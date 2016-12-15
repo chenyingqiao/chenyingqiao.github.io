@@ -1,0 +1,15 @@
+<h2 id="docker">运行第一个docker容器</h2>
+
+<ul>
+  <li>我们从网易蜂巢下载镜像</li>
+</ul>
+
+<div class="language-shell highlighter-rouge">//https://c.163.com/hub#/m/repository/?repoId<span class="o">=</span>3096
+docker pull hub.c.163.com/library/busybox:latest
+</div>
+<ul>
+  <li>然后运行镜像（运行一个交互的shell） –关闭后自动退出</li>
+</ul>
+
+<div class="language-shell highlighter-rouge">sudo docker run -i -t ubuntu /bin/bash
+</div>
