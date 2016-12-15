@@ -109,6 +109,7 @@ $ ssh root@192.168.33.10 -p 49154
 
 ## docker 导入导出
 1. 导出
+
 ```shell
 $ sudo docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                    PORTS               NAMES
@@ -117,6 +118,7 @@ $ sudo docker export 7691a814370e > ubuntu.tar
 ```
 
 2. 导入
+
 ```shell
 $ cat ubuntu.tar | sudo docker import - test/ubuntu:v1.0
 $ sudo docker images
