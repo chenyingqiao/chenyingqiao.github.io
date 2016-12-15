@@ -1,3 +1,15 @@
+---
+layout:     post
+title:      "docker入门"
+subtitle:   "docker 的入门学习笔记"
+date:       2016-12-15
+author:     "Lerko"
+header-img: "img/post-bg-universe.jpg"
+catalog: true
+tags:
+    - docker
+---
+
 ## docker的一些相关概念
 
 镜像
