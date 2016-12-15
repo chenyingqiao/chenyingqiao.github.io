@@ -10,6 +10,8 @@ tags:
     - docker
 ---
 
+> 是时候用docker部署开发环境了 （ngixn apache ubuntu mysql memcache 。。。一应俱全）
+
 ## docker的一些相关概念
 
 镜像
