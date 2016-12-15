@@ -1,14 +1,12 @@
 ## docker的一些相关概念
 
-1. 镜像
-
+镜像
 ```
 docker images 查看
 docker rmi <镜像id> 删除镜像
 ```
 
-2. 容器 containt
-
+容器
 ```
 docker ps 查看所有容器
 docker rm <容器id> 删除容器
