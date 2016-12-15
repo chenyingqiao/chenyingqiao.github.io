@@ -183,8 +183,8 @@ class video_course {
 ```
 
 ### 注解
-   1. @Table[alias=###]  |  表别名
-   2. @Field[alias=###,type=[string,int]]  |  列的别名,列的类型
+   @Table[alias=###]  |  表别名
+   @Field[alias=###,type=[string,int]]  |  列的别名,列的类型
 
 ## 查询
 
