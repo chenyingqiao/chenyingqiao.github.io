@@ -1,10 +1,15 @@
 ## docker的一些相关概念
 
-1. 镜像 
+1. 镜像
+
+```
 docker images 查看
 docker rmi <镜像id> 删除镜像
+```
 
 2. 容器 containt
+
+```
 docker ps 查看所有容器
 docker rm <容器id> 删除容器
 docker exec <容器id> 在容器中执行shell命令
@@ -12,6 +17,7 @@ docker restart <容器id> 重启容器
 docker stop <容器id> 停止容器
 docker kill <容器id> 强行杀死容器进程（一个容器一个进程）
 docker start <容器id> 开始一个容器
+```
 
 
 
