@@ -1,0 +1,169 @@
+---
+layout:     post
+title:      "nginx服务器配置"
+subtitle:   "nginx服务器配置详细分析 OneinStack"
+date:       2016-12-18
+author:     "Lerko"
+header-img: "img/home-bg-o.jpg"
+catalog: true
+tags:
+    - server
+---
+
+## 首先找到配置文件
+
+> 服务器是centos的环境  
+> 使用的是OneinStack这个php，java的运行环境一键安装工具
+
+>这个工具里面集成了一些列的sh脚本工具可以一键使用
+
+> 一般配置文件的存放路径以及nginx的主要程序存放路径
+
+```shell
+server配置（nginx.conf） /usr/local/nginx/conf(ubuntu一般在 /etc/nginx/)
+主程序                             /etc/init.d/ngin
+
+科普centos的一些基本命令
+yum ：安装软件包 yum install [软件包名称]
+rpm ：软件包管理工具  查看说有软件包 rpm -qa |grep httpd --->后面是过滤选项
+
+```
+
+## 现在是配置文件的内容
+
+> nginx 主要的配置文件nginx.conf
+
+```shell
+user www www;
+worker_processes auto;
+
+error_log /data/wwwlogs/error_nginx.log crit;
+pid /var/run/nginx.pid;
+worker_rlimit_nofile 51200;
+
+events {
+    use epoll;
+    worker_connections 51200;
+    multi_accept on;
+    }
+
+http {
+    include mime.types;
+    default_type application/octet-stream;
+    server_names_hash_bucket_size 128;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 4 32k;
+    client_max_body_size 1024m;
+    sendfile on;
+    tcp_nopush on;
+    keepalive_timeout 120;
+    server_tokens off;
+    tcp_nodelay on;
+    
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    fastcgi_buffer_size 64k;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+    fastcgi_temp_file_write_size 128k;
+
+    #Gzip Compression
+    gzip on;
+    gzip_buffers 16 8k;
+    gzip_comp_level 6;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types
+        text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
+        text/javascript application/javascript application/x-javascript
+        text/x-json application/json application/x-web-app-manifest+json
+        text/css text/plain text/x-component
+        font/opentype application/x-font-ttf application/vnd.ms-fontobject
+        image/x-icon;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+
+    #If you have a lot of static files to serve through Nginx then caching of the files' metadata (not the actual files' contents) can save some latency.
+    open_file_cache max=1000 inactive=20s;
+    open_file_cache_valid 30s;
+    open_file_cache_min_uses 2;
+    open_file_cache_errors on;
+
+######################## default ############################
+#默认的代理配置（反向代理是nginx的一个重要功能）
+    server {
+    listen 80;
+    server_name 121.42.48.14;
+    access_log /data/wwwlogs/access_nginx.log combined;
+    root /data/wwwroot/default;
+    index index.html index.htm index.php;
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+        }
+    location ~ [^/]\.php(/|$) {
+        #fastcgi_pass remote_php_ip:9000;
+        #这里对接fastcgi接口  
+        fastcgi_pass unix:/dev/shm/php-cgi.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+        }
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|ico)$ {
+        expires 30d;
+        access_log off;
+        }
+    location ~ .*\.(js|css)?$ {
+        expires 7d;
+        access_log off;
+        }
+    }
+
+########################## vhost #############################
+    include vhost/*.conf; #这里包含了其他文件加里面的配置文件
+}
+
+```
+
+### 附带我本机与apache共存的配置 （其实就改了一下端口）
+`端口更改需要service nginx restart一下进程`
+```shell
+server {
+    listen 8080 default_server;
+    listen [::]:8080 default_server;
+
+    root /var/www/Nginx;
+
+    # 这里需要加index.php 如果你开启了php的支持
+    index index.html index.php index.htm index.nginx-debian.html;
+    server_name _;
+    #location字段需要深入学习
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+    }
+}
+
+```
+
+## 科普一下fastcgi
+
+>Nginx不支持对外部程序的直接调用或者解析，所有的外部程序（包括PHP）必须通过FastCGI接口来调用。
+>FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可以是ip socket）。
+>为了调用CGI程序，还需要一个FastCGI的wrapper（wrapper可以理解为用于启动另一个程序的程序），
+>这个wrapper绑定在某个固定socket上，如端口或者文件socket。当Nginx将CGI请求发送给这个socket的时候，
+>通过FastCGI接口，wrapper接收到请求，然后派生出一个新的线程，
+>这个线程调用解释器或者外部程序处理脚本并读取返回数据；
+>接着，wrapper再将返回的数据通过FastCGI接口，
+>沿着固定的socket传递给Nginx；最后，Nginx将返回的数据发送给客户端。这就是Nginx+FastCGI的整个运作过程
+
+## php-fpm
+> 上面说明了fastcgi  php-fpm其实是一个fastcgi的管理器
+> 百度百科上面这样说明的
+> `PHP-FPM是一个PHPFastCGI管理器，是只用于PHP的。` 
