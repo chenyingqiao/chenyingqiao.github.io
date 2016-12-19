@@ -13,8 +13,8 @@ tags:
 ## 如何查看crontab是否安装？以及初次使用
  > 我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装
  
- ```shell
- 
+ ```
+
 crontab -l
 如果出现 no crontab for root的话输入
 crontab -e
@@ -61,6 +61,7 @@ Choose 1-4 [2]: 4     ---->我们一般选择的是第4个配置文件
     {每分钟执行往tmp目录下的某个文件写如当前日期信息}
 我们就可以这样写（>>标示的是将data输出的内容保存到文件中）
 */1 * * * * date >> /tmp/crontab_log.txt
+
  ```
 
  ## crontab -e 中配置文件的配置格式
