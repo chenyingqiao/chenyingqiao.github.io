@@ -148,6 +148,16 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 test/ubuntu         v1.0                9d37a6082e97        About a minute ago   171.3 MB
 ```
 
+## 如何进入docker容器
+
+> 刚开始使用docker的时候我完全不知道退出docker容器的命令行之后怎么和docker容器交互
+> 于是找到了一个命令 `docker exec`
+> 这个就是进入docker容器的一个途径
+> 比如我们run一个ubuntu的bash
+> `docker run -itd ubuntu：laster /bin/bash `
+> 然后我们可以在`docker ps`中找到这个容器
+> 我们就可以这样进入容器的命令行`docker exec -it <容器的id或者别名> /bin/bash`
+
 ## docker中网络的配置
 
 > 当docker运行的时候会产生一个docker0的网络节点
@@ -175,4 +185,6 @@ bridge模式，使用--net=bridge指定，默认设置。
 > *Dockerfile*是一种推荐的制作镜像的方法
 
 ## Dockerfile
+
+> 制作镜像的推荐途径
 
