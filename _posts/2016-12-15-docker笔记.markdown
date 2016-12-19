@@ -29,6 +29,10 @@ tags:
 * docker kill <容器id> 强行杀死容器进程（一个容器一个进程）
 * docker start <容器id> 开始一个容器
 
+远程仓库
+
+* 类似网易蜂巢这种就是一个远程的镜像仓库
+
 
 
 ## 运行第一个docker容器
@@ -53,7 +57,7 @@ sudo docker run -i -t ubuntu /bin/bash
 # 开始一个长时间运行的docker实例 运行的是后面的那条shell
 JOB=$(sudo docker run -d ubuntu /bin/sh -c "while true; do echo Hello world; sleep 1; done")
 
-# Collect（收集） the output of the job so far
+# Collect（收集） the output of the job so far  这里的$JoB也可以是容器的id
 sudo docker logs $JOB
 
 # Kill the job
@@ -89,7 +93,8 @@ $ exit
 $ docker ps -a |more
 $ docker commit a30a3a2f2b130749995f5902f079dc6ad31ea0621fac595128ec59c6da07feea dhrp/sshd
 # I gave the name dhrp/sshd for the container
-# now we can run it again
+# now we can run it again 这里表示的是吧sshd这个程序以守护进程的方式运行
+# 如果不是守护进程的话如果ubuntu这个镜像没有程序运行，docker的容器就会退出进入停止状态
 $ docker run -d dhrp/sshd /usr/sbin/sshd -D # D for daemon mode
 # is it running?
 $ docker ps
@@ -142,3 +147,32 @@ $ sudo docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
 test/ubuntu         v1.0                9d37a6082e97        About a minute ago   171.3 MB
 ```
+
+## docker中网络的配置
+
+> 当docker运行的时候会产生一个docker0的网络节点
+> 我们在使用docker run创建Docker容器时，可以用--net选项指定容器的网络模式，Docker有以下4种网络模式：
+host模式，使用--net=host指定。
+container模式，使用--net=container:NAME_or_ID指定。
+none模式，使用--net=none指定。
+bridge模式，使用--net=bridge指定，默认设置。
+默认选择bridge。
+
+>使用`docker network inspect bridge`可以查看当前桥接网络容器的ip状态
+
+
+## 关于镜像的构成
+
+[参考文章：利用 commit 理解镜像构成](https://yeasy.gitbooks.io/docker_practice/content/image/commit.html)
+
+> 当我们run一个镜像 之后对镜像进行操作 会对文件造成更改
+> 我们可以用`docker diff <容器id或者别名>`
+> commit 之后就会产生一个新的镜像
+> `docker images`可以查看
+> `docker history <image的名字>`可以查看镜像的提交历史
+> **这里要注意** commit不能不推荐用来制作镜像 因为这个是一种黑盒操作
+> 我们并不知道在我们操作之后 镜像里面发生了什么变化 
+> *Dockerfile*是一种推荐的制作镜像的方法
+
+## Dockerfile
+
