@@ -14,6 +14,7 @@ tags:
  > 我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装
  
  ```shell
+ 
 crontab -l
 如果出现 no crontab for root的话输入
 crontab -e
@@ -65,6 +66,7 @@ Choose 1-4 [2]: 4     ---->我们一般选择的是第4个配置文件
  ## crontab -e 中配置文件的配置格式
 
 ```shell
+
 * * * * * command
 第一个× ：分钟 0-59
 第二个× ：小时0-23

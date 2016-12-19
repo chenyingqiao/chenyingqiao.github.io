@@ -11,9 +11,9 @@ tags:
 ---
 
 ## 查看所有用户的进程
->ps aux
+> ps aux
 
->ps aux | grep [key]     可以进行筛选
+> ps aux \| grep [key]     可以进行筛选
 
 ## 一些基本用法
 
