@@ -5,8 +5,8 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 23 Dec 2016 19:08:22 +0800</pubDate>
-    <lastBuildDate>Fri, 23 Dec 2016 19:08:22 +0800</lastBuildDate>
+    <pubDate>Fri, 23 Dec 2016 19:27:36 +0800</pubDate>
+    <lastBuildDate>Fri, 23 Dec 2016 19:27:36 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -145,13 +145,12 @@ server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一
 &lt;p&gt;&lt;strong&gt;进入mysql&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;show master status；
-&lt;/div&gt;
-
-&lt;p&gt;+——————+———-+————–+——————+——————-+
++------------------+----------+--------------+------------------+-------------------+
 | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+——————+———-+————–+——————+——————-+
++------------------+----------+--------------+------------------+-------------------+
 | mysql-bin.000001 |      681 |              |                  |                   |
-+——————+———-+————–+——————+——————-+&lt;/p&gt;
++------------------+----------+--------------+------------------+-------------------+
+&lt;/div&gt;
 
 &lt;h3 id=&quot;master&quot;&gt;从库把master链接到主库&lt;/h3&gt;
 
@@ -159,9 +158,9 @@ server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一
   &lt;p&gt;这里我们只需要一个命令就可以&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# master_log_file =&amp;gt; 指向胡二进制文件
-# master_log_pos =&amp;gt; 二进制文件胡读取位置
-change master to master_host=&#39;172.17.0.2&#39;,master_user=&#39;lerko&#39;,master_password=&#39;111111&#39;,master_log_file=&#39;mysql-bin.000001&#39;,master_log_pos=681;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# master_log_file =&amp;gt; 指向胡二进制文件&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# master_log_pos =&amp;gt; 二进制文件胡读取位置&lt;/span&gt;
+change master to &lt;span class=&quot;nv&quot;&gt;master_host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;172.17.0.2&#39;&lt;/span&gt;,master_user&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;lerko&#39;&lt;/span&gt;,master_password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;111111&#39;&lt;/span&gt;,master_log_file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;mysql-bin.000001&#39;&lt;/span&gt;,master_log_pos&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;681;
 &lt;/div&gt;
 
 &lt;blockquote&gt;
@@ -170,11 +169,11 @@ change master to master_host=&#39;172.17.0.2&#39;,master_user=&#39;lerko&#39;,ma
 
 &lt;h3 id=&quot;section-3&quot;&gt;去从服务器查看同步状态&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入mysql命令行
-show slave status\G
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# 进入mysql命令行&lt;/span&gt;
+show slave status&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;
 
-*************************** 1. row ***************************
-               Slave_IO_State: Waiting for master to send event
+&lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt; 1. row &lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt;
+               Slave_IO_State: Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;master to send event
                   Master_Host: 172.17.0.2
                   Master_User: lerko
                   Master_Port: 3306
@@ -184,8 +183,8 @@ show slave status\G
                Relay_Log_File: 68903b92c3ea-relay-bin.000003
                 Relay_Log_Pos: 320
         Relay_Master_Log_File: mysql-bin.000001
-             Slave_IO_Running: Yes [这个必须要yes]
-            Slave_SQL_Running: Yes [这个必须要yes]
+             Slave_IO_Running: Yes &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个必须要yes]
+            Slave_SQL_Running: Yes &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个必须要yes]
               Replicate_Do_DB: 
           Replicate_Ignore_DB: 
            Replicate_Do_Table: 
@@ -206,7 +205,7 @@ show slave status\G
               Master_SSL_Cert: 
             Master_SSL_Cipher: 
                Master_SSL_Key: 
-        Seconds_Behind_Master: 0 [这个可以查看主从是否延迟]
+        Seconds_Behind_Master: 0 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个可以查看主从是否延迟]
 Master_SSL_Verify_Server_Cert: No
                 Last_IO_Errno: 0
                 Last_IO_Error: 
@@ -218,7 +217,7 @@ Master_SSL_Verify_Server_Cert: No
              Master_Info_File: /var/lib/mysql/master.info
                     SQL_Delay: 0
           SQL_Remaining_Delay: NULL
-      Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+      Slave_SQL_Running_State: Slave has &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;all relay log; waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more updates
            Master_Retry_Count: 86400
                   Master_Bind: 
       Last_IO_Error_Timestamp: 
@@ -231,7 +230,7 @@ Master_SSL_Verify_Server_Cert: No
          Replicate_Rewrite_DB: 
                  Channel_Name: 
            Master_TLS_Version: 
-1 row in set (0.00 sec)
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 ERROR: 
 No query specified
@@ -719,6 +718,232 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
         <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/</guid>
         
         <category>server</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Phero数据库查询</title>
+        <description>&lt;h2 id=&quot;docker&quot;&gt;docker创建环境&lt;/h2&gt;
+
+&lt;h3 id=&quot;dockermysql&quot;&gt;使用docker创建两个mysql容器&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker 镜像可以使用网易蜂巢的mysql的docker镜像
+MYSQL_ROOT_PASSWORD是设置docker容器中mysql的root账户的密码&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;docker run --name mysql-master -v /home/docker/file/:/home/ -e &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;111111 -d mysql
+docker run --name mysql-slave -v /home/docker/file/:/home/ -e &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;111111 -d mysql
+&lt;span class=&quot;c&quot;&gt;#这里一般都要挂载一下外部目录这样docker才能和外部机器共享文件&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;今日容器之后需要准备的事情&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;由于镜像中没有提供vim 而且 镜像中的源是使用ubuntu的官方源 
+如果我们没有使用科学上网apt-get update 将会非常慢
+我使用的是deepin 我就吧deepin的源替换进去&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# 拷贝deepin的源
+sudo cp /etc/apt/source.list /home/docker/file/
+#进入容器
+docker exec -it mysql-master bash
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入容器之后 我们从共享的文件目录获取deepin的源 然后覆盖到容器中的源
+cat /home/source.list &amp;gt; /etc/apt/source.list
+apt-get update
+apt-get upgrade
+apt-get install vim
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mysql-slave 也是同样的更新一下源&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;mysql&quot;&gt;开始配置mysql主从&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;每台mysql主机都有master和slave的概念
+其实他是两个工作线程&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;将Mysql的数据分布到多个系统上去，这种分布的机制，是通过将Mysql的某一台主机的数据复制到其&amp;gt;它主机（slaves）上，并重新执行一遍来实现的。复制过程中一个服务器充当主服务器，而一个或多个其它服务器充当从服务器。主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更新，然后封锁并等待主服务器通知新的更新。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;请注意当你进行复制时，所有对复制中的表的更新必须在主服务器上进行。否则，你必须要小心，以避免用户对主服务器上的表进行的更新与对从服务器上的表所进行的更新之间的冲突。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;从添加用户开始&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;我们需要添加一个mysql用户让slave来使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;mysql-master 容器&lt;/strong&gt;
+```shell
+mysql -u root -p
+#输入密码后进入mysql&lt;/p&gt;
+
+&lt;p&gt;#创建一个用户名为lerko密码为111111的可以使用任意ip访问的用户
+create user  ‘lerko’@’%’ IDENTIFIED BY ‘111111’;&lt;/p&gt;
+
+&lt;h1 id=&quot;curd&quot;&gt;为用户开启curd权限&lt;/h1&gt;
+&lt;p&gt;# 如果没有开启的话会导致 Slave_IO_Running :no
+# 权限有select,insert,update,delete,create,drop, all privilege[表示给所有的权限]
+#命令格式: &lt;code class=&quot;highlighter-rouge&quot;&gt;grant 权限1,权限2,…权限n on 数据库名称.表名称 to 用户名@用户地址 identified by ‘连接口令’;&lt;/code&gt;
+grant select,insert,update,delete,create,drop on &lt;em&gt;.&lt;/em&gt; to lerko@’%’ identified by ‘111111’;
+```&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;另外如果你没有开启权限就吧从库链接主库了
+你要重新链接一次 因为主库的Position会变化
+重新链接要使用stop slave结束丛库的slave&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;开启主和从服务器的二进制日志&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;mysql-master&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
+vim /etc/mysql/my.cnf
+#添加如下内容
+[mysqld]
+log-bin=mysql-bin   //[必须]启用二进制日志
+server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;mysql-slave&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
+vim /etc/mysql/my.cnf
+#添加如下内容
+[mysqld]
+log-bin=mysql-bin   //[必须]启用二进制日志
+server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+&lt;/div&gt;
+
+&lt;h3 id=&quot;mysql-1&quot;&gt;重启两个容器的mysql进程&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这个会直接吧容器给停了  之后再start一下容器就行&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;service mysql restart;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;masterslave&quot;&gt;查看主库的master以及从库的slave&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;进入mysql&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;show master status；
+&lt;/div&gt;
+
+&lt;p&gt;+——————+———-+————–+——————+——————-+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++——————+———-+————–+——————+——————-+
+| mysql-bin.000001 |      681 |              |                  |                   |
++——————+———-+————–+——————+——————-+&lt;/p&gt;
+
+&lt;h3 id=&quot;master&quot;&gt;从库把master链接到主库&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这里我们只需要一个命令就可以&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# master_log_file =&amp;gt; 指向胡二进制文件
+# master_log_pos =&amp;gt; 二进制文件胡读取位置
+change master to master_host=&#39;172.17.0.2&#39;,master_user=&#39;lerko&#39;,master_password=&#39;111111&#39;,master_log_file=&#39;mysql-bin.000001&#39;,master_log_pos=681;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;主从ip可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;docker inspect [容器id]&lt;/code&gt;来查看&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;去从服务器查看同步状态&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入mysql命令行
+show slave status\G
+
+*************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: 172.17.0.2
+                  Master_User: lerko
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000001
+          Read_Master_Log_Pos: 1045
+               Relay_Log_File: 68903b92c3ea-relay-bin.000003
+                Relay_Log_Pos: 320
+        Relay_Master_Log_File: mysql-bin.000001
+             Slave_IO_Running: Yes [这个必须要yes]
+            Slave_SQL_Running: Yes [这个必须要yes]
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+       Replicate_Ignore_Table: 
+      Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                   Last_Errno: 0
+                   Last_Error: 
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 1045
+              Relay_Log_Space: 534
+              Until_Condition: None
+               Until_Log_File: 
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: 0 [这个可以查看主从是否延迟]
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error: 
+               Last_SQL_Errno: 0
+               Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: 1
+                  Master_UUID: 38487393-c72a-11e6-a1c8-0242ac110002
+             Master_Info_File: /var/lib/mysql/master.info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+      Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+           Master_Retry_Count: 86400
+                  Master_Bind: 
+      Last_IO_Error_Timestamp: 
+     Last_SQL_Error_Timestamp: 
+               Master_SSL_Crl: 
+           Master_SSL_Crlpath: 
+           Retrieved_Gtid_Set: 
+            Executed_Gtid_Set: 
+                Auto_Position: 0
+         Replicate_Rewrite_DB: 
+                 Channel_Name: 
+           Master_TLS_Version: 
+1 row in set (0.00 sec)
+
+ERROR: 
+No query specified
+
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 15 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/15/hah/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/hah/</guid>
+        
+        <category>Phero</category>
         
         
       </item>
