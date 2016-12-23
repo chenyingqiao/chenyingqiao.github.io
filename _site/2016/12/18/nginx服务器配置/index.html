@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="迷茫">
+    <meta name="keywords"  content="一个不知道在干什么的人">
+    <meta name="theme-color" content="#000000">
+    
+    <title>nginx服务器配置 - 陈映峤的博客 | Lerko Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Lerko Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                   <!--  
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                     -->
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg-o.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg-o.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#server" title="server">server</a>
+                        
+                    </div>
+                    <h1>nginx服务器配置</h1>
+                    
+                    
+                    <h2 class="subheading">nginx服务器配置详细分析 OneinStack</h2>
+                    
+                    <span class="meta">Posted by Lerko on December 18, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h2 id="section">首先找到配置文件</h2>
+
+<blockquote>
+  <p>服务器是centos的环境
+使用的是OneinStack这个php，java的运行环境一键安装工具</p>
+</blockquote>
+
+<blockquote>
+  <p>这个工具里面集成了一些列的sh脚本工具可以一键使用</p>
+</blockquote>
+
+<blockquote>
+  <p>一般配置文件的存放路径以及nginx的主要程序存放路径</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge">server配置（nginx.conf） /usr/local/nginx/conf<span class="o">(</span>ubuntu一般在 /etc/nginx/<span class="o">)</span>
+主程序                             /etc/init.d/ngin
+
+科普centos的一些基本命令
+yum ：安装软件包 yum install <span class="o">[</span>软件包名称]
+rpm ：软件包管理工具  查看说有软件包 rpm -qa |grep httpd ---&gt;后面是过滤选项
+
+</div>
+
+<h2 id="section-1">现在是配置文件的内容</h2>
+
+<blockquote>
+  <p>nginx 主要的配置文件nginx.conf</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge">user www www;
+worker_processes auto;
+
+error_log /data/wwwlogs/error_nginx.log crit;
+pid /var/run/nginx.pid;
+worker_rlimit_nofile 51200;
+
+events <span class="o">{</span>
+    use epoll;
+    worker_connections 51200;
+    multi_accept on;
+    <span class="o">}</span>
+
+http <span class="o">{</span>
+    include mime.types;
+    default_type application/octet-stream;
+    server_names_hash_bucket_size 128;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 4 32k;
+    client_max_body_size 1024m;
+    sendfile on;
+    tcp_nopush on;
+    keepalive_timeout 120;
+    server_tokens off;
+    tcp_nodelay on;
+    
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    fastcgi_buffer_size 64k;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+    fastcgi_temp_file_write_size 128k;
+
+    <span class="c">#Gzip Compression</span>
+    gzip on;
+    gzip_buffers 16 8k;
+    gzip_comp_level 6;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types
+        text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
+        text/javascript application/javascript application/x-javascript
+        text/x-json application/json application/x-web-app-manifest+json
+        text/css text/plain text/x-component
+        font/opentype application/x-font-ttf application/vnd.ms-fontobject
+        image/x-icon;
+    gzip_disable <span class="s2">"MSIE [1-6]</span><span class="se">\.</span><span class="s2">(?!.*SV1)"</span>;
+
+    <span class="c">#If you have a lot of static files to serve through Nginx then caching of the files' metadata (not the actual files' contents) can save some latency.</span>
+    open_file_cache <span class="nv">max</span><span class="o">=</span>1000 <span class="nv">inactive</span><span class="o">=</span>20s;
+    open_file_cache_valid 30s;
+    open_file_cache_min_uses 2;
+    open_file_cache_errors on;
+
+<span class="c">######################## default ############################</span>
+<span class="c">#默认的代理配置（反向代理是nginx的一个重要功能）</span>
+    server <span class="o">{</span>
+    listen 80;
+    server_name 121.42.48.14;
+    access_log /data/wwwlogs/access_nginx.log combined;
+    root /data/wwwroot/default;
+    index index.html index.htm index.php;
+    location /nginx_status <span class="o">{</span>
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+        <span class="o">}</span>
+    location ~ <span class="o">[</span>^/]<span class="se">\.</span>php<span class="o">(</span>/|<span class="nv">$)</span> <span class="o">{</span>
+        <span class="c">#fastcgi_pass remote_php_ip:9000;</span>
+        <span class="c">#这里对接fastcgi接口  </span>
+        fastcgi_pass unix:/dev/shm/php-cgi.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+        <span class="o">}</span>
+    location ~ .<span class="k">*</span><span class="se">\.</span><span class="o">(</span>gif|jpg|jpeg|png|bmp|swf|flv|ico<span class="o">)</span><span class="nv">$ </span><span class="o">{</span>
+        expires 30d;
+        access_log off;
+        <span class="o">}</span>
+    location ~ .<span class="k">*</span><span class="se">\.</span><span class="o">(</span>js|css<span class="o">)</span>?<span class="nv">$ </span><span class="o">{</span>
+        expires 7d;
+        access_log off;
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="c">########################## vhost #############################</span>
+    include vhost/<span class="k">*</span>.conf; <span class="c">#这里包含了其他文件加里面的配置文件</span>
+<span class="o">}</span>
+
+</div>
+
+<h3 id="apache-">附带我本机与apache共存的配置 （其实就改了一下端口）</h3>
+<p><code class="highlighter-rouge">端口更改需要service nginx restart一下进程</code>
+```shell
+server {
+    listen 8080 default_server;
+    listen [::]:8080 default_server;</p>
+
+<div class="highlighter-rouge">root /var/www/Nginx;
+
+# 这里需要加index.php 如果你开启了php的支持
+index index.html index.php index.htm index.nginx-debian.html;
+server_name _;
+#location字段需要深入学习
+location / {
+    try_files $uri $uri/ =404;
+}
+location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+} }
+</div>
+
+<p>```</p>
+
+<h2 id="fastcgi">科普一下fastcgi</h2>
+
+<blockquote>
+  <p>Nginx不支持对外部程序的直接调用或者解析，所有的外部程序（包括PHP）必须通过FastCGI接口来调用。
+FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可以是ip socket）。
+为了调用CGI程序，还需要一个FastCGI的wrapper（wrapper可以理解为用于启动另一个程序的程序），
+这个wrapper绑定在某个固定socket上，如端口或者文件socket。当Nginx将CGI请求发送给这个socket的时候，
+通过FastCGI接口，wrapper接收到请求，然后派生出一个新的线程，
+这个线程调用解释器或者外部程序处理脚本并读取返回数据；
+接着，wrapper再将返回的数据通过FastCGI接口，
+沿着固定的socket传递给Nginx；最后，Nginx将返回的数据发送给客户端。这就是Nginx+FastCGI的整个运作过程</p>
+</blockquote>
+
+<h2 id="php-fpm">php-fpm</h2>
+<blockquote>
+  <p>上面说明了fastcgi  php-fpm其实是一个fastcgi的管理器
+百度百科上面这样说明的
+<code class="highlighter-rouge">PHP-FPM是一个PHPFastCGI管理器，是只用于PHP的。</code></p>
+</blockquote>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2016/12/18/nginx服务器配置"
+                    data-title="nginx服务器配置"
+                    data-url="https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"
+                    data-images="https://chenyingqiao.github.io//img/home-bg-o.jpg"
+                    data-content="首先找到配置文件
+
+
+  服务器是centos的环境
+使用的是OneinStack这个php，java的运行环境一键安装工具
+
+
+
+  这个工具里面集成了... | 陈映峤的博客 | Lerko Blog " >
+                    <div class="ds-share-inline">
+                      <style> 
+                        .ds-share-icons-16 {display:none;} 
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/" data-toggle="tooltip" data-placement="top" title="crontab工具的使用">
+                        Previous<br>
+                        <span>crontab工具的使用</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/" data-toggle="tooltip" data-placement="top" title="Mysql主从配置docker">
+                        Next<br>
+                        <span>Mysql主从配置docker</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2016/12/18/nginx服务器配置"
+                        data-title="nginx服务器配置"
+                        data-url="https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#Phero" title="Phero" rel="2">
+                                    Phero
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#server" title="server" rel="3">
+                                    server
+                                </a>
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'lerko';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/chenyingqiao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lerko Blog 2016
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'chenyingqiao.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
