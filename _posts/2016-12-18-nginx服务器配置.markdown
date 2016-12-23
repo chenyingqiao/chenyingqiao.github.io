@@ -12,12 +12,13 @@ tags:
 
 ## 首先找到配置文件
 
-> 服务器是centos的环境  
+> 服务器是centos的环境
 > 使用的是OneinStack这个php，java的运行环境一键安装工具
 
 >这个工具里面集成了一些列的sh脚本工具可以一键使用
 
 > 一般配置文件的存放路径以及nginx的主要程序存放路径
+
 
 ```shell
 server配置（nginx.conf） /usr/local/nginx/conf(ubuntu一般在 /etc/nginx/)

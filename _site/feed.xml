@@ -5,12 +5,12 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 23 Dec 2016 18:45:11 +0800</pubDate>
-    <lastBuildDate>Fri, 23 Dec 2016 18:45:11 +0800</lastBuildDate>
+    <pubDate>Fri, 23 Dec 2016 19:08:22 +0800</pubDate>
+    <lastBuildDate>Fri, 23 Dec 2016 19:08:22 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>Mysql主从配置</title>
+        <title>Mysql主从配置docker</title>
         <description>
 &lt;hr /&gt;
 &lt;p&gt;layout:     post
@@ -240,8 +240,8 @@ No query specified
 
 </description>
         <pubDate>Fri, 23 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE/</guid>
+        <link>https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/</guid>
         
         
       </item>
@@ -251,7 +251,7 @@ No query specified
         <description>&lt;h2 id=&quot;section&quot;&gt;首先找到配置文件&lt;/h2&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;服务器是centos的环境&lt;br /&gt;
+  &lt;p&gt;服务器是centos的环境
 使用的是OneinStack这个php，java的运行环境一键安装工具&lt;/p&gt;
 &lt;/blockquote&gt;
 
