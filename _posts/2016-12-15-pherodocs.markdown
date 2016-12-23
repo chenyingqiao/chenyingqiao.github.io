@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Phero数据库查询"
+title:      "Phero数据库查询框架【文档】"
 subtitle:   " \"Phero 数据库查询类库的使用\""
 date:       2016-12-15
 author:     "Lerko"
