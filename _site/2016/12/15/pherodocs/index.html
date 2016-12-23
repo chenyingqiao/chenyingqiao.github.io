@@ -203,12 +203,66 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="phero">Phero数据库查询</h2>
-
-<h2 id="section">开始</h2>
+				<h2 id="section">安装</h2>
 
 <blockquote>
-  <p>现在我们有几张表（都要引入DbUnit）</p>
+  <p>git安装 <code class="highlighter-rouge">git clone https://github.com/chenyingqiao/Phero.git</code></p>
+</blockquote>
+
+<blockquote>
+  <p>composer 安装 <code class="highlighter-rouge">composer require lerko/p-hero</code></p>
+</blockquote>
+
+<h2 id="section-1">开始</h2>
+
+<h3 id="pdo">在入口脚本注入PDO</h3>
+
+<blockquote>
+  <p>方法1</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">use Phero\System\DI;
+use Phero\Database as database;
+
+$config[]="mysql:host=localhost;dbname=video;charset=utf8";//链接字符串
+$config[]="root";//用户名
+$config[]="Cyq19931115";//密码
+DI::inj(database\Enum\DatabaseConfig::DatabaseConnect,$config);//注入
+</div>
+
+<blockquote>
+  <p>方法2</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">use Phero\System\DI;
+use Phero\Database as database;
+
+$dns = "mysql:host=localhost;dbname=video;charset=utf8";
+DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns, 'root', 'Cyq19931115'));
+</div>
+
+<blockquote>
+  <p>接下来就可以建立实体类 然后愉快的使用了</p>
+</blockquote>
+
+<h3 id="sql">直接执行sql语句</h3>
+
+<ul>
+  <li>exec(sql,bindData) 插入数据</li>
+  <li>query(sql,bindData) 读取数据</li>
+</ul>
+
+<div class="language-php highlighter-rouge">$help=new database\Realize\MysqlDbHelp();
+$data=$help-&gt;query("select * from video_cat where id=:id ",["id",1]);
+$effect=$help-&gt;exec("update video_cat set id=:id where name=:name",[
+    ['id',1],
+    ['name','视频']
+]);
+</div>
+
+<h3 id="section-2">新建实体类</h3>
+<blockquote>
+  <p>现在我们有几张表（都要<code class="highlighter-rouge">use DbUnit</code>）</p>
 </blockquote>
 
 <p><code class="highlighter-rouge">video_cat</code>表  <code class="highlighter-rouge">(视频种类表)</code></p>
@@ -476,82 +530,71 @@ class video_course {
 }
 </div>
 
-<h3 id="section-1">注解</h3>
-<ol>
-  <li>@Table    表别名</li>
-  <li>@Field    列的类型,列的别名</li>
-</ol>
+<h3 id="section-3">注解</h3>
 
-<h2 id="section-2">查询</h2>
+<table>
+  <thead>
+    <tr>
+      <th>用法</th>
+      <th style="text-align: right">参数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>@Table[alias=###]</td>
+      <td style="text-align: right">表别名</td>
+    </tr>
+    <tr>
+      <td>@Field[alias=###,type=[string,int]]</td>
+      <td style="text-align: right">列的别名,列的类型</td>
+    </tr>
+  </tbody>
+</table>
 
-<h3 id="section-3">开始使用</h3>
-<ul>
-  <li>
-    <p>方式1
-<code class="highlighter-rouge">php
-$dns = "mysql:host=localhost;dbname=video;charset=utf8";
-$config[]=$dns;
-$config[]="root";
-$config[]="Cyq19931115";
-DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns, 'root', 'Cyq19931115'));
-DI::inj(database\Enum\DatabaseConfig::DatabaseConnect,$config);
-</code></p>
-  </li>
-  <li>
-    <p>方式2
-<code class="highlighter-rouge">php
-$dns = "mysql:host=localhost;dbname=video;charset=utf8";
-DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns, 'root', 'Cyq19931115'));
-</code></p>
-  </li>
-</ul>
+<h2 id="section-4">查询</h2>
 
 <h3 id="videocat">查询所有列video_cat表中的列</h3>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat();
-$value=$video_user-&gt;select();//value就是video_cat查询出来的结果
-
+$video_user-&gt;select();//value就是video_cat查询出来的结果
 </div>
 
 <div class="language-sql highlighter-rouge"><span class="err">相当于</span><span class="p">:</span>
   <span class="k">select</span>
-    <span class="n">cd</span><span class="p">.</span><span class="n">uid</span><span class="p">,</span>
-    <span class="n">cd</span><span class="p">.</span><span class="n">username</span><span class="p">,</span>
-    <span class="n">cd</span><span class="p">.</span><span class="n">password</span>
+    <span class="n">cat</span><span class="p">.</span><span class="n">uid</span><span class="p">,</span>
+    <span class="n">cat</span><span class="p">.</span><span class="n">username</span><span class="p">,</span>
+    <span class="n">cat</span><span class="p">.</span><span class="n">password</span>
   <span class="k">from</span>
-    <span class="n">video_user</span>
+    <span class="n">video_user</span> <span class="k">as</span> <span class="n">cat</span>
 </div>
 
-<h3 id="section-4">查询表中的部分列</h3>
+<h3 id="section-5">查询表中的部分列</h3>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat(['id','name']);  //===&gt;可以输入要的列
 $value=$video_user-&gt;select();
-
-相当于:
-&gt; select id,name from video_user;
 </div>
 
 <div class="language-sql highlighter-rouge"><span class="err">相当于</span><span class="p">:</span>
 <span class="k">select</span>
-    <span class="n">id</span><span class="p">,</span>
-    <span class="n">name</span>
+    <span class="n">cd</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">cd</span><span class="p">.</span><span class="n">name</span>
 <span class="k">from</span>
-    <span class="n">video_user</span><span class="p">;</span>
+    <span class="n">video_user</span> <span class="k">as</span> <span class="n">cd</span><span class="p">;</span>
 </div>
 
 <h3 id="where">条件查询(where)</h3>
 
-<ul>
-  <li>简单的where
-<code class="highlighter-rouge">php
-  $video_user=new test\video_user(["uid","username"]);
-  $video_user-&gt;order('uid',database\Enum\OrderType::desc);
-  $video_user-&gt;whereOrEqGroupStart("uid", 4)-&gt;whereInGroupEnd("uid", [2, 3, 1]);
-  $video_user-&gt;group("password");
-  $video_user-&gt;having(["password","many_test"]);
-  $video_user-&gt;select();
-</code></li>
-</ul>
+<blockquote>
+  <p>简单的where</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">    $video_user=new test\video_user(["uid","username"]);
+    $video_user-&gt;order('uid',database\Enum\OrderType::desc);
+    $video_user-&gt;whereOrEqGroupStart("uid", 4)-&gt;whereInGroupEnd("uid", [2, 3, 1]);
+    $video_user-&gt;group("password");
+    $video_user-&gt;having(["password","many_test"]);
+    $video_user-&gt;select();
+</div>
 
 <div class="language-sql highlighter-rouge"><span class="err">相当于</span><span class="p">:</span>
 <span class="k">select</span>
@@ -569,17 +612,16 @@ $value=$video_user-&gt;select();
     <span class="n">cd</span><span class="p">.</span><span class="n">uid</span> <span class="k">desc</span><span class="p">;</span>
 </div>
 
-<ul>
-  <li>条件查询的组合
-    <ol>
-      <li>where[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge]([列],[值])</li>
-      <li>whereAnd[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge]([列],[值])</li>
-      <li>whereOr[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge]([列],[值])</li>
-    </ol>
-  </li>
-</ul>
+<blockquote>
+  <p>条件查询的组合</p>
+</blockquote>
 
-<h3 id="section-5">关联查询</h3>
+<div class="highlighter-rouge">1. where\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
+2. whereAnd\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
+3. whereOr\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
+</div>
+
+<h3 id="section-6">关联查询</h3>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat();
 /**
@@ -599,19 +641,19 @@ $video_cat-&gt;join(new video_course(['course_id','name','video_path']),"$.id=#.
 $value=$video_cat-&gt;select();
 </div>
 
-<h2 id="section-6">插入</h2>
+<h2 id="section-7">插入</h2>
 
-<h3 id="section-7">普通插入</h3>
+<h3 id="section-8">普通插入</h3>
 
 <div class="language-php highlighter-rouge">//这是一种赋值方式
 $video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
 //或者通过字段直接赋值
-$video_user-&gt;username="this is fuck";
+$video_user-&gt;username="fuck";
 $video_user-&gt;password="123455";
 $insert = $video_user-&gt;insert();
 </div>
 
-<h3 id="section-8">批量插入</h3>
+<h3 id="section-9">批量插入</h3>
 
 <div class="language-php highlighter-rouge">$video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
  $video_user2 = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
@@ -621,7 +663,7 @@ $model = new Model();
 $model-&gt;insert($entiy);
 </div>
 
-<h3 id="section-9">事务插入</h3>
+<h3 id="section-10">事务插入</h3>
 
 <div class="language-php highlighter-rouge">//这是一种赋值方式
 $video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
@@ -634,11 +676,38 @@ $insert = $video_user-&gt;insert(true);
 $video_user-&gt;commit();
 </div>
 
-<h2 id="section-10">更新</h2>
+<h2 id="section-11">更新</h2>
 
-<h2 id="section-11">删除</h2>
+<h3 id="section-12">普通更新</h3>
 
-<h1 id="section-12">实例测试文件</h1>
+<div class="language-php highlighter-rouge">$video_user = new unit\video_user(["username" =&gt; "asdfs", "password" =&gt; "1234"]);
+$video_user-&gt;where(['uid', 4]);
+$update = $video_user-&gt;update();
+</div>
+
+<div class="language-sql highlighter-rouge"><span class="err">相当于</span>
+<span class="k">update</span>
+    <span class="n">video_user</span> <span class="k">as</span> <span class="n">cd</span>
+<span class="k">set</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">asdfs</span><span class="p">,</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="mi">1234</span>
+<span class="k">where</span>
+    <span class="n">cd</span><span class="p">.</span><span class="n">uid</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</div>
+
+<h1 id="section-13">删除</h1>
+
+<h3 id="section-14">普通删除</h3>
+<div class="language-php highlighter-rouge">$video_user = new unit\video_user();
+$video_user-&gt;whereEq("uid",4);
+$video_user-&gt;delete();
+</div>
+
+<div class="language-sql highlighter-rouge"><span class="err">相当于</span>
+<span class="k">delete</span> <span class="k">from</span> <span class="n">video_user</span> <span class="k">where</span> <span class="n">uid</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</div>
+
+<h1 id="section-15">实例测试文件</h1>
 
 <div class="language-php highlighter-rouge"><span class="cp">&lt;?php</span>
 <span class="k">require_once</span> <span class="s2">"vendor/autoload.php"</span><span class="p">;</span>
@@ -777,20 +846,14 @@ $video_user-&gt;commit();
                     data-title="Phero数据库查询"
                     data-url="https://chenyingqiao.github.io//2016/12/15/pherodocs/"
                     data-images="https://chenyingqiao.github.io//img/post-bg-universe.jpg"
-                    data-content="Phero数据库查询
-
-开始
+                    data-content="安装
 
 
-  现在我们有几张表（都要引入DbUnit）
+  git安装 git clone https://github.com/chenyingqiao/Phero.git
 
 
-video_cat表  (视频种类表)
 
-
-  
-    
-     ... | 陈映峤的博客 | Lerko Blog " >
+  compose... | 陈映峤的博客 | Lerko Blog " >
                     <div class="ds-share-inline">
                       <style> 
                         .ds-share-icons-16 {display:none;} 
@@ -813,12 +876,19 @@ video_cat表  (视频种类表)
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/12/15/docker%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="Docker笔记">
+                        <a href="/2016/12/15/docker%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="docker入门">
                         Previous<br>
-                        <span>Docker笔记</span>
+                        <span>docker入门</span>
                         </a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/" data-toggle="tooltip" data-placement="top" title="ps 进程管理命令">
+                        Next<br>
+                        <span>ps 进程管理命令</span>
+                        </a>
+                    </li>
                     
                 </ul>
 
@@ -869,6 +939,14 @@ video_cat表  (视频种类表)
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
         				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#server" title="server" rel="3">
+                                    server
+                                </a>
                             
         				
         			</div>

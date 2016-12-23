@@ -187,6 +187,134 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE/">
+        <h2 class="post-title">
+            Mysql主从配置
+        </h2>
+        
+        <div class="post-content-preview">
+            
+
+layout:     post
+title:      “mysql 主从复制”
+subtitle:   “使用Docker创建本地mysql主从,实现主从分离”
+date:       2016-12-15
+author:     “Lerko”
+header-img: “img/post-bg-unix-linux.jpg”
+catalog: true
+tags:
+    - da...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko Blog on December 23, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/">
+        <h2 class="post-title">
+            nginx服务器配置
+        </h2>
+        
+        <h3 class="post-subtitle">
+            nginx服务器配置详细分析 OneinStack
+        </h3>
+        
+        <div class="post-content-preview">
+            首先找到配置文件
+
+
+  服务器是centos的环境
+使用的是OneinStack这个php，java的运行环境一键安装工具
+
+
+
+  这个工具里面集成了一些列的sh脚本工具可以一键使用
+
+
+
+  一般配置文件的存放路径以及nginx的主要程序存放路径
+
+
+server配置（nginx.conf） /usr/local/nginx/conf(ubuntu一般在 /etc/nginx/)
+主程...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on December 18, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/">
+        <h2 class="post-title">
+            crontab工具的使用
+        </h2>
+        
+        <h3 class="post-subtitle">
+            crontab是一个linux重要的计划任务工具
+        </h3>
+        
+        <div class="post-content-preview">
+            如何查看crontab是否安装？以及初次使用
+
+
+  我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装
+
+
+crontab -l
+如果出现 no crontab for root的话输入
+crontab -e
+会有如下的选项
+no crontab for root - using an empty one
+
+Select an editor.  To chan...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on December 18, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/">
+        <h2 class="post-title">
+            ps 进程管理命令
+        </h2>
+        
+        <h3 class="post-subtitle">
+            ps命令很强大！
+        </h3>
+        
+        <div class="post-content-preview">
+            查看所有用户的进程
+
+  ps aux
+
+
+
+  ps aux | grep [key]     可以进行筛选
+
+
+一些基本用法
+
+    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
+    ps -A 显示所有程序。 
+    ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。 
+    ps -e 此参数的效果和指定"A"参数相同。 ...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on December 18, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2016/12/15/pherodocs/">
         <h2 class="post-title">
             Phero数据库查询
@@ -197,33 +325,28 @@
         </h3>
         
         <div class="post-content-preview">
-            Phero数据库查询
+            安装
+
+
+  git安装 git clone https://github.com/chenyingqiao/Phero.git
+
+
+
+  composer 安装 composer require lerko/p-hero
+
 
 开始
 
-
-  现在我们有几张表（都要引入DbUnit）
-
-
-video_cat表  (视频种类表)
+在入口脚本注入PDO
 
 
-  
-    
-      Field
-      Type
-      Null
-      Key
-      Default
-      Extra
-    
-  
-  
-    
-      id
-      int(11)
-      NO
-      P...
+  方法1
+
+
+use Phero\System\DI;
+use Phero\Database as database;
+
+$con...
         </div>
     </a>
     <p class="post-meta">
@@ -235,28 +358,37 @@ video_cat表  (视频种类表)
 <div class="post-preview">
     <a href="/2016/12/15/docker%E7%AC%94%E8%AE%B0/">
         <h2 class="post-title">
-            Docker笔记
+            docker入门
         </h2>
         
+        <h3 class="post-subtitle">
+            docker 的入门学习笔记
+        </h3>
+        
         <div class="post-content-preview">
-            运行第一个docker容器
+            
+  是时候用docker部署开发环境了 （ngixn apache ubuntu mysql memcache 。。。一应俱全）
 
 
-  我们从网易蜂巢下载镜像
+docker的一些相关概念
+
+镜像
 
 
-//https://c.163.com/hub#/m/repository/?repoId=3096
-docker pull hub.c.163.com/library/busybox:latest
+  docker images 查看
+  docker rmi  删除镜像
 
 
-  然后运行镜像（运行一个交互的shell） –关闭后自动退出
+容器
 
 
-sudo docker run -i -t ubuntu ...
+  docker ps 查看所有容器
+  docker rm  删除容器
+  docker exec  在容器中执行shell命...
         </div>
     </a>
     <p class="post-meta">
-        Posted by Lerko Blog on December 15, 2016
+        Posted by Lerko on December 15, 2016
     </p>
 </div>
 <hr>
@@ -283,6 +415,14 @@ sudo docker run -i -t ubuntu ...
                         
                             
                         
+                            
+                        
+                            
+                                <a href="/tags/#server" title="server" rel="3">
+                                    server
+                                </a>
+                            
+                        
                     </div>
                 </section>
                 
@@ -295,7 +435,7 @@ sudo docker run -i -t ubuntu ...
                             <img src="/img/8207331.jpg" />
                         
                         
-                            <p>写写代码，做做设计，<br>离开世界之前，一切都是过程</p>
+                            <p>迷茫</p>
                         
                         <!-- SNS Link -->
                         <ul class="list-inline">
