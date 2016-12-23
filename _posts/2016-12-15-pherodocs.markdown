@@ -20,7 +20,7 @@ tags:
 
 ## 开始
 
-### 在入口脚本注入PDO
+#### 在入口脚本注入PDO
 
 > 方法1
 
@@ -46,7 +46,7 @@ DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns,
 
 > 接下来就可以建立实体类 然后愉快的使用了
 
-### 直接执行sql语句
+#### 直接执行sql语句
 
 *   exec(sql,bindData) 插入数据
 *   query(sql,bindData) 读取数据
@@ -61,7 +61,7 @@ $effect=$help->exec("update video_cat set id=:id where name=:name",[
 ```
 
 
-### 新建实体类
+#### 新建实体类
 > 现在我们有几张表（都要`use DbUnit`）
 
 `video_cat`表  `(视频种类表)`
@@ -182,7 +182,7 @@ class video_course {
 }
 ```
 
-### 注解
+#### 注解
 
 |用法| 参数|
 |---------------|--------------:|
@@ -191,7 +191,7 @@ class video_course {
 
 ## 查询
 
-### 查询所有列video_cat表中的列
+#### 查询所有列video_cat表中的列
 
 ```php
 $video_cat=new video_cat();
@@ -208,7 +208,7 @@ $video_user->select();//value就是video_cat查询出来的结果
     video_user as cat
 ```
 
-### 查询表中的部分列
+#### 查询表中的部分列
 
 ```php
 $video_cat=new video_cat(['id','name']);  //===>可以输入要的列
@@ -225,7 +225,7 @@ from
 ```
 
 
-### 条件查询(where)
+#### 条件查询(where)
 
 > 简单的where
 
@@ -262,7 +262,7 @@ order by
     3. whereOr\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
     
     
-### 关联查询
+#### 关联查询
 
 ```php
 $video_cat=new video_cat();
@@ -286,7 +286,7 @@ $value=$video_cat->select();
 
 ## 插入
 
-### 普通插入
+#### 普通插入
 
 ```php
 //这是一种赋值方式
@@ -297,7 +297,7 @@ $video_user->password="123455";
 $insert = $video_user->insert();
 ```
 
-### 批量插入
+#### 批量插入
 
 ```php
 $video_user = new unit\video_user(["username" => "asdfs" . rand(), "password" => "1234" . rand()]);
@@ -308,7 +308,7 @@ $model = new Model();
 $model->insert($entiy);
 ```
 
-### 事务插入
+#### 事务插入
 
 ```php
 //这是一种赋值方式
@@ -324,7 +324,7 @@ $video_user->commit();
 
 ## 更新
 
-### 普通更新
+#### 普通更新
 
 ```php
 $video_user = new unit\video_user(["username" => "asdfs", "password" => "1234"]);
@@ -346,7 +346,7 @@ where
 
 # 删除
 
-### 普通删除
+#### 普通删除
 ```php
 $video_user = new unit\video_user();
 $video_user->whereEq("uid",4);

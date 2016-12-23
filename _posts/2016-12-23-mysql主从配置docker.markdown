@@ -12,7 +12,7 @@ tags:
 
 ## docker创建环境
 
-### 使用docker创建两个mysql容器
+#### 使用docker创建两个mysql容器
 
 > docker 镜像可以使用网易蜂巢的mysql的docker镜像
 > MYSQL_ROOT_PASSWORD是设置docker容器中mysql的root账户的密码
@@ -23,7 +23,7 @@ docker run --name mysql-slave -v /home/docker/file/:/home/ -e MYSQL_ROOT_PASSWOR
 #这里一般都要挂载一下外部目录这样docker才能和外部机器共享文件
 ```
 
-### 今日容器之后需要准备的事情
+#### 今日容器之后需要准备的事情
 
 > 由于镜像中没有提供vim 而且 镜像中的源是使用ubuntu的官方源 
 > 如果我们没有使用科学上网apt-get update 将会非常慢
@@ -57,7 +57,7 @@ apt-get install vim
 
 > 复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。
 
-### 从添加用户开始
+#### 从添加用户开始
 
 > 我们需要添加一个mysql用户让slave来使用
 
@@ -80,7 +80,7 @@ grant select,insert,update,delete,create,drop on *.* to lerko@'%' identified by 
 > 你要重新链接一次 因为主库的Position会变化
 > 重新链接要使用stop slave结束丛库的slave
 
-### 开启主和从服务器的二进制日志
+#### 开启主和从服务器的二进制日志
 
 **mysql-master**
 
@@ -104,7 +104,7 @@ log-bin=mysql-bin   //[必须]启用二进制日志
 server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
 ```
 
-### 重启两个容器的mysql进程
+#### 重启两个容器的mysql进程
 
 > 这个会直接吧容器给停了  之后再start一下容器就行
 
@@ -112,7 +112,7 @@ server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一
 service mysql restart;
 ```
 
-### 查看主库的master以及从库的slave
+#### 查看主库的master以及从库的slave
 
 **进入mysql**
 
@@ -128,7 +128,7 @@ show master status；
 
 
 
-### 从库把master链接到主库
+#### 从库把master链接到主库
 
 > 这里我们只需要一个命令就可以
 
@@ -140,7 +140,7 @@ change master to master_host='172.17.0.2',master_user='lerko',master_password='1
 
 > 主从ip可以使用`docker inspect [容器id]`来查看
 
-### 去从服务器查看同步状态
+#### 去从服务器查看同步状态
 
 ```shell
 # 进入mysql命令行
