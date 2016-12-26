@@ -1,0 +1,153 @@
+body {
+    font-family: "微软雅黑";
+    background-color: aliceblue;
+}
+
+.nav-tabs>li {
+    width: 50%;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.margin-center {
+    margin: 0 auto;
+}
+
+.width-middle {
+    width: 50%;
+}
+
+.width-smiddle {
+    width: 75%;
+}
+
+.width-small {
+    width: 12%;
+}
+
+.width-ssmall {
+    width: 25%;
+}
+
+.width-full {
+    width: 100%;
+}
+
+td>a {
+    display: inline-block;
+    margin: 4px 4px;
+}
+
+#basepie {
+    width: 800px;
+    height: 400px;
+    margin: 8px auto;
+}
+
+.grade {
+    width: 21%;
+    height: 250px;
+    float: left;
+    background: #fff;
+    margin: 2%;
+    overflow: hidden;
+}
+.grade img{
+    width: 100%;
+    height: 60%;
+    padding: 5px;
+}
+.grade .gradeTitle{
+    background-color: #fff;
+    text-align: center;
+    vertical-align: center;
+    font-style: 楷体;
+    font-size: 15px;
+    padding-top: 3px;
+    font-weight:bold;
+}
+.grade .gradeInfo{
+    height: 40%;
+    background-color: #fff;
+    padding: 5px;
+    font-size: 0.9;
+    color: #ccc;
+    font-size: 10px;
+}
+.grade-bar span {
+    padding: 3px;
+    margin-right: 40px;
+    font-size: 2.1rem;
+    font-family: "楷体";
+    color: #0E72EE;
+}
+
+video {
+    width: 100%;
+    background: #000;
+    height: 600px;
+}
+.container{
+    background-color: #fff;
+}
+.hoverShadow .grade:hover {
+    -webkit-box-shadow: 0 0 20px rgba(33, 33, 33, .5);
+    -moz-box-shadow: 0 0 20px rgba(33, 33, 33, .5);
+    box-shadow: 0 0 20px rgba(33, 33, 33, .5);
+}
+.swiper-slide{
+    background-color: #ccc;
+}
+.swiper-slide img{
+    width: 100%;
+    height: 100%;
+}
+.hurdels{
+    margin: 4px;
+    border-bottom-width: 2px;
+    border-bottom-color: #ccc;
+    border-bottom-style: solid;
+    border-top: 2px #ccc solid;
+    background-color: #fff;
+}
+.hurdel{
+    border-bottom: 1px #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    border-bottom-width: 1px;
+    border-bottom-color: #E6E3E3;
+    border-bottom-style: solid;
+    vertical-align: center;
+    line-height: 40px;
+}
+.hurdel span{
+    font-size: 7px;
+    margin-left: 30px;
+    cursor:pointer;
+}
+.hurdel .classifyHead{
+        color: #ccc;
+        float: left;
+}
+.hurdel .item{
+        padding: 4px;
+        display: inline-block;
+}
+.hurdel .item i{
+    padding: 4px;
+}
+.hurdel .item.selected i{
+    background-color: #FF0000;
+}
+.panel-center{
+    margin-top: 15%;
+}
+.comment_item{
+    margin-left: 20px;
+}
+#showUpload{
+        width: 100%;
+}

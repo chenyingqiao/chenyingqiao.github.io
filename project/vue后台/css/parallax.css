@@ -1,0 +1,35 @@
+html{
+	box-sizing: border-box;
+	overflow: hidden;
+}
+*,*::before,*::after{
+	box-sizing: inherit;
+}
+body{
+	height: 100vh;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling:touch;
+	-webkit-perspective:1px;
+	perspective: 1px;
+}
+img {
+	width: 100%;
+}
+.parallax-group{
+	-webkit-transform-style:preserve-3d;
+	transform-style:preserve-3d;
+}
+.back{
+	-webkit-transform: translateZ(-1px) scale(2);
+	transform: translateZ(-1px) scale(2);
+}
+
+.font{
+	background-color: #ccc;
+	padding: 14em lem;
+	position: relative;
+	z-index: 2;
+	top: 300px;
+}

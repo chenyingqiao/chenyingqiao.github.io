@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Title Page</title>
+
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/index.css">
+
+
+	<style type="text/css">
+		.bg_1 {
+			color: aliceblue;
+			background: green;
+		}
+		
+		.bg_2 {
+			color: aliceblue;
+			background: red;
+		}
+		
+		.bg_3 {
+			color: aliceblue;
+			background: blue;
+		}
+		
+		.bg_4 {
+			color: aliceblue;
+			background: black;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="title">
+		<p :class="classname+number">{{ message.split('').reverse().join('') }} {{number}}</p>
+		<p v-html="htmltemp"></p>
+		<input v-model="message">
+		<ul>
+			<li v-for="todo in todos">
+				{{ todo.text }}
+			</li>
+		</ul>
+
+		<ul>
+			<!-- Create an instance of the todo-item component -->
+			<todo-item thispro="cuk" v-show="show"></todo-item>
+		</ul>
+
+		<button @click="addnumber">增加数据</button>
+		</br>
+		<img :src="imageUrl" @click="imageChange" width="200" height="100">
+
+		<list-div>
+		</list-div>
+
+		<inner-component></inner-component>
+
+	</div>
+
+	<template id="template">
+		<!--这里需要一个根元素,如果没有根元素的话会报错-->
+		<div @click="test">
+			<slot>如果没有分发内容则显示我。</slot>
+			<h2>title</h2>
+			<div>这个是div122</div>
+		</div>
+	</template>
+
+
+	<script type="text/x-template" id="innerCom">
+		<div style="background:red;" @click="test">这是一个内嵌的组件
+			<slot>组件内部没有东西就显示我</slot>
+		</div>
+	</script>
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/vue.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		//component的this和vue的this是不同的
+		Vue.component('todo-item', {
+			template: '<li @click="test">这里是一个模板{{msg}} 这个是属性值：{{thispro}}</li>',
+			props: ['thispro'],
+			data: function () {
+				return {
+					msg: "data",
+				};
+			},
+			methods: {
+				test: function () {
+					console.log(this);
+				}
+			}
+		});
+		Vue.component("list-div", {
+			template: '#template',
+			methods: {
+				test: function () {
+					//每个composer都是一个composer实例
+					console.log(this);
+				}
+			}
+		});
+		var vue = new Vue({
+			el: '.title',
+			data: {
+				message: 'Hello Laravel!',
+				htmltemp: "<b>这里是插入的完整的html模板</b>",
+				number: 1,
+				todos: [
+					{
+						text: 'Learn Laravel'
+					},
+					{
+						text: 'Learn Vue.js'
+					},
+					{
+						text: 'At LaravelAcademy.org'
+					}],
+				imageUrl: "image/1.jpg",
+				show: true,
+				classname: "bg_"
+			},
+			created: function () {
+				// `this` 指向 vm 实例
+				console.log('a is: ' + this.message)
+			},
+			methods: {
+				addnumber: function () {
+					this.number++;
+				},
+				imageChange: function () {
+					if (this.show) {
+						this.show = false;
+						this.imageUrl = "image/2.jpg";
+					} else {
+						this.show = true;
+						this.imageUrl = "image/1.jpg";
+					}
+				},
+				test: function () {
+					console.log(this);
+				}
+			},
+			components: {
+				"inner-component": {
+					template: "#innerCom",
+					methods: {
+						test: function () {
+							console.log(this);
+						}
+					}
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
