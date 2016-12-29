@@ -1,0 +1,28 @@
+---
+layout:     post
+title:      "webpack入门"
+subtitle:   "webpack入门笔记"
+date:       2016-12-15
+author:     "Lerko"
+header-img: "img/post-bg-unix-linux.jpg"
+catalog: true
+tags:
+    - database
+---
+
+## webpack
+
+> webpack 是一个可以让程序员可以使用require()
+> 可以包含js以及css和各种web资源  并且支持一些资源的转换
+> 吧这些资源打包到在一起
+
+## 初次使用
+
+> 使用`npm install webpack`安装webpack
+
+项目目录
+
+```
+---app
+	
+```

@@ -1,0 +1,19 @@
+---
+layout:     post
+title:      "sass入门"
+subtitle:   "sass入门笔记"
+date:       2016-12-26
+author:     "Lerko"
+header-img: "img/post-bg-unix-linux.jpg"
+catalog: true
+tags:
+    - web
+---
+
+## 什么是sass
+
+> Sass 是对 CSS 的扩展，让 CSS 语言更强大、优雅。 它允许你使用变量、嵌套规则、 mixins、导入等众多功能， 并且完全兼容 CSS 语法。 Sass 有助于保持大型样式表结构良好， 同时也让你能够快速开始小型项目， 特别是在搭配 Compass 样式库一同使用时。
+
+
+## 嵌套
+## 变量
