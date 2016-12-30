@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="迷茫">
+    <meta name="keywords"  content="一个不知道在干什么的人">
+    <meta name="theme-color" content="#000000">
+    
+    <title>laravel深度入门 - 陈映峤的博客 | Lerko Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Lerko Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                   <!--  
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                     -->
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-unix-linux.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-unix-linux.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#database" title="database">database</a>
+                        
+                    </div>
+                    <h1>laravel深度入门</h1>
+                    
+                    
+                    <h2 class="subheading">从源码分析入门laravel</h2>
+                    
+                    <span class="meta">Posted by Lerko on December 26, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h2 id="section">初始化流程</h2>
+
+<h3 id="http-">http 的初始化</h3>
+
+<blockquote>
+  <p>引入composer的autoload</p>
+</blockquote>
+
+<blockquote>
+  <p>实例化Applocation（初始化ioc容器，application本身就是ioc容器。并且注册本身到自己的ioc容器中。注册基础的服务提供者【并且执行服务提供者的register和boot方法】。注册一些类别名到ioc容器）</p>
+</blockquote>
+
+<blockquote>
+  <p>注册Http的Kernel到ioc容器</p>
+</blockquote>
+
+<blockquote>
+  <p>从make中去除kernel（实例化了kernel，kernel调用了一些bootstrap的类来初始化一些系统功能【门面注册，内容提供者注册–app.php中配置的那些】，调用application的boot方法等）</p>
+</blockquote>
+
+<blockquote>
+  <p>捕获Request</p>
+</blockquote>
+
+<blockquote>
+  <p>发送response（Symfony\Component\HttpFoundation\Response）</p>
+</blockquote>
+
+<h3 id="console-">console 的初始化</h3>
+
+<h2 id="section-1">几个重要的系统定义初始化的值</h2>
+
+<blockquote>
+  <p>Illuminate\Foundation\Http\Kernel  $bootstrappers 初始化一些系统的必须类 包括下面的几个类  （都有bootstrap()方法  初始化了系统绝大多数东西）</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">    protected $bootstrappers = [
+        'Illuminate\Foundation\Bootstrap\DetectEnvironment',
+        'Illuminate\Foundation\Bootstrap\LoadConfiguration',
+        'Illuminate\Foundation\Bootstrap\ConfigureLogging',
+        'Illuminate\Foundation\Bootstrap\HandleExceptions', 
+ 		//初始化门面
+ 		'Illuminate\Foundation\Bootstrap\RegisterFacades',
+		//初始化内容提供者
+ 		'Illuminate\Foundation\Bootstrap\RegisterProviders',
+        //调用Applocation实例到ioc容器中
+        'Illuminate\Foundation\Bootstrap\BootProviders',
+    ];
+</div>
+
+<blockquote>
+  <p>application 注册核心的别名到ioc容器中  契约以及契约的实现类</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge"> public function registerCoreContainerAliases(){
+        $aliases = [ 'app' =&gt; ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application'],
+            'auth'                 =&gt; ['Illuminate\Auth\AuthManager', 'Illuminate\Contracts\Auth\Factory'],
+            'auth.driver'          =&gt; ['Illuminate\Contracts\Auth\Guard'],
+            'blade.compiler'       =&gt; ['Illuminate\View\Compilers\BladeCompiler'],
+            'cache'                =&gt; ['Illuminate\Cache\CacheManager', 'Illuminate\Contracts\Cache\Factory'],
+            'cache.store'          =&gt; ['Illuminate\Cache\Repository', 'Illuminate\Contracts\Cache\Repository'],
+            'config'               =&gt; ['Illuminate\Config\Repository', 'Illuminate\Contracts\Config\Repository'],
+            'cookie'               =&gt; ['Illuminate\Cookie\CookieJar', 'Illuminate\Contracts\Cookie\Factory', 'Illuminate\Contracts\Cookie\QueueingFactory'],
+            'encrypter'            =&gt; ['Illuminate\Encryption\Encrypter', 'Illuminate\Contracts\Encryption\Encrypter'],
+            'db'                   =&gt; ['Illuminate\Database\DatabaseManager'],
+            'db.connection'        =&gt; ['Illuminate\Database\Connection', 'Illuminate\Database\ConnectionInterface'],
+            'events'               =&gt; ['Illuminate\Events\Dispatcher', 'Illuminate\Contracts\Events\Dispatcher'],
+            'files'                =&gt; ['Illuminate\Filesystem\Filesystem'],
+            'filesystem'           =&gt; ['Illuminate\Filesystem\FilesystemManager', 'Illuminate\Contracts\Filesystem\Factory'],
+            'filesystem.disk'      =&gt; ['Illuminate\Contracts\Filesystem\Filesystem'],
+            'filesystem.cloud'     =&gt; ['Illuminate\Contracts\Filesystem\Cloud'],
+            'hash'                 =&gt; ['Illuminate\Contracts\Hashing\Hasher'],
+            'translator'           =&gt; ['Illuminate\Translation\Translator', 'Symfony\Component\Translation\TranslatorInterface'],
+            'log'                  =&gt; ['Illuminate\Log\Writer', 'Illuminate\Contracts\Logging\Log', 'Psr\Log\LoggerInterface'],
+            'mailer'               =&gt; ['Illuminate\Mail\Mailer', 'Illuminate\Contracts\Mail\Mailer', 'Illuminate\Contracts\Mail\MailQueue'],
+            'auth.password'        =&gt; ['Illuminate\Auth\Passwords\PasswordBrokerManager', 'Illuminate\Contracts\Auth\PasswordBrokerFactory'],
+            'auth.password.broker' =&gt; ['Illuminate\Auth\Passwords\PasswordBroker', 'Illuminate\Contracts\Auth\PasswordBroker'],
+            'queue'                =&gt; ['Illuminate\Queue\QueueManager', 'Illuminate\Contracts\Queue\Factory', 'Illuminate\Contracts\Queue\Monitor'],
+            'queue.connection'     =&gt; ['Illuminate\Contracts\Queue\Queue'],
+            'queue.failer'         =&gt; ['Illuminate\Queue\Failed\FailedJobProviderInterface'],
+            'redirect'             =&gt; ['Illuminate\Routing\Redirector'],
+            'redis'                =&gt; ['Illuminate\Redis\Database', 'Illuminate\Contracts\Redis\Database'],
+            'request'              =&gt; ['Illuminate\Http\Request', 'Symfony\Component\HttpFoundation\Request'],
+            'router'               =&gt; ['Illuminate\Routing\Router', 'Illuminate\Contracts\Routing\Registrar'],
+            'session'              =&gt; ['Illuminate\Session\SessionManager'],
+            'session.store'        =&gt; ['Illuminate\Session\Store', 'Symfony\Component\HttpFoundation\Session\SessionInterface'],
+            'url'                  =&gt; ['Illuminate\Routing\UrlGenerator', 'Illuminate\Contracts\Routing\UrlGenerator'],
+            'validator'            =&gt; ['Illuminate\Validation\Factory', 'Illuminate\Contracts\Validation\Factory'],
+            'view'                 =&gt; ['Illuminate\View\Factory', 'Illuminate\Contracts\View\Factory'], ];
+        foreach ($aliases as $key =&gt; $aliases) {
+            foreach ($aliases as $alias) {
+                $this-&gt;alias($key, $alias);
+            }
+        }
+}
+
+ ```
+ 
+ 
+ &gt; app.php 配置文件中的aliases 就是吧对应的类设置别名（通过AliasLoad 去找到类【prependToLoaderStack】注册了门面的autoload）
+ 
+ 
+## 需要知道的知识
+
+```php
+类：Closure
+这个是一个回调函数的具体类
+方法  bind(Closure $closure , object $newthis [, mixed $newscope = 'static' ] ) 
+	 bindto(object $newthis [, mixed $newscope = 'static' ])
+
+bind:将回调函数绑定到一个具体的类 $newthis（这个绑定之后才有上下文）
+	$newscope 代表的是这个类的作用域（即回调函数能访问这个作用域【类】中的成员变量   也可以是一个命名空间加类名的字符串）
+    即 $newthis是绑定上下文  $newscope取得上下文的变量
+bindTo 参数如上
+
+static::class --&gt; 返回的是php这个类的域名以及类名的全部string
+
+callable 标示一个可以调用的类型
+
+接口：ArrayAccess：让类可以像数组一样的进行使用
+</div>
+
+<div class="highlighter-rouge">//laravel的基础类
+Macroable：实现了一个注册callable类型就可以添加到类中的trait
+</div>
+
+<h2 id="applocatin-">applocatin 分析</h2>
+
+<blockquote>
+  <p>Applocation 类继承了接口：<code class="highlighter-rouge">IApplication, HttpKernelInterface</code>,继承了类<code class="highlighter-rouge">Container</code></p>
+</blockquote>
+
+<ul>
+  <li>Application 接口
+```php
+interface Application extends Container
+{
+  /**
+    <ul>
+      <li>获取laravel的版本</li>
+      <li>@return string
+   */
+  public function version();</li>
+    </ul>
+
+    <p>/**
+   * 获取laravel框架的基本路径（项目根目录）
+   * @return string
+   */
+  public function basePath();</p>
+
+    <p>/**
+   * 取得环境
+   * @return string
+   */
+  public function environment();</p>
+
+    <p>/**
+   * 判断框架是否是在维护
+   * @return bool
+   */
+  public function isDownForMaintenance();</p>
+
+    <p>/**
+   * 注册所有的配置提供者
+   * @return void
+   */
+  public function registerConfiguredProviders();</p>
+
+    <p>/**
+   * 注册服务提供者到applocation中  并且调用服务的register方法
+   * @param  \Illuminate\Support\ServiceProvider|string  $provider
+   * @param  array  $options
+   * @param  bool   $force
+   * @return \Illuminate\Support\ServiceProvider
+   */
+  public function register($provider, $options = [], $force = false);</p>
+
+    <p>/**
+   *注册一个延迟的服务提供者（如果已经有注册服务的话就从deferredServices中unset服务 然后在调用register方法注册服务）
+   * @param  string  $provider
+   * @param  string  $service
+   * @return void
+   */
+  public function registerDeferredProvider($provider, $service = null);</p>
+
+    <p>/**
+   * 调用所有的boot的callback并且吧所有注册的服务提供者都调用boot方法
+   * @return void
+   */
+  public function boot();</p>
+
+    <p>/**
+   * 注册一个boot（框架启动的回调函数）
+   *
+   * @param  mixed  $callback
+   * @return void
+   */
+  public function booting($callback);</p>
+
+    <p>/**
+   * 注册一个框架启动完成之后的回调函数
+   *
+   * @param  mixed  $callback
+   * @return void
+   */
+  public function booted($callback);</p>
+
+    <p>/**
+   * Get the path to the cached “compiled.php” file.
+   *
+   * @return string
+   */
+  public function getCachedCompilePath();</p>
+
+    <p>/**
+   * Get the path to the cached services.php file.
+   *
+   * @return string
+   */
+  public function getCachedServicesPath();
+}
+```</p>
+  </li>
+</ul>
+
+<div class="language-php highlighter-rouge">//http接口
+interface HttpKernelInterface
+{
+    const MASTER_REQUEST = 1;
+    const SUB_REQUEST = 2;
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true);
+}
+</div>
+
+<div class="language-php highlighter-rouge">//依赖注入容器
+interface Container
+{
+    /**
+     * Determine if the given abstract type has been bound.
+     *
+     * @param  string  $abstract
+     * @return bool
+     */
+    public function bound($abstract);
+
+    /**
+     * Alias a type to a different name.
+     *
+     * @param  string  $abstract
+     * @param  string  $alias
+     * @return void
+     */
+    public function alias($abstract, $alias);
+
+    /**
+     * Assign a set of tags to a given binding.
+     *
+     * @param  array|string  $abstracts
+     * @param  array|mixed   ...$tags
+     * @return void
+     */
+    public function tag($abstracts, $tags);
+
+    /**
+     * Resolve all of the bindings for a given tag.
+     *
+     * @param  array  $tag
+     * @return array
+     */
+    public function tagged($tag);
+
+    /**
+     * Register a binding with the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @param  bool  $shared
+     * @return void
+     */
+    public function bind($abstract, $concrete = null, $shared = false);
+
+    /**
+     * Register a binding if it hasn't already been registered.
+     *
+     * @param  string  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @param  bool  $shared
+     * @return void
+     */
+    public function bindIf($abstract, $concrete = null, $shared = false);
+
+    /**
+     * Register a shared binding in the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function singleton($abstract, $concrete = null);
+
+    /**
+     * "Extend" an abstract type in the container.
+     *
+     * @param  string    $abstract
+     * @param  \Closure  $closure
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function extend($abstract, Closure $closure);
+
+    /**
+     * Register an existing instance as shared in the container.
+     *
+     * @param  string  $abstract
+     * @param  mixed   $instance
+     * @return void
+     */
+    public function instance($abstract, $instance);
+
+    /**
+     * Define a contextual binding.
+     *
+     * @param  string  $concrete
+     * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
+     */
+    public function when($concrete);
+
+    /**
+     * Resolve the given type from the container.
+     *
+     * @param  string  $abstract
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function make($abstract, array $parameters = []);
+
+    /**
+     * Call the given Closure / class@method and inject its dependencies.
+     *
+     * @param  callable|string  $callback
+     * @param  array  $parameters
+     * @param  string|null  $defaultMethod
+     * @return mixed
+     */
+    public function call($callback, array $parameters = [], $defaultMethod = null);
+
+    /**
+     * Determine if the given abstract type has been resolved.
+     *
+     * @param  string $abstract
+     * @return bool
+     */
+    public function resolved($abstract);
+
+    /**
+     * Register a new resolving callback.
+     *
+     * @param  string    $abstract
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public function resolving($abstract, Closure $callback = null);
+
+    /**
+     * Register a new after resolving callback.
+     *
+     * @param  string    $abstract
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public function afterResolving($abstract, Closure $callback = null);
+}
+</div>
+
+<ul>
+  <li>通过<code class="highlighter-rouge">Illuminate\Config\Repository</code>读取配置文件的数据</li>
+</ul>
+
+<blockquote>
+  <p>apploction 初始化注册的的基础服务和基础容器</p>
+</blockquote>
+
+<ol>
+  <li>基础服务
+```php
+//事件服务
+class EventServiceProvider extends ServiceProvider
+{
+ /**
+    <ul>
+      <li>Register the service provider.
+  *</li>
+      <li>@return void
+  */
+ public function register()
+ {
+ $this-&gt;app-&gt;singleton(‘events’, function ($app) {
+     return (new Dispatcher($app))-&gt;setQueueResolver(function () use ($app) {
+         return $app-&gt;make(‘Illuminate\Contracts\Queue\Factory’);
+     });
+ });
+ }
+}
+//路由服务
+class RoutingServiceProvider extends ServiceProvider
+{
+ /**</li>
+      <li>Register the service provider.
+  *</li>
+      <li>
+        <p>@return void
+  */
+ public function register()
+ {
+ $this-&gt;registerRouter();</p>
+
+        <p>$this-&gt;registerUrlGenerator();</p>
+
+        <p>$this-&gt;registerRedirector();</p>
+
+        <p>$this-&gt;registerPsrRequest();</p>
+
+        <p>$this-&gt;registerPsrResponse();</p>
+
+        <p>$this-&gt;registerResponseFactory();
+ }
+}
+```
+&gt; 其实大部分初始化工作都在这两个服务里面</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>主要关注 <code class="highlighter-rouge">EventServiceProvider</code></p>
+
+<h2 id="section-2">核心概念</h2>
+<p>### 依赖注入
+&gt; 依赖注入接口</p>
+
+<div class="language-php highlighter-rouge">//Application 是这个接口的子类
+<span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">Illuminate\Contracts\Container</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Closure</span><span class="p">;</span>
+<span class="k">interface</span> <span class="nx">Container</span>
+<span class="p">{</span>
+	<span class="c1">//判断是不是存在这个ioc
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bound</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">);</span>
+    <span class="c1">//别名ioc容器
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">alias</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nv">$alias</span><span class="p">);</span>
+    <span class="c1">//对ioc容器中的元素进行标注
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">tag</span><span class="p">(</span><span class="nv">$abstracts</span><span class="p">,</span> <span class="nv">$tags</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">tagged</span><span class="p">(</span><span class="nv">$tag</span><span class="p">);</span>
+    <span class="c1">//绑定实现类到ioc容器
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nv">$concrete</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nv">$shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">bindIf</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nv">$concrete</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nv">$shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="c1">//单例的ioc容器
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">singleton</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nv">$concrete</span> <span class="o">=</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">extend</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$closure</span><span class="p">);</span>
+    <span class="c1">//每次都实例化的ioc容器
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">instance</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nv">$instance</span><span class="p">);</span>
+    <span class="c1">//容器限制条件
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">when</span><span class="p">(</span><span class="nv">$concrete</span><span class="p">);</span>
+    <span class="c1">//遍历所有的容器 去除ioc实例
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">make</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$parameters</span> <span class="o">=</span> <span class="p">[]);</span>
+    <span class="c1">//调用ioc容器中的对应方法
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">call</span><span class="p">(</span><span class="nv">$callback</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$parameters</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">$defaultMethod</span> <span class="o">=</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="c1">//是否注册ioc容器事件
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">resolved</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">);</span>
+    <span class="c1">//注册ioc容器解析事件
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">resolving</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$callback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="c1">//注册ioc容器解析之后的
+</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">afterResolving</span><span class="p">(</span><span class="nv">$abstract</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$callback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">);</span>
+<span class="p">}</span>
+
+</div>
+
+<blockquote>
+  <p>依赖注入的一些类型</p>
+</blockquote>
+
+<ol>
+  <li>注册单例</li>
+  <li>注册别名</li>
+  <li></li>
+</ol>
+
+<h3 id="section-3">服务提供者</h3>
+
+<div class="highlighter-rouge">服务提供者是一个在框架运行流程中可以注册到框架的applocation中 然后有两个主要的方法
+1. register
+2. boot
+
+执行顺序 register-&gt;boot
+
+app.php配置文件中有许多初始化的服务提供者
+系统的启动也是这些提供者提供的
+</div>
+
+<h3 id="section-4">门面</h3>
+
+<blockquote>
+  <p>门面抽象类中的getFacadeAccessor（）方法（重载） 就是用来获取ioc容器中alias别名容器中对应的【契约=》类】；</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">//门面就是一个注册函数或者对象到类中 之后可以通过__callStatic 来访问这些方法
+// 使得很多注册的门面可以直接通过static的方式进行访问
+//门面类
+namespace Illuminate\Support\Facades;
+abstract class Facade
+
+//门面注册类
+namespace Illuminate\Foundation\Bootstrap;
+class RegisterFacades
+</div>
+
+<h2 id="http">主要使用（http）</h2>
+
+<h3 id="section-5">路由</h3>
+
+<blockquote>
+  <p>路由文件web.php在App\Providers\RouteServiceProvider中被包含 并且吧这些都包含在一个group中</p>
+</blockquote>
+
+<div class="language-php highlighter-rouge">protected function mapWebRoutes()
+{
+    Route::group([
+        'middleware' =&gt; 'web',
+        'namespace' =&gt; $this-&gt;namespace,
+    ], function ($router) {
+        require base_path('routes/web.php');
+    });
+}
+</div>
+
+<h3 id="section-6">控制器</h3>
+
+<div class="language-php highlighter-rouge">abstract class Controller
+{
+    /**
+     * The middleware registered on the controller.
+     *
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
+     * Register middleware on the controller. 注册一个中间件
+     *
+     * @param  array|string|\Closure  $middleware
+     * @param  array   $options
+     * @return \Illuminate\Routing\ControllerMiddlewareOptions
+     */
+    public function middleware($middleware, array $options = [])
+    {
+        foreach ((array) $middleware as $m) {
+            $this-&gt;middleware[] = [
+                'middleware' =&gt; $m,
+                'options' =&gt; <span class="err">&amp;</span>$options,
+            ];
+        }
+
+        return new ControllerMiddlewareOptions($options);
+    }
+
+    /**
+     * Get the middleware assigned to the controller.  获取注册到控制器的中间件
+     *
+     * @return array
+     */
+    public function getMiddleware()
+    {
+        return $this-&gt;middleware;
+    }
+
+    /**
+     * Execute an action on the controller.  调用控制器的方法
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function callAction($method, $parameters)
+    {
+        return call_user_func_array([$this, $method], $parameters);
+    }
+
+    /**
+     * Handle calls to missing methods on the controller.  调用控制器没有的方法抛出异常
+     *
+     * @param  array   $parameters
+     * @return mixed
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function missingMethod($parameters = [])
+    {
+        throw new NotFoundHttpException('Controller method not found.');
+    }
+
+    /**
+     * Handle calls to missing methods on the controller.  调用未知方法直接抛出异常
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     *
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $parameters)
+    {
+        throw new BadMethodCallException("Method [{$method}] does not exist.");
+    }
+}
+</div>
+
+<h3 id="section-7">中间件</h3>
+<div class="highlighter-rouge">用来过滤请求 然后可以对请求进行处理
+比如 验证 跳转 过滤
+</div>
+
+<blockquote>
+  <p>php artisan make:middleware CheckAge 可以直接生成中间件</p>
+</blockquote>
+
+<ol>
+  <li>普通中间件（中间件前）</li>
+</ol>
+
+<div class="language-php highlighter-rouge">class CheckAge
+{
+    public function handle($request, Closure $next)
+    {
+        return $next($request);
+    }
+}
+</div>
+
+<ol>
+  <li>后置中间件</li>
+</ol>
+
+<div class="language-php highlighter-rouge">class AfterMiddleware
+{
+    public function handle($request, Closure $next)
+    {
+        $response = $next($request);
+        // 执行动作
+        return $response;
+    }
+}
+</div>
+
+<h3 id="section-8">队列</h3>
+
+<blockquote>
+  <p>队列的实现  QueueServiceProvider 提供了队列的初始化
+Worker类通过pcntl系列的函数创建队列线程</p>
+</blockquote>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2016/12/26/laravel深度入门"
+                    data-title="laravel深度入门"
+                    data-url="https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/"
+                    data-images="https://chenyingqiao.github.io//img/post-bg-unix-linux.jpg"
+                    data-content="初始化流程
+
+http 的初始化
+
+
+  引入composer的autoload
+
+
+
+  实例化Applocation（初始化ioc容器，applica... | 陈映峤的博客 | Lerko Blog " >
+                    <div class="ds-share-inline">
+                      <style> 
+                        .ds-share-icons-16 {display:none;} 
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/" data-toggle="tooltip" data-placement="top" title="Js规范总结">
+                        Previous<br>
+                        <span>Js规范总结</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/12/26/sass%E5%85%A5%E9%97%A8/" data-toggle="tooltip" data-placement="top" title="sass入门">
+                        Next<br>
+                        <span>sass入门</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2016/12/26/laravel深度入门"
+                        data-title="laravel深度入门"
+                        data-url="https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#database" title="database" rel="3">
+                                    database
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#server" title="server" rel="4">
+                                    server
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'lerko';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/chenyingqiao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lerko Blog 2016
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'chenyingqiao.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -10,7 +10,7 @@
     <meta name="keywords"  content="一个不知道在干什么的人">
     <meta name="theme-color" content="#000000">
     
-    <title>Phero数据库查询 - 陈映峤的博客 | Lerko Blog</title>
+    <title>Phero数据库查询框架【文档】 - 陈映峤的博客 | Lerko Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -180,7 +180,7 @@
                         <a class="tag" href="/tags/#Phero" title="Phero">Phero</a>
                         
                     </div>
-                    <h1>Phero数据库查询</h1>
+                    <h1>Phero数据库查询框架【文档】</h1>
                     
                     
                     <h2 class="subheading"> "Phero 数据库查询类库的使用"</h2>
@@ -215,7 +215,7 @@
 
 <h2 id="section-1">开始</h2>
 
-<h3 id="pdo">在入口脚本注入PDO</h3>
+<h4 id="pdo">在入口脚本注入PDO</h4>
 
 <blockquote>
   <p>方法1</p>
@@ -245,7 +245,7 @@ DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns,
   <p>接下来就可以建立实体类 然后愉快的使用了</p>
 </blockquote>
 
-<h3 id="sql">直接执行sql语句</h3>
+<h4 id="sql">直接执行sql语句</h4>
 
 <ul>
   <li>exec(sql,bindData) 插入数据</li>
@@ -260,7 +260,7 @@ $effect=$help-&gt;exec("update video_cat set id=:id where name=:name",[
 ]);
 </div>
 
-<h3 id="section-2">新建实体类</h3>
+<h4 id="section-2">新建实体类</h4>
 <blockquote>
   <p>现在我们有几张表（都要<code class="highlighter-rouge">use DbUnit</code>）</p>
 </blockquote>
@@ -530,7 +530,7 @@ class video_course {
 }
 </div>
 
-<h3 id="section-3">注解</h3>
+<h4 id="section-3">注解</h4>
 
 <table>
   <thead>
@@ -553,7 +553,7 @@ class video_course {
 
 <h2 id="section-4">查询</h2>
 
-<h3 id="videocat">查询所有列video_cat表中的列</h3>
+<h4 id="videocat">查询所有列video_cat表中的列</h4>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat();
 $video_user-&gt;select();//value就是video_cat查询出来的结果
@@ -568,7 +568,7 @@ $video_user-&gt;select();//value就是video_cat查询出来的结果
     <span class="n">video_user</span> <span class="k">as</span> <span class="n">cat</span>
 </div>
 
-<h3 id="section-5">查询表中的部分列</h3>
+<h4 id="section-5">查询表中的部分列</h4>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat(['id','name']);  //===&gt;可以输入要的列
 $value=$video_user-&gt;select();
@@ -582,7 +582,7 @@ $value=$video_user-&gt;select();
     <span class="n">video_user</span> <span class="k">as</span> <span class="n">cd</span><span class="p">;</span>
 </div>
 
-<h3 id="where">条件查询(where)</h3>
+<h4 id="where">条件查询(where)</h4>
 
 <blockquote>
   <p>简单的where</p>
@@ -621,7 +621,7 @@ $value=$video_user-&gt;select();
 3. whereOr\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
 </div>
 
-<h3 id="section-6">关联查询</h3>
+<h4 id="section-6">关联查询</h4>
 
 <div class="language-php highlighter-rouge">$video_cat=new video_cat();
 /**
@@ -643,7 +643,7 @@ $value=$video_cat-&gt;select();
 
 <h2 id="section-7">插入</h2>
 
-<h3 id="section-8">普通插入</h3>
+<h4 id="section-8">普通插入</h4>
 
 <div class="language-php highlighter-rouge">//这是一种赋值方式
 $video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
@@ -653,7 +653,7 @@ $video_user-&gt;password="123455";
 $insert = $video_user-&gt;insert();
 </div>
 
-<h3 id="section-9">批量插入</h3>
+<h4 id="section-9">批量插入</h4>
 
 <div class="language-php highlighter-rouge">$video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
  $video_user2 = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
@@ -663,7 +663,7 @@ $model = new Model();
 $model-&gt;insert($entiy);
 </div>
 
-<h3 id="section-10">事务插入</h3>
+<h4 id="section-10">事务插入</h4>
 
 <div class="language-php highlighter-rouge">//这是一种赋值方式
 $video_user = new unit\video_user(["username" =&gt; "asdfs" . rand(), "password" =&gt; "1234" . rand()]);
@@ -678,7 +678,7 @@ $video_user-&gt;commit();
 
 <h2 id="section-11">更新</h2>
 
-<h3 id="section-12">普通更新</h3>
+<h4 id="section-12">普通更新</h4>
 
 <div class="language-php highlighter-rouge">$video_user = new unit\video_user(["username" =&gt; "asdfs", "password" =&gt; "1234"]);
 $video_user-&gt;where(['uid', 4]);
@@ -697,7 +697,7 @@ $update = $video_user-&gt;update();
 
 <h1 id="section-13">删除</h1>
 
-<h3 id="section-14">普通删除</h3>
+<h4 id="section-14">普通删除</h4>
 <div class="language-php highlighter-rouge">$video_user = new unit\video_user();
 $video_user-&gt;whereEq("uid",4);
 $video_user-&gt;delete();
@@ -843,7 +843,7 @@ $video_user-&gt;delete();
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2016/12/15/pherodocs"
-                    data-title="Phero数据库查询"
+                    data-title="Phero数据库查询框架【文档】"
                     data-url="https://chenyingqiao.github.io//2016/12/15/pherodocs/"
                     data-images="https://chenyingqiao.github.io//img/post-bg-universe.jpg"
                     data-content="安装
@@ -884,9 +884,9 @@ $video_user-&gt;delete();
                     
                     
                     <li class="next">
-                        <a href="/2016/12/15/hah/" data-toggle="tooltip" data-placement="top" title="Phero数据库查询">
+                        <a href="/2016/12/15/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/" data-toggle="tooltip" data-placement="top" title="mysql 主从复制">
                         Next<br>
-                        <span>Phero数据库查询</span>
+                        <span>mysql 主从复制</span>
                         </a>
                     </li>
                     
@@ -898,7 +898,7 @@ $video_user-&gt;delete();
                 <div class="comment">
                     <div class="ds-thread"
                         data-thread-key="/2016/12/15/pherodocs"
-                        data-title="Phero数据库查询"
+                        data-title="Phero数据库查询框架【文档】"
                         data-url="https://chenyingqiao.github.io//2016/12/15/pherodocs/" >
                     </div>
                 </div>
@@ -942,15 +942,21 @@ $video_user-&gt;delete();
                             
         				
                             
-                				<a href="/tags/#Phero" title="Phero" rel="2">
-                                    Phero
+        				
+                            
+                				<a href="/tags/#database" title="database" rel="3">
+                                    database
                                 </a>
                             
         				
                             
-                				<a href="/tags/#server" title="server" rel="3">
+                				<a href="/tags/#server" title="server" rel="4">
                                     server
                                 </a>
+                            
+        				
+                            
+        				
                             
         				
         			</div>

@@ -5,242 +5,825 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 23 Dec 2016 19:27:36 +0800</pubDate>
-    <lastBuildDate>Fri, 23 Dec 2016 19:27:36 +0800</lastBuildDate>
+    <pubDate>Fri, 30 Dec 2016 14:15:30 +0800</pubDate>
+    <lastBuildDate>Fri, 30 Dec 2016 14:15:30 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>Mysql主从配置docker</title>
-        <description>
-&lt;hr /&gt;
-&lt;p&gt;layout:     post
-title:      “mysql 主从复制”
-subtitle:   “使用Docker创建本地mysql主从,实现主从分离”
-date:       2016-12-15
-author:     “Lerko”
-header-img: “img/post-bg-unix-linux.jpg”
-catalog: true
-tags:
-    - database
-—&lt;/p&gt;
+        <title>有限状态机</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;认识有限状态级&lt;/h2&gt;
 
-&lt;h2 id=&quot;docker&quot;&gt;docker创建环境&lt;/h2&gt;
-
-&lt;h3 id=&quot;dockermysql&quot;&gt;使用docker创建两个mysql容器&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/img/finite-state-machine.png&quot; alt=&quot;fsm&quot; title=&quot;有限状态机&quot; /&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;docker 镜像可以使用网易蜂巢的mysql的docker镜像
-MYSQL_ROOT_PASSWORD是设置docker容器中mysql的root账户的密码&lt;/p&gt;
+  &lt;p&gt;有限状态机器有3个特征&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;docker run --name mysql-master -v /home/docker/file/:/home/ -e MYSQL_ROOT_PASSWORD=111111 -d mysql
-docker run --name mysql-slave -v /home/docker/file/:/home/ -e MYSQL_ROOT_PASSWORD=111111 -d mysql
-#这里一般都要挂载一下外部目录这样docker才能和外部机器共享文件
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;状态总数（state）是有限的。&lt;/li&gt;
+  &lt;li&gt;任一时刻，只处在一种状态之中。&lt;/li&gt;
+  &lt;li&gt;某种条件下，会从一种状态转变（transition）到另一种状态。&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;今日容器之后需要准备的事情&lt;/h3&gt;
+&lt;h2 id=&quot;js&quot;&gt;在js中的应用&lt;/h2&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;由于镜像中没有提供vim 而且 镜像中的源是使用ubuntu的官方源 
-如果我们没有使用科学上网apt-get update 将会非常慢
-我使用的是deepin 我就吧deepin的源替换进去&lt;/p&gt;
+  &lt;p&gt;下面介绍一个有限状态机的函数库Javascript Finite State Machine。这个库非常好懂，可以帮助我们加深理解，而且功能一点都不弱。
+该库提供一个全局对象StateMachine，使用该对象的create方法，可以生成有限状态机的实例。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 拷贝deepin的源
-sudo cp /etc/apt/source.list /home/docker/file/
-#进入容器
-docker exec -it mysql-master bash
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入容器之后 我们从共享的文件目录获取deepin的源 然后覆盖到容器中的源
-cat /home/source.list &amp;gt; /etc/apt/source.list
-apt-get update
-apt-get upgrade
-apt-get install vim
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StateMachine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//生成的时候，需要提供一个参数对象，用来描述实例的性质。比如，交通信号灯（红绿灯）可以这样描述：&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StateMachine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;green&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;warn&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;green&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yellow&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;stop&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yellow&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;red&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;ready&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;red&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;    &lt;span class=&quot;na&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yellow&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;go&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yellow&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;green&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;mysql-slave 也是同样的更新一下源&lt;/p&gt;
+  &lt;p&gt;交通信号灯的初始状态（initial）为green，events属性是触发状态改变的各种事件，比如warn事件使得green状态变成yellow状态，stop事件使得yellow状态变成red状态等等。
+生成实例以后，就可以随时查询当前状态。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;mysql&quot;&gt;开始配置mysql主从&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;每台mysql主机都有master和slave的概念
-其实他是两个工作线程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;将Mysql的数据分布到多个系统上去，这种分布的机制，是通过将Mysql的某一台主机的数据复制到其&amp;gt;它主机（slaves）上，并重新执行一遍来实现的。复制过程中一个服务器充当主服务器，而一个或多个其它服务器充当从服务器。主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更新，然后封锁并等待主服务器通知新的更新。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;请注意当你进行复制时，所有对复制中的表的更新必须在主服务器上进行。否则，你必须要小心，以避免用户对主服务器上的表进行的更新与对从服务器上的表所进行的更新之间的冲突。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;从添加用户开始&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;我们需要添加一个mysql用户让slave来使用&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;mysql-master 容器&lt;/strong&gt;
-```shell
-mysql -u root -p
-#输入密码后进入mysql&lt;/p&gt;
-
-&lt;p&gt;#创建一个用户名为lerko密码为111111的可以使用任意ip访问的用户
-create user  ‘lerko’@’%’ IDENTIFIED BY ‘111111’;&lt;/p&gt;
-
-&lt;h1 id=&quot;curd&quot;&gt;为用户开启curd权限&lt;/h1&gt;
-&lt;p&gt;# 如果没有开启的话会导致 Slave_IO_Running :no
-# 权限有select,insert,update,delete,create,drop, all privilege[表示给所有的权限]
-#命令格式: &lt;code class=&quot;highlighter-rouge&quot;&gt;grant 权限1,权限2,…权限n on 数据库名称.表名称 to 用户名@用户地址 identified by ‘连接口令’;&lt;/code&gt;
-grant select,insert,update,delete,create,drop on &lt;em&gt;.&lt;/em&gt; to lerko@’%’ identified by ‘111111’;
-```&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;另外如果你没有开启权限就吧从库链接主库了
-你要重新链接一次 因为主库的Position会变化
-重新链接要使用stop slave结束丛库的slave&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;开启主和从服务器的二进制日志&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;mysql-master&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
-vim /etc/mysql/my.cnf
-#添加如下内容
-[mysqld]
-log-bin=mysql-bin   //[必须]启用二进制日志
-server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;current&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回当前状态。&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示状态s是否为当前状态。&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;can&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示事件e是否能在当前状态触发。&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cannot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示事件e是否不能在当前状态触发。&lt;/span&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;strong&gt;mysql-slave&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
-vim /etc/mysql/my.cnf
-#添加如下内容
-[mysqld]
-log-bin=mysql-bin   //[必须]启用二进制日志
-server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
-&lt;/div&gt;
-
-&lt;h3 id=&quot;mysql-1&quot;&gt;重启两个容器的mysql进程&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这个会直接吧容器给停了  之后再start一下容器就行&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;service mysql restart;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;masterslave&quot;&gt;查看主库的master以及从库的slave&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;进入mysql&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;show master status；
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000001 |      681 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
-&lt;/div&gt;
-
-&lt;h3 id=&quot;master&quot;&gt;从库把master链接到主库&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这里我们只需要一个命令就可以&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# master_log_file =&amp;gt; 指向胡二进制文件&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# master_log_pos =&amp;gt; 二进制文件胡读取位置&lt;/span&gt;
-change master to &lt;span class=&quot;nv&quot;&gt;master_host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;172.17.0.2&#39;&lt;/span&gt;,master_user&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;lerko&#39;&lt;/span&gt;,master_password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;111111&#39;&lt;/span&gt;,master_log_file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;mysql-bin.000001&#39;&lt;/span&gt;,master_log_pos&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;681;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;主从ip可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;docker inspect [容器id]&lt;/code&gt;来查看&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;去从服务器查看同步状态&lt;/h3&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# 进入mysql命令行&lt;/span&gt;
-show slave status&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt; 1. row &lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt;
-               Slave_IO_State: Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;master to send event
-                  Master_Host: 172.17.0.2
-                  Master_User: lerko
-                  Master_Port: 3306
-                Connect_Retry: 60
-              Master_Log_File: mysql-bin.000001
-          Read_Master_Log_Pos: 1045
-               Relay_Log_File: 68903b92c3ea-relay-bin.000003
-                Relay_Log_Pos: 320
-        Relay_Master_Log_File: mysql-bin.000001
-             Slave_IO_Running: Yes &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个必须要yes]
-            Slave_SQL_Running: Yes &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个必须要yes]
-              Replicate_Do_DB: 
-          Replicate_Ignore_DB: 
-           Replicate_Do_Table: 
-       Replicate_Ignore_Table: 
-      Replicate_Wild_Do_Table: 
-  Replicate_Wild_Ignore_Table: 
-                   Last_Errno: 0
-                   Last_Error: 
-                 Skip_Counter: 0
-          Exec_Master_Log_Pos: 1045
-              Relay_Log_Space: 534
-              Until_Condition: None
-               Until_Log_File: 
-                Until_Log_Pos: 0
-           Master_SSL_Allowed: No
-           Master_SSL_CA_File: 
-           Master_SSL_CA_Path: 
-              Master_SSL_Cert: 
-            Master_SSL_Cipher: 
-               Master_SSL_Key: 
-        Seconds_Behind_Master: 0 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;这个可以查看主从是否延迟]
-Master_SSL_Verify_Server_Cert: No
-                Last_IO_Errno: 0
-                Last_IO_Error: 
-               Last_SQL_Errno: 0
-               Last_SQL_Error: 
-  Replicate_Ignore_Server_Ids: 
-             Master_Server_Id: 1
-                  Master_UUID: 38487393-c72a-11e6-a1c8-0242ac110002
-             Master_Info_File: /var/lib/mysql/master.info
-                    SQL_Delay: 0
-          SQL_Remaining_Delay: NULL
-      Slave_SQL_Running_State: Slave has &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;all relay log; waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more updates
-           Master_Retry_Count: 86400
-                  Master_Bind: 
-      Last_IO_Error_Timestamp: 
-     Last_SQL_Error_Timestamp: 
-               Master_SSL_Crl: 
-           Master_SSL_Crlpath: 
-           Retrieved_Gtid_Set: 
-            Executed_Gtid_Set: 
-                Auto_Position: 0
-         Replicate_Rewrite_DB: 
-                 Channel_Name: 
-           Master_TLS_Version: 
-1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-ERROR: 
-No query specified
-
-&lt;/div&gt;
+&lt;p&gt;更多概念查看&lt;a href=&quot;http://www.ruanyifeng.com/blog/2013/09/finite-state_machine_for_javascript.html&quot;&gt;阮一峰博客&lt;/a&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 23 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/23/mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AEdocker/</guid>
+        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/26/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
+        
+        <category>数据结构与算法</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>sass入门</title>
+        <description>&lt;h2 id=&quot;sass&quot;&gt;什么是sass&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sass 是对 CSS 的扩展，让 CSS 语言更强大、优雅。 它允许你使用变量、嵌套规则、 mixins、导入等众多功能， 并且完全兼容 CSS 语法。 Sass 有助于保持大型样式表结构良好， 同时也让你能够快速开始小型项目， 特别是在搭配 Compass 样式库一同使用时。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;嵌套&lt;/h2&gt;
+&lt;p&gt;## 变量&lt;/p&gt;
+</description>
+        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/26/sass%E5%85%A5%E9%97%A8/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/sass%E5%85%A5%E9%97%A8/</guid>
+        
+        <category>web</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>laravel深度入门</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;初始化流程&lt;/h2&gt;
+
+&lt;h3 id=&quot;http-&quot;&gt;http 的初始化&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;引入composer的autoload&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;实例化Applocation（初始化ioc容器，application本身就是ioc容器。并且注册本身到自己的ioc容器中。注册基础的服务提供者【并且执行服务提供者的register和boot方法】。注册一些类别名到ioc容器）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注册Http的Kernel到ioc容器&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;从make中去除kernel（实例化了kernel，kernel调用了一些bootstrap的类来初始化一些系统功能【门面注册，内容提供者注册–app.php中配置的那些】，调用application的boot方法等）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;捕获Request&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;发送response（Symfony\Component\HttpFoundation\Response）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;console-&quot;&gt;console 的初始化&lt;/h3&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;几个重要的系统定义初始化的值&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Illuminate\Foundation\Http\Kernel  $bootstrappers 初始化一些系统的必须类 包括下面的几个类  （都有bootstrap()方法  初始化了系统绝大多数东西）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;    protected $bootstrappers = [
+        &#39;Illuminate\Foundation\Bootstrap\DetectEnvironment&#39;,
+        &#39;Illuminate\Foundation\Bootstrap\LoadConfiguration&#39;,
+        &#39;Illuminate\Foundation\Bootstrap\ConfigureLogging&#39;,
+        &#39;Illuminate\Foundation\Bootstrap\HandleExceptions&#39;, 
+ 		//初始化门面
+ 		&#39;Illuminate\Foundation\Bootstrap\RegisterFacades&#39;,
+		//初始化内容提供者
+ 		&#39;Illuminate\Foundation\Bootstrap\RegisterProviders&#39;,
+        //调用Applocation实例到ioc容器中
+        &#39;Illuminate\Foundation\Bootstrap\BootProviders&#39;,
+    ];
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;application 注册核心的别名到ioc容器中  契约以及契约的实现类&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt; public function registerCoreContainerAliases(){
+        $aliases = [ &#39;app&#39; =&amp;gt; [&#39;Illuminate\Foundation\Application&#39;, &#39;Illuminate\Contracts\Container\Container&#39;, &#39;Illuminate\Contracts\Foundation\Application&#39;],
+            &#39;auth&#39;                 =&amp;gt; [&#39;Illuminate\Auth\AuthManager&#39;, &#39;Illuminate\Contracts\Auth\Factory&#39;],
+            &#39;auth.driver&#39;          =&amp;gt; [&#39;Illuminate\Contracts\Auth\Guard&#39;],
+            &#39;blade.compiler&#39;       =&amp;gt; [&#39;Illuminate\View\Compilers\BladeCompiler&#39;],
+            &#39;cache&#39;                =&amp;gt; [&#39;Illuminate\Cache\CacheManager&#39;, &#39;Illuminate\Contracts\Cache\Factory&#39;],
+            &#39;cache.store&#39;          =&amp;gt; [&#39;Illuminate\Cache\Repository&#39;, &#39;Illuminate\Contracts\Cache\Repository&#39;],
+            &#39;config&#39;               =&amp;gt; [&#39;Illuminate\Config\Repository&#39;, &#39;Illuminate\Contracts\Config\Repository&#39;],
+            &#39;cookie&#39;               =&amp;gt; [&#39;Illuminate\Cookie\CookieJar&#39;, &#39;Illuminate\Contracts\Cookie\Factory&#39;, &#39;Illuminate\Contracts\Cookie\QueueingFactory&#39;],
+            &#39;encrypter&#39;            =&amp;gt; [&#39;Illuminate\Encryption\Encrypter&#39;, &#39;Illuminate\Contracts\Encryption\Encrypter&#39;],
+            &#39;db&#39;                   =&amp;gt; [&#39;Illuminate\Database\DatabaseManager&#39;],
+            &#39;db.connection&#39;        =&amp;gt; [&#39;Illuminate\Database\Connection&#39;, &#39;Illuminate\Database\ConnectionInterface&#39;],
+            &#39;events&#39;               =&amp;gt; [&#39;Illuminate\Events\Dispatcher&#39;, &#39;Illuminate\Contracts\Events\Dispatcher&#39;],
+            &#39;files&#39;                =&amp;gt; [&#39;Illuminate\Filesystem\Filesystem&#39;],
+            &#39;filesystem&#39;           =&amp;gt; [&#39;Illuminate\Filesystem\FilesystemManager&#39;, &#39;Illuminate\Contracts\Filesystem\Factory&#39;],
+            &#39;filesystem.disk&#39;      =&amp;gt; [&#39;Illuminate\Contracts\Filesystem\Filesystem&#39;],
+            &#39;filesystem.cloud&#39;     =&amp;gt; [&#39;Illuminate\Contracts\Filesystem\Cloud&#39;],
+            &#39;hash&#39;                 =&amp;gt; [&#39;Illuminate\Contracts\Hashing\Hasher&#39;],
+            &#39;translator&#39;           =&amp;gt; [&#39;Illuminate\Translation\Translator&#39;, &#39;Symfony\Component\Translation\TranslatorInterface&#39;],
+            &#39;log&#39;                  =&amp;gt; [&#39;Illuminate\Log\Writer&#39;, &#39;Illuminate\Contracts\Logging\Log&#39;, &#39;Psr\Log\LoggerInterface&#39;],
+            &#39;mailer&#39;               =&amp;gt; [&#39;Illuminate\Mail\Mailer&#39;, &#39;Illuminate\Contracts\Mail\Mailer&#39;, &#39;Illuminate\Contracts\Mail\MailQueue&#39;],
+            &#39;auth.password&#39;        =&amp;gt; [&#39;Illuminate\Auth\Passwords\PasswordBrokerManager&#39;, &#39;Illuminate\Contracts\Auth\PasswordBrokerFactory&#39;],
+            &#39;auth.password.broker&#39; =&amp;gt; [&#39;Illuminate\Auth\Passwords\PasswordBroker&#39;, &#39;Illuminate\Contracts\Auth\PasswordBroker&#39;],
+            &#39;queue&#39;                =&amp;gt; [&#39;Illuminate\Queue\QueueManager&#39;, &#39;Illuminate\Contracts\Queue\Factory&#39;, &#39;Illuminate\Contracts\Queue\Monitor&#39;],
+            &#39;queue.connection&#39;     =&amp;gt; [&#39;Illuminate\Contracts\Queue\Queue&#39;],
+            &#39;queue.failer&#39;         =&amp;gt; [&#39;Illuminate\Queue\Failed\FailedJobProviderInterface&#39;],
+            &#39;redirect&#39;             =&amp;gt; [&#39;Illuminate\Routing\Redirector&#39;],
+            &#39;redis&#39;                =&amp;gt; [&#39;Illuminate\Redis\Database&#39;, &#39;Illuminate\Contracts\Redis\Database&#39;],
+            &#39;request&#39;              =&amp;gt; [&#39;Illuminate\Http\Request&#39;, &#39;Symfony\Component\HttpFoundation\Request&#39;],
+            &#39;router&#39;               =&amp;gt; [&#39;Illuminate\Routing\Router&#39;, &#39;Illuminate\Contracts\Routing\Registrar&#39;],
+            &#39;session&#39;              =&amp;gt; [&#39;Illuminate\Session\SessionManager&#39;],
+            &#39;session.store&#39;        =&amp;gt; [&#39;Illuminate\Session\Store&#39;, &#39;Symfony\Component\HttpFoundation\Session\SessionInterface&#39;],
+            &#39;url&#39;                  =&amp;gt; [&#39;Illuminate\Routing\UrlGenerator&#39;, &#39;Illuminate\Contracts\Routing\UrlGenerator&#39;],
+            &#39;validator&#39;            =&amp;gt; [&#39;Illuminate\Validation\Factory&#39;, &#39;Illuminate\Contracts\Validation\Factory&#39;],
+            &#39;view&#39;                 =&amp;gt; [&#39;Illuminate\View\Factory&#39;, &#39;Illuminate\Contracts\View\Factory&#39;], ];
+        foreach ($aliases as $key =&amp;gt; $aliases) {
+            foreach ($aliases as $alias) {
+                $this-&amp;gt;alias($key, $alias);
+            }
+        }
+}
+
+ ```
+ 
+ 
+ &amp;gt; app.php 配置文件中的aliases 就是吧对应的类设置别名（通过AliasLoad 去找到类【prependToLoaderStack】注册了门面的autoload）
+ 
+ 
+## 需要知道的知识
+
+```php
+类：Closure
+这个是一个回调函数的具体类
+方法  bind(Closure $closure , object $newthis [, mixed $newscope = &#39;static&#39; ] ) 
+	 bindto(object $newthis [, mixed $newscope = &#39;static&#39; ])
+
+bind:将回调函数绑定到一个具体的类 $newthis（这个绑定之后才有上下文）
+	$newscope 代表的是这个类的作用域（即回调函数能访问这个作用域【类】中的成员变量   也可以是一个命名空间加类名的字符串）
+    即 $newthis是绑定上下文  $newscope取得上下文的变量
+bindTo 参数如上
+
+static::class --&amp;gt; 返回的是php这个类的域名以及类名的全部string
+
+callable 标示一个可以调用的类型
+
+接口：ArrayAccess：让类可以像数组一样的进行使用
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;//laravel的基础类
+Macroable：实现了一个注册callable类型就可以添加到类中的trait
+&lt;/div&gt;
+
+&lt;h2 id=&quot;applocatin-&quot;&gt;applocatin 分析&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Applocation 类继承了接口：&lt;code class=&quot;highlighter-rouge&quot;&gt;IApplication, HttpKernelInterface&lt;/code&gt;,继承了类&lt;code class=&quot;highlighter-rouge&quot;&gt;Container&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Application 接口
+```php
+interface Application extends Container
+{
+  /**
+    &lt;ul&gt;
+      &lt;li&gt;获取laravel的版本&lt;/li&gt;
+      &lt;li&gt;@return string
+   */
+  public function version();&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;/**
+   * 获取laravel框架的基本路径（项目根目录）
+   * @return string
+   */
+  public function basePath();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 取得环境
+   * @return string
+   */
+  public function environment();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 判断框架是否是在维护
+   * @return bool
+   */
+  public function isDownForMaintenance();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 注册所有的配置提供者
+   * @return void
+   */
+  public function registerConfiguredProviders();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 注册服务提供者到applocation中  并且调用服务的register方法
+   * @param  \Illuminate\Support\ServiceProvider|string  $provider
+   * @param  array  $options
+   * @param  bool   $force
+   * @return \Illuminate\Support\ServiceProvider
+   */
+  public function register($provider, $options = [], $force = false);&lt;/p&gt;
+
+    &lt;p&gt;/**
+   *注册一个延迟的服务提供者（如果已经有注册服务的话就从deferredServices中unset服务 然后在调用register方法注册服务）
+   * @param  string  $provider
+   * @param  string  $service
+   * @return void
+   */
+  public function registerDeferredProvider($provider, $service = null);&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 调用所有的boot的callback并且吧所有注册的服务提供者都调用boot方法
+   * @return void
+   */
+  public function boot();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 注册一个boot（框架启动的回调函数）
+   *
+   * @param  mixed  $callback
+   * @return void
+   */
+  public function booting($callback);&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 注册一个框架启动完成之后的回调函数
+   *
+   * @param  mixed  $callback
+   * @return void
+   */
+  public function booted($callback);&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * Get the path to the cached “compiled.php” file.
+   *
+   * @return string
+   */
+  public function getCachedCompilePath();&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * Get the path to the cached services.php file.
+   *
+   * @return string
+   */
+  public function getCachedServicesPath();
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//http接口
+interface HttpKernelInterface
+{
+    const MASTER_REQUEST = 1;
+    const SUB_REQUEST = 2;
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true);
+}
+&lt;/div&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//依赖注入容器
+interface Container
+{
+    /**
+     * Determine if the given abstract type has been bound.
+     *
+     * @param  string  $abstract
+     * @return bool
+     */
+    public function bound($abstract);
+
+    /**
+     * Alias a type to a different name.
+     *
+     * @param  string  $abstract
+     * @param  string  $alias
+     * @return void
+     */
+    public function alias($abstract, $alias);
+
+    /**
+     * Assign a set of tags to a given binding.
+     *
+     * @param  array|string  $abstracts
+     * @param  array|mixed   ...$tags
+     * @return void
+     */
+    public function tag($abstracts, $tags);
+
+    /**
+     * Resolve all of the bindings for a given tag.
+     *
+     * @param  array  $tag
+     * @return array
+     */
+    public function tagged($tag);
+
+    /**
+     * Register a binding with the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @param  bool  $shared
+     * @return void
+     */
+    public function bind($abstract, $concrete = null, $shared = false);
+
+    /**
+     * Register a binding if it hasn&#39;t already been registered.
+     *
+     * @param  string  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @param  bool  $shared
+     * @return void
+     */
+    public function bindIf($abstract, $concrete = null, $shared = false);
+
+    /**
+     * Register a shared binding in the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function singleton($abstract, $concrete = null);
+
+    /**
+     * &quot;Extend&quot; an abstract type in the container.
+     *
+     * @param  string    $abstract
+     * @param  \Closure  $closure
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function extend($abstract, Closure $closure);
+
+    /**
+     * Register an existing instance as shared in the container.
+     *
+     * @param  string  $abstract
+     * @param  mixed   $instance
+     * @return void
+     */
+    public function instance($abstract, $instance);
+
+    /**
+     * Define a contextual binding.
+     *
+     * @param  string  $concrete
+     * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
+     */
+    public function when($concrete);
+
+    /**
+     * Resolve the given type from the container.
+     *
+     * @param  string  $abstract
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function make($abstract, array $parameters = []);
+
+    /**
+     * Call the given Closure / class@method and inject its dependencies.
+     *
+     * @param  callable|string  $callback
+     * @param  array  $parameters
+     * @param  string|null  $defaultMethod
+     * @return mixed
+     */
+    public function call($callback, array $parameters = [], $defaultMethod = null);
+
+    /**
+     * Determine if the given abstract type has been resolved.
+     *
+     * @param  string $abstract
+     * @return bool
+     */
+    public function resolved($abstract);
+
+    /**
+     * Register a new resolving callback.
+     *
+     * @param  string    $abstract
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public function resolving($abstract, Closure $callback = null);
+
+    /**
+     * Register a new after resolving callback.
+     *
+     * @param  string    $abstract
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public function afterResolving($abstract, Closure $callback = null);
+}
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Illuminate\Config\Repository&lt;/code&gt;读取配置文件的数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;apploction 初始化注册的的基础服务和基础容器&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;基础服务
+```php
+//事件服务
+class EventServiceProvider extends ServiceProvider
+{
+ /**
+    &lt;ul&gt;
+      &lt;li&gt;Register the service provider.
+  *&lt;/li&gt;
+      &lt;li&gt;@return void
+  */
+ public function register()
+ {
+ $this-&amp;gt;app-&amp;gt;singleton(‘events’, function ($app) {
+     return (new Dispatcher($app))-&amp;gt;setQueueResolver(function () use ($app) {
+         return $app-&amp;gt;make(‘Illuminate\Contracts\Queue\Factory’);
+     });
+ });
+ }
+}
+//路由服务
+class RoutingServiceProvider extends ServiceProvider
+{
+ /**&lt;/li&gt;
+      &lt;li&gt;Register the service provider.
+  *&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;@return void
+  */
+ public function register()
+ {
+ $this-&amp;gt;registerRouter();&lt;/p&gt;
+
+        &lt;p&gt;$this-&amp;gt;registerUrlGenerator();&lt;/p&gt;
+
+        &lt;p&gt;$this-&amp;gt;registerRedirector();&lt;/p&gt;
+
+        &lt;p&gt;$this-&amp;gt;registerPsrRequest();&lt;/p&gt;
+
+        &lt;p&gt;$this-&amp;gt;registerPsrResponse();&lt;/p&gt;
+
+        &lt;p&gt;$this-&amp;gt;registerResponseFactory();
+ }
+}
+```
+&amp;gt; 其实大部分初始化工作都在这两个服务里面&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;主要关注 &lt;code class=&quot;highlighter-rouge&quot;&gt;EventServiceProvider&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;核心概念&lt;/h2&gt;
+&lt;p&gt;### 依赖注入
+&amp;gt; 依赖注入接口&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//Application 是这个接口的子类
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Illuminate\Contracts\Container&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Container&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//判断是不是存在这个ioc
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bound&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//别名ioc容器
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;alias&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$alias&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//对ioc容器中的元素进行标注
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstracts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$tags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tagged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//绑定实现类到ioc容器
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$concrete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$shared&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bindIf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$concrete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$shared&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//单例的ioc容器
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;singleton&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$concrete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$closure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//每次都实例化的ioc容器
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//容器限制条件
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$concrete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//遍历所有的容器 去除ioc实例
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;make&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$parameters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//调用ioc容器中的对应方法
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$parameters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$defaultMethod&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//是否注册ioc容器事件
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;resolved&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//注册ioc容器解析事件
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;resolving&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$callback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//注册ioc容器解析之后的
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;afterResolving&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$callback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;依赖注入的一些类型&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;注册单例&lt;/li&gt;
+  &lt;li&gt;注册别名&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;服务提供者&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;服务提供者是一个在框架运行流程中可以注册到框架的applocation中 然后有两个主要的方法
+1. register
+2. boot
+
+执行顺序 register-&amp;gt;boot
+
+app.php配置文件中有许多初始化的服务提供者
+系统的启动也是这些提供者提供的
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;门面&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;门面抽象类中的getFacadeAccessor（）方法（重载） 就是用来获取ioc容器中alias别名容器中对应的【契约=》类】；&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//门面就是一个注册函数或者对象到类中 之后可以通过__callStatic 来访问这些方法
+// 使得很多注册的门面可以直接通过static的方式进行访问
+//门面类
+namespace Illuminate\Support\Facades;
+abstract class Facade
+
+//门面注册类
+namespace Illuminate\Foundation\Bootstrap;
+class RegisterFacades
+&lt;/div&gt;
+
+&lt;h2 id=&quot;http&quot;&gt;主要使用（http）&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;路由&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;路由文件web.php在App\Providers\RouteServiceProvider中被包含 并且吧这些都包含在一个group中&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;protected function mapWebRoutes()
+{
+    Route::group([
+        &#39;middleware&#39; =&amp;gt; &#39;web&#39;,
+        &#39;namespace&#39; =&amp;gt; $this-&amp;gt;namespace,
+    ], function ($router) {
+        require base_path(&#39;routes/web.php&#39;);
+    });
+}
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;控制器&lt;/h3&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;abstract class Controller
+{
+    /**
+     * The middleware registered on the controller.
+     *
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
+     * Register middleware on the controller. 注册一个中间件
+     *
+     * @param  array|string|\Closure  $middleware
+     * @param  array   $options
+     * @return \Illuminate\Routing\ControllerMiddlewareOptions
+     */
+    public function middleware($middleware, array $options = [])
+    {
+        foreach ((array) $middleware as $m) {
+            $this-&amp;gt;middleware[] = [
+                &#39;middleware&#39; =&amp;gt; $m,
+                &#39;options&#39; =&amp;gt; &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;$options,
+            ];
+        }
+
+        return new ControllerMiddlewareOptions($options);
+    }
+
+    /**
+     * Get the middleware assigned to the controller.  获取注册到控制器的中间件
+     *
+     * @return array
+     */
+    public function getMiddleware()
+    {
+        return $this-&amp;gt;middleware;
+    }
+
+    /**
+     * Execute an action on the controller.  调用控制器的方法
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function callAction($method, $parameters)
+    {
+        return call_user_func_array([$this, $method], $parameters);
+    }
+
+    /**
+     * Handle calls to missing methods on the controller.  调用控制器没有的方法抛出异常
+     *
+     * @param  array   $parameters
+     * @return mixed
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function missingMethod($parameters = [])
+    {
+        throw new NotFoundHttpException(&#39;Controller method not found.&#39;);
+    }
+
+    /**
+     * Handle calls to missing methods on the controller.  调用未知方法直接抛出异常
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     *
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $parameters)
+    {
+        throw new BadMethodCallException(&quot;Method [{$method}] does not exist.&quot;);
+    }
+}
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;中间件&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;用来过滤请求 然后可以对请求进行处理
+比如 验证 跳转 过滤
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;php artisan make:middleware CheckAge 可以直接生成中间件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;普通中间件（中间件前）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;class CheckAge
+{
+    public function handle($request, Closure $next)
+    {
+        return $next($request);
+    }
+}
+&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;后置中间件&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;class AfterMiddleware
+{
+    public function handle($request, Closure $next)
+    {
+        $response = $next($request);
+        // 执行动作
+        return $response;
+    }
+}
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;队列&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;队列的实现  QueueServiceProvider 提供了队列的初始化
+Worker类通过pcntl系列的函数创建队列线程&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/</guid>
+        
+        <category>database</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Js规范总结</title>
+        <description>
+</description>
+        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>从flv.js说llvm</title>
+        <description>&lt;h2 id=&quot;llvm&quot;&gt;什么是LLVM&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;LLVM 命名最早源自于底层虚拟机（Low Level Virtual Machine）的缩写,由于命名带来的混乱，目前LLVM就是该项目的全称。LLVM 核心库提供了与编译器相关的支持，可以作为多种语言编译器的后台来使用。能够进行程序语言的编译期优化、链接优化、在线编译优化、代码生成。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;LLVM的项目是一个模块化和可重复使用的编译器和工具技术的集合。LLVM是伊利诺伊大学的一个研究项目，提供一个现代化的，基于SSA的编译策略能够同时支持静态和动态的任意编程语言的编译目标。自那时以来，已经成长为LLVM的主干项目，由不同的子项目组成，其中许多正在生产中使用的各种 商业和开源的项目，以及被广泛用于学术研究。[1]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;flvjsllvm&quot;&gt;从flv.js看LLVM&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;参考网址
+&lt;a href=&quot;https://software.intel.com/zh-cn/articles/html5-asmjs&quot;&gt;HTML5标准与性能之四：asm.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flvjs 使用的是Emscripten 
+这个是一个可以吧c/c++编译成js或者html5应用的开源项目&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Sat, 24 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/24/%E4%BB%8Eflv.js%E8%AF%B4LLVM/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/24/%E4%BB%8Eflv.js%E8%AF%B4LLVM/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>协同过滤算法</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;协同过滤算法的计算原理&lt;/h2&gt;
+
+&lt;p&gt;皮尔逊相关系数理解&lt;/p&gt;
+
+&lt;p&gt;x&amp;lt;-c(1,2,3,5,8)
+y&amp;lt;-c(0.11,0.12,0.13,0.15,0.18)&lt;/p&gt;
+
+&lt;p&gt;比如这两组数据
+皮尔逊公式      [x-x数组平均值]*[y-y数组平均值]=》全部加起来/&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/18/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</guid>
+        
+        <category>server</category>
         
         
       </item>
@@ -723,1079 +1306,32 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
       </item>
     
       <item>
-        <title>Phero数据库查询</title>
-        <description>&lt;h2 id=&quot;docker&quot;&gt;docker创建环境&lt;/h2&gt;
-
-&lt;h3 id=&quot;dockermysql&quot;&gt;使用docker创建两个mysql容器&lt;/h3&gt;
+        <title>webpack入门</title>
+        <description>&lt;h2 id=&quot;webpack&quot;&gt;webpack&lt;/h2&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;docker 镜像可以使用网易蜂巢的mysql的docker镜像
-MYSQL_ROOT_PASSWORD是设置docker容器中mysql的root账户的密码&lt;/p&gt;
+  &lt;p&gt;webpack 是一个可以让程序员可以使用require()
+可以包含js以及css和各种web资源  并且支持一些资源的转换
+吧这些资源打包到在一起&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;docker run --name mysql-master -v /home/docker/file/:/home/ -e &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;111111 -d mysql
-docker run --name mysql-slave -v /home/docker/file/:/home/ -e &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;111111 -d mysql
-&lt;span class=&quot;c&quot;&gt;#这里一般都要挂载一下外部目录这样docker才能和外部机器共享文件&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;今日容器之后需要准备的事情&lt;/h3&gt;
+&lt;h2 id=&quot;section&quot;&gt;初次使用&lt;/h2&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;由于镜像中没有提供vim 而且 镜像中的源是使用ubuntu的官方源 
-如果我们没有使用科学上网apt-get update 将会非常慢
-我使用的是deepin 我就吧deepin的源替换进去&lt;/p&gt;
+  &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;npm install webpack&lt;/code&gt;安装webpack&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 拷贝deepin的源
-sudo cp /etc/apt/source.list /home/docker/file/
-#进入容器
-docker exec -it mysql-master bash
-&lt;/div&gt;
+&lt;p&gt;项目目录&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入容器之后 我们从共享的文件目录获取deepin的源 然后覆盖到容器中的源
-cat /home/source.list &amp;gt; /etc/apt/source.list
-apt-get update
-apt-get upgrade
-apt-get install vim
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mysql-slave 也是同样的更新一下源&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;mysql&quot;&gt;开始配置mysql主从&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;每台mysql主机都有master和slave的概念
-其实他是两个工作线程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;将Mysql的数据分布到多个系统上去，这种分布的机制，是通过将Mysql的某一台主机的数据复制到其&amp;gt;它主机（slaves）上，并重新执行一遍来实现的。复制过程中一个服务器充当主服务器，而一个或多个其它服务器充当从服务器。主服务器将更新写入二进制日志文件，并维护文件的一个索引以跟踪日志循环。这些日志可以记录发送到从服务器的更新。当一个从服务器连接主服务器时，它通知主服务器从服务器在日志中读取的最后一次成功更新的位置。从服务器接收从那时起发生的任何更新，然后封锁并等待主服务器通知新的更新。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;请注意当你进行复制时，所有对复制中的表的更新必须在主服务器上进行。否则，你必须要小心，以避免用户对主服务器上的表进行的更新与对从服务器上的表所进行的更新之间的冲突。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;复制过程有一个很重要的限制——复制在slave上是串行化的，也就是说master上的并行更新操作不能在slave上并行操作。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;从添加用户开始&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;我们需要添加一个mysql用户让slave来使用&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;mysql-master 容器&lt;/strong&gt;
-```shell
-mysql -u root -p
-#输入密码后进入mysql&lt;/p&gt;
-
-&lt;p&gt;#创建一个用户名为lerko密码为111111的可以使用任意ip访问的用户
-create user  ‘lerko’@’%’ IDENTIFIED BY ‘111111’;&lt;/p&gt;
-
-&lt;h1 id=&quot;curd&quot;&gt;为用户开启curd权限&lt;/h1&gt;
-&lt;p&gt;# 如果没有开启的话会导致 Slave_IO_Running :no
-# 权限有select,insert,update,delete,create,drop, all privilege[表示给所有的权限]
-#命令格式: &lt;code class=&quot;highlighter-rouge&quot;&gt;grant 权限1,权限2,…权限n on 数据库名称.表名称 to 用户名@用户地址 identified by ‘连接口令’;&lt;/code&gt;
-grant select,insert,update,delete,create,drop on &lt;em&gt;.&lt;/em&gt; to lerko@’%’ identified by ‘111111’;
-```&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;另外如果你没有开启权限就吧从库链接主库了
-你要重新链接一次 因为主库的Position会变化
-重新链接要使用stop slave结束丛库的slave&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;开启主和从服务器的二进制日志&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;mysql-master&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
-vim /etc/mysql/my.cnf
-#添加如下内容
-[mysqld]
-log-bin=mysql-bin   //[必须]启用二进制日志
-server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;mysql-slave&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 修改mysql的配置文件开启二进制日志
-vim /etc/mysql/my.cnf
-#添加如下内容
-[mysqld]
-log-bin=mysql-bin   //[必须]启用二进制日志
-server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
-&lt;/div&gt;
-
-&lt;h3 id=&quot;mysql-1&quot;&gt;重启两个容器的mysql进程&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这个会直接吧容器给停了  之后再start一下容器就行&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;service mysql restart;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;masterslave&quot;&gt;查看主库的master以及从库的slave&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;进入mysql&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;show master status；
-&lt;/div&gt;
-
-&lt;p&gt;+——————+———-+————–+——————+——————-+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+——————+———-+————–+——————+——————-+
-| mysql-bin.000001 |      681 |              |                  |                   |
-+——————+———-+————–+——————+——————-+&lt;/p&gt;
-
-&lt;h3 id=&quot;master&quot;&gt;从库把master链接到主库&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这里我们只需要一个命令就可以&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# master_log_file =&amp;gt; 指向胡二进制文件
-# master_log_pos =&amp;gt; 二进制文件胡读取位置
-change master to master_host=&#39;172.17.0.2&#39;,master_user=&#39;lerko&#39;,master_password=&#39;111111&#39;,master_log_file=&#39;mysql-bin.000001&#39;,master_log_pos=681;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;主从ip可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;docker inspect [容器id]&lt;/code&gt;来查看&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;去从服务器查看同步状态&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;# 进入mysql命令行
-show slave status\G
-
-*************************** 1. row ***************************
-               Slave_IO_State: Waiting for master to send event
-                  Master_Host: 172.17.0.2
-                  Master_User: lerko
-                  Master_Port: 3306
-                Connect_Retry: 60
-              Master_Log_File: mysql-bin.000001
-          Read_Master_Log_Pos: 1045
-               Relay_Log_File: 68903b92c3ea-relay-bin.000003
-                Relay_Log_Pos: 320
-        Relay_Master_Log_File: mysql-bin.000001
-             Slave_IO_Running: Yes [这个必须要yes]
-            Slave_SQL_Running: Yes [这个必须要yes]
-              Replicate_Do_DB: 
-          Replicate_Ignore_DB: 
-           Replicate_Do_Table: 
-       Replicate_Ignore_Table: 
-      Replicate_Wild_Do_Table: 
-  Replicate_Wild_Ignore_Table: 
-                   Last_Errno: 0
-                   Last_Error: 
-                 Skip_Counter: 0
-          Exec_Master_Log_Pos: 1045
-              Relay_Log_Space: 534
-              Until_Condition: None
-               Until_Log_File: 
-                Until_Log_Pos: 0
-           Master_SSL_Allowed: No
-           Master_SSL_CA_File: 
-           Master_SSL_CA_Path: 
-              Master_SSL_Cert: 
-            Master_SSL_Cipher: 
-               Master_SSL_Key: 
-        Seconds_Behind_Master: 0 [这个可以查看主从是否延迟]
-Master_SSL_Verify_Server_Cert: No
-                Last_IO_Errno: 0
-                Last_IO_Error: 
-               Last_SQL_Errno: 0
-               Last_SQL_Error: 
-  Replicate_Ignore_Server_Ids: 
-             Master_Server_Id: 1
-                  Master_UUID: 38487393-c72a-11e6-a1c8-0242ac110002
-             Master_Info_File: /var/lib/mysql/master.info
-                    SQL_Delay: 0
-          SQL_Remaining_Delay: NULL
-      Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
-           Master_Retry_Count: 86400
-                  Master_Bind: 
-      Last_IO_Error_Timestamp: 
-     Last_SQL_Error_Timestamp: 
-               Master_SSL_Crl: 
-           Master_SSL_Crlpath: 
-           Retrieved_Gtid_Set: 
-            Executed_Gtid_Set: 
-                Auto_Position: 0
-         Replicate_Rewrite_DB: 
-                 Channel_Name: 
-           Master_TLS_Version: 
-1 row in set (0.00 sec)
-
-ERROR: 
-No query specified
-
-&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 15 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/15/hah/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/hah/</guid>
-        
-        <category>Phero</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Phero数据库查询</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;安装&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;git安装 &lt;code class=&quot;highlighter-rouge&quot;&gt;git clone https://github.com/chenyingqiao/Phero.git&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;composer 安装 &lt;code class=&quot;highlighter-rouge&quot;&gt;composer require lerko/p-hero&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;开始&lt;/h2&gt;
-
-&lt;h3 id=&quot;pdo&quot;&gt;在入口脚本注入PDO&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;方法1&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;use Phero\System\DI;
-use Phero\Database as database;
-
-$config[]=&quot;mysql:host=localhost;dbname=video;charset=utf8&quot;;//链接字符串
-$config[]=&quot;root&quot;;//用户名
-$config[]=&quot;Cyq19931115&quot;;//密码
-DI::inj(database\Enum\DatabaseConfig::DatabaseConnect,$config);//注入
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;方法2&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;use Phero\System\DI;
-use Phero\Database as database;
-
-$dns = &quot;mysql:host=localhost;dbname=video;charset=utf8&quot;;
-DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns, &#39;root&#39;, &#39;Cyq19931115&#39;));
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;接下来就可以建立实体类 然后愉快的使用了&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;sql&quot;&gt;直接执行sql语句&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;exec(sql,bindData) 插入数据&lt;/li&gt;
-  &lt;li&gt;query(sql,bindData) 读取数据&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$help=new database\Realize\MysqlDbHelp();
-$data=$help-&amp;gt;query(&quot;select * from video_cat where id=:id &quot;,[&quot;id&quot;,1]);
-$effect=$help-&amp;gt;exec(&quot;update video_cat set id=:id where name=:name&quot;,[
-    [&#39;id&#39;,1],
-    [&#39;name&#39;,&#39;视频&#39;]
-]);
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;新建实体类&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;现在我们有几张表（都要&lt;code class=&quot;highlighter-rouge&quot;&gt;use DbUnit&lt;/code&gt;）&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;video_cat&lt;/code&gt;表  &lt;code class=&quot;highlighter-rouge&quot;&gt;(视频种类表)&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Field&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Type&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Null&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Key&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Default&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Extra&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;PRI&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;auto_increment&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;name&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;YES&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实体&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;namespace PheroTest\DatabaseTest\Unit;
-use Phero\Database\DbUnit;
-
-/**
- * @Table[alias=cat]
- */
-class video_cat {
-    use DbUnit;
-    /**
-     * [$id description]
-     * @var [type]
-     * @Field[alias=cat_id]
-     */
-    public $id;
-    /**
-     * [$name description]
-     * @var [type]
-     * @Field[alias=cat_name]
-     */
-    public $name;
-}
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;video_user&lt;/code&gt;表   &lt;code class=&quot;highlighter-rouge&quot;&gt;(用户表)&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Field&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Type&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Null&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Key&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Default&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Extra&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;uid&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;PRI&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;auto_increment&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;username&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;YES&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;password&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;YES&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实体&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;namespace PheroTest\DatabaseTest\Unit;
-
-use Phero\Database\DbUnit;
-
-/**
- * @Table[alias=cd]
- */
-class video_user {
-    use DbUnit;
-    /**
-     * @Primary
-     * @DbType[type=int]
-     * @var [type]
-     */
-    public $uid;
-    /**
-     * @DbType[type=string]
-     * @var [type]
-     */
-    public $username;
-    /**
-     * @DbType[type=string]
-     * @var [type]
-     */
-    public $password;
-}
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;video_course&lt;/code&gt;表  &lt;code class=&quot;highlighter-rouge&quot;&gt;(视频课程表)&lt;/code&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Field&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Type&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Null&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Key&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Default&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Extra&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;course_id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;PRI&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;auto_increment&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;name&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;anthor&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;cat_id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;direction_id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;difficulty_id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;intreduce&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;text&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;video_path&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;cover&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;varchar(255)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NO&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;create_time&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;YES&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;update_time&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;int(11)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;YES&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NULL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实体&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;namespace PheroTest\DatabaseTest\Unit;
-use Phero\Database\DbUnit;
-
-/**
- * @Table[alias=course]
- */
-class video_course {
-    use DbUnit;
-
-    public $course_id;
-    public $name;
-    public $anthor;
-    public $cat_id;
-    public $direction_id;
-    public $difficulty_id;
-    public $intreduce;
-    public $video_path;
-    public $cover;
-    public $create_time;
-    public $update_time;
-}
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;注解&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;用法&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;参数&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;@Table[alias=###]&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;表别名&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;@Field[alias=###,type=[string,int]]&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;列的别名,列的类型&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;section-4&quot;&gt;查询&lt;/h2&gt;
-
-&lt;h3 id=&quot;videocat&quot;&gt;查询所有列video_cat表中的列&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_cat=new video_cat();
-$video_user-&amp;gt;select();//value就是video_cat查询出来的结果
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;相当于&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;video_user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-5&quot;&gt;查询表中的部分列&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_cat=new video_cat([&#39;id&#39;,&#39;name&#39;]);  //===&amp;gt;可以输入要的列
-$value=$video_user-&amp;gt;select();
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;相当于&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;video_user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;where&quot;&gt;条件查询(where)&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;简单的where&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;    $video_user=new test\video_user([&quot;uid&quot;,&quot;username&quot;]);
-    $video_user-&amp;gt;order(&#39;uid&#39;,database\Enum\OrderType::desc);
-    $video_user-&amp;gt;whereOrEqGroupStart(&quot;uid&quot;, 4)-&amp;gt;whereInGroupEnd(&quot;uid&quot;, [2, 3, 1]);
-    $video_user-&amp;gt;group(&quot;password&quot;);
-    $video_user-&amp;gt;having([&quot;password&quot;,&quot;many_test&quot;]);
-    $video_user-&amp;gt;select();
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;相当于&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;video_user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;having&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;many_test&#39;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;desc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;条件查询的组合&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;1. where\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
-2. whereAnd\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
-3. whereOr\[Eq,Neq,In,Not_in,Between,Like,Lt,Lr,Gt,Ge\]([列],[值])
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-6&quot;&gt;关联查询&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_cat=new video_cat();
-/**
- * $.id=#.cat_id
- * 这个表达式标示两个表的联系
- * 其中
- *         $:表示 video_cat表
- *         #:表示 video_path表
- *          join可以嵌套使用
-            如 A B C 三表
-            A-&amp;gt;join(B);
-            B-&amp;gt;join(C);
-            A-&amp;gt;select(); //完成3表链接
- * @type {[type]}
- */
-$video_cat-&amp;gt;join(new video_course([&#39;course_id&#39;,&#39;name&#39;,&#39;video_path&#39;]),&quot;$.id=#.cat_id&quot;);
-$value=$video_cat-&amp;gt;select();
-&lt;/div&gt;
-
-&lt;h2 id=&quot;section-7&quot;&gt;插入&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-8&quot;&gt;普通插入&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//这是一种赋值方式
-$video_user = new unit\video_user([&quot;username&quot; =&amp;gt; &quot;asdfs&quot; . rand(), &quot;password&quot; =&amp;gt; &quot;1234&quot; . rand()]);
-//或者通过字段直接赋值
-$video_user-&amp;gt;username=&quot;fuck&quot;;
-$video_user-&amp;gt;password=&quot;123455&quot;;
-$insert = $video_user-&amp;gt;insert();
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-9&quot;&gt;批量插入&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_user = new unit\video_user([&quot;username&quot; =&amp;gt; &quot;asdfs&quot; . rand(), &quot;password&quot; =&amp;gt; &quot;1234&quot; . rand()]);
- $video_user2 = new unit\video_user([&quot;username&quot; =&amp;gt; &quot;asdfs&quot; . rand(), &quot;password&quot; =&amp;gt; &quot;1234&quot; . rand()]);
-//批量插入
-$entiy = [$video_user, $video_user2];
-$model = new Model();
-$model-&amp;gt;insert($entiy);
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-10&quot;&gt;事务插入&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//这是一种赋值方式
-$video_user = new unit\video_user([&quot;username&quot; =&amp;gt; &quot;asdfs&quot; . rand(), &quot;password&quot; =&amp;gt; &quot;1234&quot; . rand()]);
-//或者通过字段直接赋值
-$video_user-&amp;gt;username=&quot;this is fuck&quot;;
-$video_user-&amp;gt;password=&quot;123455&quot;;
-//true表示开启事务
-$insert = $video_user-&amp;gt;insert(true);
-//提交事务
-$video_user-&amp;gt;commit();
-&lt;/div&gt;
-
-&lt;h2 id=&quot;section-11&quot;&gt;更新&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-12&quot;&gt;普通更新&lt;/h3&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_user = new unit\video_user([&quot;username&quot; =&amp;gt; &quot;asdfs&quot;, &quot;password&quot; =&amp;gt; &quot;1234&quot;]);
-$video_user-&amp;gt;where([&#39;uid&#39;, 4]);
-$update = $video_user-&amp;gt;update();
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;相当于&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;update&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;video_user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;asdfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1234&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;section-13&quot;&gt;删除&lt;/h1&gt;
-
-&lt;h3 id=&quot;section-14&quot;&gt;普通删除&lt;/h3&gt;
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;$video_user = new unit\video_user();
-$video_user-&amp;gt;whereEq(&quot;uid&quot;,4);
-$video_user-&amp;gt;delete();
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;相当于&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;delete&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;video_user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;section-15&quot;&gt;实例测试文件&lt;/h1&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;require_once&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;vendor/autoload.php&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PheroTest\DatabaseTest\Unit&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Phero\System\DI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Phero\Database&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/**
- * 注入pdo实例【没有注入将无法使用】
- * @var string
- */&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$dns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;mysql:host=localhost;dbname=video;charset=utf8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$dns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;root&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Cyq19931115&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;DI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;inj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;database\Enum\DatabaseConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;DatabaseConnect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//DI::inj(database\Enum\DatabaseConfig::pdo_instance, new Phero\Database\PDO($dns, &#39;root&#39;, &#39;Cyq19931115&#39;));
-&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- * 测试普通单个查询
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//$video_user-&amp;gt;group(&quot;uid&quot;);
-//$video_user-&amp;gt;limit(2, 5);
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;uid&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;database\Enum\OrderType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;desc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;group&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;having&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;many_test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//$video_user-&amp;gt;fieldTemp([&#39;username&#39; =&amp;gt; &quot;SUBSTRING(? FROM 2) as subUsername&quot;, &#39;password&#39; =&amp;gt; &quot;SUBSTRING(? FROM 2) as subPassword&quot;]);
-//// 设置列模板之后原来的列就会消失-----要如下手动添加
-//$video_user-&amp;gt;field([&quot;username&quot;, &quot;password&quot;]);
-//$video_user-&amp;gt;field(&quot;count(case when username=&#39;ying&#39; then username end) as &#39;asdf&#39;&quot;);
-//$video_user-&amp;gt;BIN(&quot;password&quot;);
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;whereOrEqGroupStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;whereInGroupEnd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//$user = $video_user-&amp;gt;find();
-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dumpSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- * 测试内外链接
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;id&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//===&amp;gt;可以输入要的列
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_course&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_course&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;course_id&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;video_path&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;difficulty_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_course&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$.id=#.cat_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_course&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_difficulty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;id&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$.difficulty_id=#.id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat_join_course&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_cat_join_course&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dumpSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- * 测试删除
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;uid&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- * 测试插入
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;asdfs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1234&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;this is fuck&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;123455&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//true表示开启事务
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$insert&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;c1&quot;&gt;//嵌套事务
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$insert&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;c1&quot;&gt;//嵌套事务
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dumpSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- * 测试数据更新
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;asdfs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1234&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;uid&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$update&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- *测试数据替换
- * @var video_user
- *****************************************/&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;asdfs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1234&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]);&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$video_user2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;asdfs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1234&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]);&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//批量插入
-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$entiy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$entiy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
- &lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//ORM 插入
-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- *依赖注入测试
- * @var video_user
- *****************************************/&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$injectTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;InjectTest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$injectTest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;sd&quot;&gt;/******************************************
- *手动设置数据源测试
- * @var video_user
- *****************************************/&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unit\video_cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;id&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//===&amp;gt;可以输入要的列
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;course.id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;datasourse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;(select * from video_course)&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;course&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;#.cat_id=$.id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;var_dump&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dumpSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$video_cat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fetchSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
+&lt;div class=&quot;highlighter-rouge&quot;&gt;---app
+	
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 15 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/15/pherodocs/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/pherodocs/</guid>
+        <link>https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</guid>
         
-        <category>Phero</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>docker入门</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;是时候用docker部署开发环境了 （ngixn apache ubuntu mysql memcache 。。。一应俱全）&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;docker&quot;&gt;docker的一些相关概念&lt;/h2&gt;
-
-&lt;p&gt;镜像&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;docker images 查看&lt;/li&gt;
-  &lt;li&gt;docker rmi &lt;镜像id&gt; 删除镜像&lt;/镜像id&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;容器&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;docker ps 查看所有容器&lt;/li&gt;
-  &lt;li&gt;docker rm &lt;容器id&gt; 删除容器&lt;/容器id&gt;&lt;/li&gt;
-  &lt;li&gt;docker exec &lt;容器id&gt; 在容器中执行shell命令&lt;/容器id&gt;&lt;/li&gt;
-  &lt;li&gt;docker restart &lt;容器id&gt; 重启容器&lt;/容器id&gt;&lt;/li&gt;
-  &lt;li&gt;docker stop &lt;容器id&gt; 停止容器&lt;/容器id&gt;&lt;/li&gt;
-  &lt;li&gt;docker kill &lt;容器id&gt; 强行杀死容器进程（一个容器一个进程）&lt;/容器id&gt;&lt;/li&gt;
-  &lt;li&gt;docker start &lt;容器id&gt; 开始一个容器&lt;/容器id&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;远程仓库&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;类似网易蜂巢这种就是一个远程的镜像仓库&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;docker-1&quot;&gt;运行第一个docker容器&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;我们从网易蜂巢下载镜像&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;//https://c.163.com/hub#/m/repository/?repoId&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3096
-docker pull hub.c.163.com/library/busybox:latest
-&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;然后运行镜像（运行一个交互的shell） –关闭后自动退出&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# -i Keep STDIN open even if not attached（交互式的）&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# -t Allocate a pseudo-TTY（有终端）&lt;/span&gt;
-sudo docker run -i -t ubuntu /bin/bash
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;运行一个长期运行的实例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# 开始一个长时间运行的docker实例 运行的是后面的那条shell&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;JOB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;sudo docker run -d ubuntu /bin/sh -c &lt;span class=&quot;s2&quot;&gt;&quot;while true; do echo Hello world; sleep 1; done&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Collect（收集） the output of the job so far  这里的$JoB也可以是容器的id&lt;/span&gt;
-sudo docker logs &lt;span class=&quot;nv&quot;&gt;$JOB&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Kill the job&lt;/span&gt;
-sudo docker &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$JOB&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;运行一个ssh 用主机链接&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;docker 的commit标示的是提交当前的状态 不然如果容器停止了就会恢复到原来的情况&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;# -d, --detach Run container in background and print container ID（保持后台守护运行）&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# -p, --publish=[] Publish a container&#39;s port(s) to the host(分配端口)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Hello! We are going to try and install openssh on a container and run it as a service&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# let&#39;s pull ubuntu to get a base ubuntu image.&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker pull ubuntu
-&lt;span class=&quot;c&quot;&gt;# I had it so it was quick&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# now let&#39;s connect using -i for interactive and with -t for terminal&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# we execute /bin/bash to get a prompt.&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker run -i -t ubuntu /bin/bash
-&lt;span class=&quot;c&quot;&gt;# yes! we are in!&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# now lets install openssh&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;apt-get update
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;apt-get install openssh-server
-&lt;span class=&quot;c&quot;&gt;# ok. lets see if we can run it.&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;which sshd
-&lt;span class=&quot;c&quot;&gt;# we need to create privilege separation directory&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mkdir /var/run/sshd
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;/usr/sbin/sshd
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# now let&#39;s commit it&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# which container was it?&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker ps -a |more
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker commit a30a3a2f2b130749995f5902f079dc6ad31ea0621fac595128ec59c6da07feea dhrp/sshd
-&lt;span class=&quot;c&quot;&gt;# I gave the name dhrp/sshd for the container&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# now we can run it again 这里表示的是吧sshd这个程序以守护进程的方式运行&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 如果不是守护进程的话如果ubuntu这个镜像没有程序运行，docker的容器就会退出进入停止状态&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker run -d dhrp/sshd /usr/sbin/sshd -D &lt;span class=&quot;c&quot;&gt;# D for daemon mode&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# is it running?&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker ps
-&lt;span class=&quot;c&quot;&gt;# yes!&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# let&#39;s stop it&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker stop 0ebf7cec294755399d063f4b1627980d4cbff7d999f0bc82b59c300f8536a562
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker ps
-&lt;span class=&quot;c&quot;&gt;# and reconnect, but now open a port to it&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker run -d -p 22 dhrp/sshd /usr/sbin/sshd -D
-&lt;span class=&quot;c&quot;&gt;# 这里 port List port mappings or a specific mapping for the CONTAINER&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 标示端口列表映射或者一个特殊的端口映射到容器&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker port b2b407cf22cf8e7fa3736fa8852713571074536b1d31def3fdfcd9fa4fd8c8c5 22
-&lt;span class=&quot;c&quot;&gt;# it has now given us a port to connect to&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# we have to connect using a public ip of our host&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;hostname
-&lt;span class=&quot;c&quot;&gt;# *ifconfig* is deprecated, better use *ip addr show* now&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ifconfig
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh root@192.168.33.10 -p 49153
-&lt;span class=&quot;c&quot;&gt;# Ah! forgot to set root passwd&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker commit b2b407cf22cf8e7fa3736fa8852713571074536b1d31def3fdfcd9fa4fd8c8c5 dhrp/sshd
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker ps -a
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker run -i -t dhrp/sshd /bin/bash
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;passwd
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker commit 9e863f0ca0af31c8b951048ba87641d67c382d08d655c2e4879c51410e0fedc1 dhrp/sshd
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker run -d -p 22 dhrp/sshd /usr/sbin/sshd -D
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;docker port a0aaa9558c90cf5c7782648df904a82365ebacce523e4acc085ac1213bfe2206 22
-&lt;span class=&quot;c&quot;&gt;# *ifconfig* is deprecated, better use *ip addr show* now&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ifconfig
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh root@192.168.33.10 -p 49154
-&lt;span class=&quot;c&quot;&gt;# Thanks for watching, Thatcher thatcher@dotcloud.com&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;docker-&quot;&gt;docker 导入导出&lt;/h2&gt;
-
-&lt;p&gt;导出&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo docker ps -a
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                    PORTS               NAMES
-7691a814370e        ubuntu:14.04        &lt;span class=&quot;s2&quot;&gt;&quot;/bin/bash&quot;&lt;/span&gt;         36 hours ago        Exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 21 hours ago                       &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo docker &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;7691a814370e &amp;gt; ubuntu.tar
-&lt;/div&gt;
-
-&lt;p&gt;导入&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cat ubuntu.tar | sudo docker import - &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;/ubuntu:v1.0
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
-&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;/ubuntu         v1.0                9d37a6082e97        About a minute ago   171.3 MB
-&lt;/div&gt;
-
-&lt;h2 id=&quot;docker-2&quot;&gt;如何进入docker容器&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;刚开始使用docker的时候我完全不知道退出docker容器的命令行之后怎么和docker容器交互
-于是找到了一个命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec&lt;/code&gt;
-这个就是进入docker容器的一个途径
-比如我们run一个ubuntu的bash
-&lt;code class=&quot;highlighter-rouge&quot;&gt;docker run -itd ubuntu：laster /bin/bash &lt;/code&gt;
-然后我们可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt;中找到这个容器
-我们就可以这样进入容器的命令行&lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec -it &amp;lt;容器的id或者别名&amp;gt; /bin/bash&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;docker-3&quot;&gt;docker中网络的配置&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;当docker运行的时候会产生一个docker0的网络节点
-我们在使用docker run创建Docker容器时，可以用–net选项指定容器的网络模式，Docker有以下4种网络模式：
-host模式，使用–net=host指定。
-container模式，使用–net=container:NAME_or_ID指定。
-none模式，使用–net=none指定。
-bridge模式，使用–net=bridge指定，默认设置。
-默认选择bridge。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;docker network inspect bridge&lt;/code&gt;可以查看当前桥接网络容器的ip状态&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;关于镜像的构成&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://yeasy.gitbooks.io/docker_practice/content/image/commit.html&quot;&gt;参考文章：利用 commit 理解镜像构成&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;当我们run一个镜像 之后对镜像进行操作 会对文件造成更改
-我们可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;docker diff &amp;lt;容器id或者别名&amp;gt;&lt;/code&gt;
-commit 之后就会产生一个新的镜像
-&lt;code class=&quot;highlighter-rouge&quot;&gt;docker images&lt;/code&gt;可以查看
-&lt;code class=&quot;highlighter-rouge&quot;&gt;docker history &amp;lt;image的名字&amp;gt;&lt;/code&gt;可以查看镜像的提交历史
-&lt;strong&gt;这里要注意&lt;/strong&gt; commit不能不推荐用来制作镜像 因为这个是一种黑盒操作
-我们并不知道在我们操作之后 镜像里面发生了什么变化 
-&lt;em&gt;Dockerfile&lt;/em&gt;是一种推荐的制作镜像的方法&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;dockerfile&quot;&gt;Dockerfile&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;制作镜像的推荐途径&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</description>
-        <pubDate>Thu, 15 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/15/docker%E7%AC%94%E8%AE%B0/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/docker%E7%AC%94%E8%AE%B0/</guid>
-        
-        <category>docker</category>
+        <category>database</category>
         
         
       </item>
