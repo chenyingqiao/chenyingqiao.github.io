@@ -1,0 +1,315 @@
+---
+layout:     post
+title:      "mysql 深入学习"
+subtitle:   "深入学习mysql的基础原理"
+date:       2017-1-13
+author:     "Lerko"
+header-img: "img/post-bg-unix-linux.jpg"
+catalog: true
+tags:
+    - database
+---
+
+## mysql的锁机制
+
+#### 什么情况下会出现deadlock
+
+> 一般在一个长事务执行的时候如果两个事务相互抢夺资源的话就会造成死锁
+> innodb是行锁 MyISAM是表锁
+> 但是innodb在搜索范围为全表的时候也是会形成表锁
+> 比如下面这个更新语句
+
+```sql
+update user set username='lerko' where phone like '186%';
+```
+
+> 在innodb如何出现行的死锁
+> 下面是一个例子
+
+```sql
+# sql1
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update video_cat set name='test' where id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+```
+
+```sql
+# sql1
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+# 这里就会出现deadlock 因为sql1已经吧id为1的数据上锁了
+mysql> update video_cat set name='test22' where id=1;
+ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+
+```
+
+#### mysql如何检查deadlock
+
+> mysql有一个参数可以设置死锁超时时间
+> 但是只有在innodb里面可以设置这个参数
+> `innodb_lock_wait_timeout` 默认是50秒
+
+#### 如何应对死锁
+
+1. 通过调整innodb_lock_wait_timeout的值，默认50，增加这个值不是一个好办法，会从某种程序上减少响应速度。
+2. 调整隔离模式(isolation)为应用可以接受的比较低的级别，例如设置为：READ COMMITTED
+如果应用接收不了，低的隔离级别，可以考虑使用session，在执行容易产生deadlock的事务之前执行命令：SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;然后执行事务。
+3. 调整事务为合理的大小，事务越小越不容易产生死锁。
+4. 对于容易产生死锁的事务来说，可以一直指定需要的资源，既加锁所有涉及的表，不使用先使用意向锁，在使用排它锁。例如：
+set autocommit=0;
+lock tables t1 write, t2, write , t3 read;
+update statement;
+commit;
+unlock tables t1,t2,t3;
+5. 对不同的应用访问同一表，使用相同的顺序，对于表里面的数据，访问里面的行也使用相同次序。
+6. 优化表的索引，因为innodb是row lock, row lock是对索引上的索引项加锁，优化调整索引在一定程度上能避免一些死锁问题。
+7. 使用show innodb status 来分析TRANSACTIONS里面的内容，分析那些语句产生死锁，从而做出一些调整。
+
+#### 锁和性能
+
+[参考网址](http://xm-king.iteye.com/blog/770721)
+
+> 表锁 不会产生死锁 因为事务有原子性 必须commit之后才能更改数据
+> 而且表是我们操作最大的一个数据单位
+> 表上锁之后一个事务就只占用一张表，等这个事务处理完了之后才会进来第二个事务
+> 而行锁就不是这样
+> 行锁是一个行可以由一个事务来处理
+> 
+
+*         表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。
+*         行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最,并发度也最高。
+*         页面锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般
+
+1. 脏读(Drity Read)：允许读取其他的事务写入更新的数据
+2. 不可重复读(Non-repeatable read) 幻读(Phantom Read):在事务中进行查找的时候 有其他的事务commit了改变了数据 mysql解决了幻读=》保持了数据在事务中读取都是一样的
+
+```
+HOLDLOCK 持有共享锁，直到整个事务完成，应该在被锁对象不需要时立即释放，等于SERIALIZABLE事务隔离级别
+NOLOCK 语句执行时不发出共享锁，允许脏读 ，等于 READ UNCOMMITTED事务隔离级别
+PAGLOCK 在使用一个表锁的地方用多个页锁
+READPAST 让sql server跳过任何锁定行，执行事务，适用于READ UNCOMMITTED事务隔离级别只跳过RID锁，不跳过页，区域和表锁
+ROWLOCK 强制使用行锁
+TABLOCKX 强制使用独占表级锁，这个锁在事务期间阻止任何其他事务使用这个表
+UPLOCK 强制在读表时使用更新而不用共享锁
+```
+
+## mysql的索引
+
+#### 查看索引
+
+```
+查看索引
+mysql> show index from tblname;
+mysql> show keys from tblname;
+· Table
+表的名称。
+· Non_unique
+如果索引不能包括重复词，则为0。如果可以，则为1。
+· Key_name
+索引的名称。
+· Seq_in_index
+索引中的列序列号，从1开始。
+· Column_name
+列名称。
+· Collation
+列以什么方式存储在索引中。在MySQL中，有值‘A’（升序）或NULL（无分类）。
+· Cardinality
+索引中唯一值的数目的估计值。通过运行ANALYZE TABLE或myisamchk -a可以更新。基数根据被存储为整数的统计数据来计数，所以即使对于小型表，该值也没有必要是精确的。基数越大，当进行联合时，MySQL使用该索引的机 会就越大。
+· Sub_part
+如果列只是被部分地编入索引，则为被编入索引的字符的数目。如果整列被编入索引，则为NULL。
+· Packed
+指示关键字如何被压缩。如果没有被压缩，则为NULL。
+· Null
+如果列含有NULL，则含有YES。如果没有，则该列含有NO。
+· Index_type
+用过的索引方法（BTREE, FULLTEXT, HASH, RTREE）。
+· Comment
+```
+
+#### 聚集概念
+
+[参考概念](http://www.cnblogs.com/aspnethot/articles/1504082.html)
+
+
+> 聚集索引
+
+```
+一种索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序。 
+　　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 
+　　　　 
+　　　　 聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。例如，如果应用程序执行 的一个查询经常检索某一日期范围内的记录，则使用聚集索引可以迅速找到包含开始日期的行，然后检索表中所有相邻的行，直到到达结束日期。这样有助于提高此 类查询的性能。同样，如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节 省成本。 
+　　　　 
+　　　　 当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列 emp_id 查找特定雇员的最快速的方法，是在 emp_id 列上创建聚集索引或 PRIMARY KEY 约束。
+
+InnoDB按照主键进行聚集，如果没有定义主键，InnoDB会试着使用唯一的非空索引来代替。如果没有这种索引，InnoDB就会定义隐藏的主键然后在上面进行聚集。
+```
+
+> 非聚集索引
+
+```
+一种索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。
+```
+
+> 应用场景
+
+```
+动作描述                        使用聚集索引              使用非聚集索引
+列经常被分组排序            应                                 应
+返回某范围内的数据        应                                不应
+一个或极少不同值           不应                            不应
+小数目的不同值               应                               不应
+大数目的不同值               不应                           应
+频繁更新的列                  不应                           应
+外键列                            应                              应
+主键列                           应                               应
+频繁修改索引列             不应                              应
+```
+
+#### 索引的数据结构
+
+
+
+
+#### where 上各种索引类型的速度
+```
+    `没有索引`
+    （1）仅在主键上建立聚集索引，并且不划分时间段：
+    Select gid,fariqi,neibuyonghu,title from tgongwen
+    用时：128470毫秒（即：128秒）
+
+`非聚集索引`
+    （2）在主键上建立聚集索引，在fariq上建立非聚集索引：
+    select gid,fariqi,neibuyonghu,title from Tgongwen
+    where fariqi> dateadd(day,-90,getdate())
+    用时：53763毫秒（54秒）
+
+`聚集索引`
+    （3）将聚合索引建立在日期列（fariqi）上：
+    select gid,fariqi,neibuyonghu,title from Tgongwen
+    where fariqi> dateadd(day,-90,getdate())
+```
+
+## 索引和锁的关系
+
+> 索引以及查询语句的使用都会影响到innodb的锁
+> 比如查询中使用的where是主键唯一索引,那么就这行被锁
+> 如 `select * from table where id=1`  =>就锁定id=1这行
+> 如果是查询一个有聚集索引的列,那么就是锁定符合条件的行
+> 如 `select * from table where clusteredIndexField='kk'` => 这个就锁定  clusteredIndexField='kk'的列
+> 如果查询的是一个没有索引的列 整个表都会锁住
+
+## mysql的存储引擎
+
+> `show engines;`可以查看现在mysql支持的数据库引擎、
+> `alter table table_name engine=innodb;`修改表的数据库引擎
+
+```sql
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |
+| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |
+| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |
+| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |
+| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |
+| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |
+| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |
+| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |
+| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+9 rows in set (0.00 sec)
+```
+
+```
+  `ISAM`：ISAM是一个定义明确且历经时间考验的数据表格管理方法，它在设计之时就考虑到 数据库被查询的次数要远大于更新的次数。因此，ISAM执行读取操作的速度很快，而且不占用大量的内存和存储资源。ISAM的两个主要不足之处在于，它不 支持事务处理，也不能够容错：如果你的硬盘崩溃了，那么数据文件就无法恢复了。如果你正在把ISAM用在关键任务应用程序里，那就必须经常备份你所有的实 时数据，通过其复制特性，MYSQL能够支持这样的备份应用程序。
+
+    `MyISAM`：MyISAM是MySQL的ISAM扩展格式和缺省的数据库引擎。除了提供ISAM里所没有的索引和字段管理的大量功能，MyISAM还使用一种表格锁定的机制，来优化多个并发的读写操作，其代价是你需要经常运行OPTIMIZE TABLE命令，来恢复被更新机制所浪费的空间。MyISAM还有一些有用的扩展，例如用来修复数据库文件的MyISAMCHK工具和用来恢复浪费空间的 MyISAMPACK工具。MYISAM强调了快速读取操作，这可能就是为什么MySQL受到了WEB开发如此青睐的主要原因：在WEB开发中你所进行的大量数据操作都是读取操作。所以，大多数虚拟主机提供商和INTERNET平台提供商只允许使用MYISAM格式。MyISAM格式的一个重要缺陷就是不能在表损坏后恢复数据。
+
+    `HEAP`：HEAP允许只驻留在内存里的临时表格。驻留在内存里让HEAP要比ISAM和MYISAM都快，但是它所管理的数据是不稳定的，而且如果在关机之前没有进行保存，那么所有的数据都会丢失。在数据行被删除的时候，HEAP也不会浪费大量的空间。HEAP表格在你需要使用SELECT表达式来选择和操控数据的时候非常有用。要记住，在用完表格之后就删除表格。
+
+    `InnoDB`：InnoDB数据库引擎都是造就MySQL灵活性的技术的直接产品，这项技术就是MYSQL++ API。在使用MYSQL的时候，你所面对的每一个挑战几乎都源于ISAM和MyISAM数据库引擎不支持事务处理（transaction process）也不支持外来键。尽管要比ISAM和 MyISAM引擎慢很多，但是InnoDB包括了对事务处理和外来键的支持，这两点都是前两个引擎所没有的。如前所述，如果你的设计需要这些特性中的一者 或者两者，那你就要被迫使用后两个引擎中的一个了。 
+
+    MySQL 官方对InnoDB是这样解释的：InnoDB给MySQL提供了具有提交、回滚和崩溃恢复能力的事务安全（ACID兼容）存储引擎。InnoDB锁定在行级并且也在SELECT语句提供一个Oracle风格一致的非锁定读，这些特色增加了多用户部署和性能。没有在InnoDB中扩大锁定的需要，因为在InnoDB中行级锁定适合非常小的空间。InnoDB也支持FOREIGN KEY强制。在SQL查询中，你可以自由地将InnoDB类型的表与其它MySQL的表的类型混合起来，甚至在同一个查询中也可以混合。
+
+    InnoDB是为处理巨大数据量时的最大性能设计，它的CPU效率可能是任何其它基于磁盘的关系数据库引擎所不能匹敌的。
+
+    InnoDB存储引擎被完全与MySQL服务器整合，InnoDB存储引擎为在主内存中缓存数据和索引而维持它自己的缓冲池。InnoDB存储它的表＆索引在一个表空间中，表空间可以包含数个文件（或原始磁盘分区）。这与MyISAM表不同，比如在MyISAM表中每个表被存在分离的文件中。InnoDB 表可以是任何尺寸，即使在文件尺寸被限制为2GB的操作系统上。
+
+    InnoDB默认地被包含在MySQL二进制分发中。Windows Essentials installer使InnoDB成为Windows上MySQL的默认表。
+
+    InnoDB被用来在众多需要高性能的大型数据库站点上产生。著名的Internet新闻站点Slashdot.org运行在InnoDB上。 Mytrix, Inc.在InnoDB上存储超过1TB的数据，还有一些其它站点在InnoDB上处理平均每秒800次插入/更新的
+
+
+
+    一般来说，MyISAM适合：(1)做很多count 的计算；(2)插入不频繁，查询非常频繁；(3)没有事务。
+    InnoDB适合：(1)可靠性要求比较高，或者要求事务；(2)表更新和查询都相当的频繁，并且表锁定的机会比较大的情况。
+
+
+
+    所有的性能测试在：Micrisoft window xp sp2 ， Intel(R) Pentinum(R) M processor 1.6oGHz 1G 内存的电脑上测试。
+
+    测试方法：连续提交10个query， 表记录总数：38万 ， 时间单位 s
+
+        引擎类型                    MyISAM                InnoDB              性能相差
+
+        count                      0.0008357            3.0163                3609
+
+        查询主键                   0.005708              0.1574                27.57
+
+        查询非主键                  24.01                   80.37                 3.348
+
+        更新主键                   0.008124             0.8183                 100.7
+
+        更新非主键                0.004141             0.02625               6.338
+
+        插入                         0.004188             0.3694                 88.21
+
+    （1）加了索引以后，对于MyISAM查询可以加快：4 206.09733倍，对InnoDB查询加快510.72921倍，同时对MyISAM更新速度减慢为原来的1/2，InnoDB的更新速度减慢为原来的1/30。要看情况决定是否要加索引，比如不查询的log表，不要做任何的索引。
+
+    （2）如果你的数据量是百万级别的，并且没有任何的事务处理，那么用MyISAM是性能最好的选择。
+
+    （3）InnoDB表的大小更加的大，用MyISAM可省很多的硬盘空间。
+
+        在我们测试的这个38w的表中，表占用空间的情况如下：
+            引擎类型                    MyISAM               InnoDB
+            数据                       53,924 KB           58,976 KB
+            索引                       13,640 KB           21,072 KB
+            占用总空间              67,564 KB           80,048 KB
+ 
+        另外一个176W万记录的表， 表占用空间的情况如下：
+
+            引擎类型                MyIsam               InnorDB
+            数据                   56,166 KB           90,736 KB
+            索引                   67,103 KB           88,848 KB
+            占用总空间        123,269 KB         179,584 KB
+```
+
+
+## mysql中的慢查询分析
+
+```
+#首先查看设置变量
+show variables like 'slow_query_log';
+#查看设置参数
+show variable like '%log%';
+#设置记录没有使用索引的查询
+set global log_queries_not_using_indexes=on;
+#查看慢查询筛选时间
+mysql> show variables like 'long_query_time';
++-----------------+-----------+
+| Variable_name   | Value     |
++-----------------+-----------+
+| long_query_time | 10.000000 |
++-----------------+-----------+
+1 row in set (0.00 sec)
+# 设置慢查询时间
+set global long_query_time;
+# 设置开启满查询日志
+set global slow_query_log=on;
+```
