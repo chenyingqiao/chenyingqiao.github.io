@@ -142,6 +142,9 @@ change master to master_host='172.17.0.2',master_user='lerko',master_password='1
 
 #### 去从服务器查看同步状态
 
+> 首相我们要确保两个mysql服务器的数据库以及表结构是一致的
+> 这样才能进行同步  不然会造成 Slave_SQL_Running 错误
+
 ```shell
 # 进入mysql命令行
 show slave status\G
