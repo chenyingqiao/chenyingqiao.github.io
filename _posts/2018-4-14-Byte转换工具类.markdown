@@ -1,0 +1,180 @@
+---
+layout:     post
+title:      "Byte转换工具类"
+subtitle:   "Byte转换工具类"
+date:       2018-04-14
+author:     "lerko"
+header-img: "img/post-bg-universe.jpg"
+catalog: true
+tags:
+    - php
+---
+
+# Byte转换工具类
+
+## 代码
+
+```php
+<?php
+namespace common;
+
+/**
+ * @Author: CYQ19931115
+ * @Date:   2017-11-28 17:51:52
+ * @Last Modified by:   CYQ19931115
+ * @Last Modified time: 2017-11-29 11:11:41
+ */
+
+class Bytes {
+   
+    /**
+     * 转换一个String字符串为byte数组
+     * @param $str 需要转换的字符串
+     * @param $bytes 目标byte数组
+     * @author Zikie
+     */
+    
+    public static function getBytes($str,$reverse=false) {
+
+        $len = strlen($str);
+        $bytes = array();
+           for($i=0;$i<$len;$i++) {
+               if(ord($str[$i]) >= 128){
+                   $byte = ord($str[$i]) - 256;
+               }else{
+                   $byte = ord($str[$i]);
+               }
+            $bytes[] =  $byte ;
+        }
+        if($reverse){
+            return array_reverse($bytes);
+        }
+        return $bytes;
+    }
+   
+    /**
+     * 将字节数组转化为String类型的数据
+     * @param $bytes 字节数组
+     * @param $str 目标字符串
+     * @return 一个String类型的数据
+     */
+    
+    public static function toStr($bytes) {
+        $str = '';
+        foreach($bytes as $ch) {
+            $str .= chr($ch);
+        }
+        return $str;
+    }
+   
+    /**
+     * 转换一个int为byte数组
+     * @param $byt 目标byte数组
+     * @param $val 需要转换的字符串
+     * @author Zikie
+     */
+   
+    public static function integerToBytes($val,$reverse=false) {
+        $byt = array();
+        $byt[0] = ($val & 0xff);
+        $byt[1] = ($val >> 8 & 0xff);
+        $byt[2] = ($val >> 16 & 0xff);
+        $byt[3] = ($val >> 24 & 0xff);
+        if($reverse){
+            return array_reverse($byt);
+        }
+        return $byt;
+    }
+
+    /**
+     * 
+     * @author Lerko
+     * @dateTime 2017-11-29T11:07:41+0800
+     * @throws   Exception                         可能抛出异常
+     * @param    [type]                   $val     [description]
+     * @param    boolean                  $reverse [description]
+     * @return   [type]                            [description]
+     */
+    public static function longToBytes($val,$reverse=false) {
+        $byt = array();
+        $byt[0] = ($val & 0xff);
+        $byt[1] = ($val >> 8 & 0xff);
+        $byt[2] = ($val >> 16 & 0xff);
+        $byt[3] = ($val >> 24 & 0xff);
+        $byt[4] = ($val >> 48 & 0xff);
+        $byt[5] = ($val >> 192 & 0xff);
+        $byt[6] = ($val >> 384 & 0xff);
+        $byt[7] = ($val >> 768 & 0xff);
+        if($reverse){
+            return array_reverse($byt);
+        }
+        return $byt;
+    }
+   
+    /**
+     * 从字节数组中指定的位置读取一个Integer类型的数据
+     * @param $bytes 字节数组
+     * @param $position 指定的开始位置
+     * @return 一个Integer类型的数据
+     */
+    
+    public static function bytesToInteger($bytes, $position) {
+        $val = 0;
+        $val = $bytes[$position + 3] & 0xff;
+        $val <<= 8;
+        $val |= $bytes[$position + 2] & 0xff;
+        $val <<= 8;
+        $val |= $bytes[$position + 1] & 0xff;
+        $val <<= 8;
+        $val |= $bytes[$position] & 0xff;
+        return $val;
+    }
+
+    /**
+     * 转换一个shor字符串为byte数组
+     * @param $byt 目标byte数组
+     * @param $val 需要转换的字符串
+     * @author Zikie
+     */
+   
+    public static function shortToBytes($val,$reverse=false) {
+        $byt = array();
+        $byt[0] = ($val & 0xff);
+        $byt[1] = ($val >> 8 & 0xff);
+        if($reverse){
+            return array_reverse($byt);
+        }
+        return $byt;
+    }
+
+    /**
+     * @author Lerko
+     * @dateTime 2017-11-28T17:41:31+0800
+     * @throws   Exception                     可能抛出异常
+     * @param    [type]                   $val [description]
+     */
+    public static function tinyIntToBytes($val,$reverse=false) {
+        $byt = array();
+        $byt[0] = ($val & 0xff);
+        if($reverse){
+            return array_reverse($byt);
+        }
+        return $byt;
+    }
+   
+    /**
+     * 从字节数组中指定的位置读取一个Short类型的数据。
+     * @param $bytes 字节数组
+     * @param $position 指定的开始位置
+     * @return 一个Short类型的数据
+     */
+    
+    public static function bytesToShort($bytes, $position) {
+        $val = 0;
+        $val = $bytes[$position + 1] & 0xFF;
+        $val = $val << 8;
+        $val |= $bytes[$position] & 0xFF;
+        return $val;
+    }
+}
+```
