@@ -12,6 +12,10 @@
     
     <title>有限状态机 - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -203,6 +204,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
+                <!-- Multi-Lingual -->
+                
+
 				<h2 id="section">认识有限状态级</h2>
 
 <p><img src="/img/finite-state-machine.png" alt="fsm" title="有限状态机" /></p>
@@ -224,7 +228,7 @@
 该库提供一个全局对象StateMachine，使用该对象的create方法，可以生成有限状态机的实例。</p>
 </blockquote>
 
-<div class="language-javascript highlighter-rouge"><span class="err">　　</span><span class="kd">var</span> <span class="nx">fsm</span> <span class="o">=</span> <span class="nx">StateMachine</span><span class="p">.</span><span class="nx">create</span><span class="p">();</span>
+<div class="language-javascript highlighter-rouge"><pre class="codehilite"><code><span class="err">　　</span><span class="kd">var</span> <span class="nx">fsm</span> <span class="o">=</span> <span class="nx">StateMachine</span><span class="p">.</span><span class="nx">create</span><span class="p">();</span>
 <span class="err">　　</span><span class="c1">//生成的时候，需要提供一个参数对象，用来描述实例的性质。比如，交通信号灯（红绿灯）可以这样描述：</span>
 <span class="err">　　</span><span class="kd">var</span> <span class="nx">fsm</span> <span class="o">=</span> <span class="nx">StateMachine</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
 <span class="err">　　</span>
@@ -239,63 +243,24 @@
 <span class="err">　　</span>
 <span class="err">　　</span><span class="p">});</span>
 <span class="err">　　</span>
-</div>
+</code></pre></div>
 
 <blockquote>
   <p>交通信号灯的初始状态（initial）为green，events属性是触发状态改变的各种事件，比如warn事件使得green状态变成yellow状态，stop事件使得yellow状态变成red状态等等。
 生成实例以后，就可以随时查询当前状态。</p>
 </blockquote>
 
-<div class="language-javascript highlighter-rouge"> <span class="nx">fsm</span><span class="p">.</span><span class="nx">current</span> <span class="err">：</span><span class="c1">//返回当前状态。</span>
+<div class="language-javascript highlighter-rouge"><pre class="codehilite"><code> <span class="nx">fsm</span><span class="p">.</span><span class="nx">current</span> <span class="err">：</span><span class="c1">//返回当前状态。</span>
  <span class="nx">fsm</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="err">：</span><span class="c1">//返回一个布尔值，表示状态s是否为当前状态。</span>
  <span class="nx">fsm</span><span class="p">.</span><span class="nx">can</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="err">：</span><span class="c1">//返回一个布尔值，表示事件e是否能在当前状态触发。</span>
  <span class="nx">fsm</span><span class="p">.</span><span class="nx">cannot</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="err">：</span><span class="c1">//返回一个布尔值，表示事件e是否不能在当前状态触发。</span>
-</div>
+</code></pre></div>
 
 <p>更多概念查看<a href="http://www.ruanyifeng.com/blog/2013/09/finite-state_machine_for_javascript.html">阮一峰博客</a></p>
 
 
 
                 <hr style="visibility: hidden;">
-
-                
-                <!-- 多说 Share start -->
-                <div class="ds-share"
-                    style="text-align: right"
-                    data-thread-key="/2016/12/26/有限状态机的应用"
-                    data-title="有限状态机"
-                    data-url="https://chenyingqiao.github.io//2016/12/26/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8/"
-                    data-images="https://chenyingqiao.github.io//img/post-bg-2015.jpgs"
-                    data-content="认识有限状态级
-
-
-
-
-  有限状态机器有3个特征
-
-
-
-  状态总数（state）是有限的。
-  任一时刻，只处在一种状态之中。
-  某种条件下，会从一... | 陈映峤的博客 | Lerko Blog " >
-                    <div class="ds-share-inline">
-                      <style> 
-                        .ds-share-icons-16 {display:none;} 
-                      </style>
-                      <ul class="ds-share-icons-16">
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- 多说 Share end-->
-                
-
 
                 <ul class="pager">
                     
@@ -307,23 +272,19 @@
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/" data-toggle="tooltip" data-placement="top" title="sass入门">
+                        Next<br>
+                        <span>sass入门</span>
+                        </a>
+                    </li>
+                    
                 </ul>
 
 
                 
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread"
-                        data-thread-key="/2016/12/26/有限状态机的应用"
-                        data-title="有限状态机"
-                        data-url="https://chenyingqiao.github.io//2016/12/26/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8/" >
-                    </div>
-                </div>
-                <!-- 多说评论框 end -->
-                
 
                 
-
             </div>  
 
     <!-- Side Catalog Container -->
@@ -361,7 +322,7 @@
                             
         				
                             
-                				<a href="/tags/#database" title="database" rel="3">
+                				<a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -369,6 +330,12 @@
                             
                 				<a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
         				
@@ -386,28 +353,6 @@
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
             </div>
@@ -416,24 +361,6 @@
 </article>
 
 
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _user = 'lerko';
-
-    // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
 
 
 
@@ -504,7 +431,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -522,6 +449,7 @@
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -529,16 +457,8 @@
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -553,15 +473,15 @@
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -619,13 +539,26 @@
 
 
 
-
 <!-- Side Catalog -->
 
 <script type="text/javascript">
     function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
         a.each(function () {
             n = $(this).prop('tagName').toLowerCase();
             i = "#"+$(this).prop('id');
@@ -634,7 +567,7 @@
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
-        return true;    
+        return true;
     }
 
     generateCatalog(".catalog-body");
@@ -666,6 +599,9 @@
     });
 </script>
 
+
+
+<!-- Multi-Lingual -->
 
 
 

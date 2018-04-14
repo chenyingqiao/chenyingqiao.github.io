@@ -12,6 +12,10 @@
     
     <title>ps 进程管理命令 - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -203,6 +204,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
+                <!-- Multi-Lingual -->
+                
+
 				<h2 id="section">查看所有用户的进程</h2>
 <blockquote>
   <p>ps aux</p>
@@ -214,7 +218,7 @@
 
 <h2 id="section-1">一些基本用法</h2>
 
-<div class="highlighter-rouge">    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
+<div class="highlighter-rouge"><pre class="codehilite"><code>    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
     ps -A 显示所有程序。 
     ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。 
     ps -e 此参数的效果和指定"A"参数相同。 
@@ -227,11 +231,11 @@
     ps -t&lt;终端机编号&gt; 指定终端机编号，并列出属于该终端机的程序的状况。 
     ps u 以用户为主的格式来显示程序状况。 
     ps x 显示所有程序，不以终端机来区分。
-</div>
+</code></pre></div>
 
 <h4 id="section-2">下面是一个例子</h4>
 
-<div class="highlighter-rouge">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+<div class="highlighter-rouge"><pre class="codehilite"><code>USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.0 121764  5856 ?        Ss   09:59   0:01 /sbin/init splash
 root         2  0.0  0.0      0     0 ?        S    09:59   0:00 [kthreadd]
 root         3  0.0  0.0      0     0 ?        S    09:59   0:00 [ksoftirqd/0]
@@ -257,10 +261,10 @@ STAT：该进程目前的状态，与ps -l显示的S标识相同
 START：该进程被触发启动的时间
 TIME：该进程实际占用的CPU时间
 COMMAND：该进程的实际命令
-</div>
+</code></pre></div>
 
 <h4 id="stat">关于stat标示列</h4>
-<div class="highlighter-rouge">    D    不可中断     Uninterruptible sleep (usually IO)
+<div class="highlighter-rouge"><pre class="codehilite"><code>    D    不可中断     Uninterruptible sleep (usually IO)
     R    正在运行，或在队列中的进程
     S    处于休眠状态
     T    停止或被追踪
@@ -275,14 +279,14 @@ COMMAND：该进程的实际命令
     s    包含子进程
     +    位于后台的进程组；
     l    多线程，克隆线程  multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
-</div>
+</code></pre></div>
 
 <blockquote>
   <p>想在我运行一个swoole的tcpserver
 然后我查看 <code class="highlighter-rouge">ps aux |grep php</code></p>
 </blockquote>
 
-<div class="highlighter-rouge">chen@chen-pc:/var/www/html/test/swoole$ *ps auxf | grep php*
+<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ *ps auxf | grep php*
 root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
 www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
 www-data  1116  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
@@ -307,7 +311,7 @@ chen      7984  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f
 chen      7985  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
 chen      7986  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
 chen      7987  0.0  0.1 285640 10352 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-</div>
+</code></pre></div>
 
 <p>我们可以看到有两个 stat为 Ssl的tcp_server.php的进程</p>
 
@@ -319,12 +323,12 @@ chen      7987  0.0  0.1 285640 10352 ?        S    10:44   0:00      \_ php5 -f
 
 <p><code class="highlighter-rouge">*kill[参数][进程号]*</code></p>
 
-<div class="highlighter-rouge">-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称
+<div class="highlighter-rouge"><pre class="codehilite"><code>-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称
 -a  当处理当前进程时，不限制命令名和进程号的对应关系
 -p  指定kill 命令只打印相关进程的进程号，而不发送任何信号
 -s  指定发送信号
 -u  指定用户 
-</div>
+</code></pre></div>
 
 <blockquote>
   <p>实例1：列出所有信号名称</p>
@@ -332,7 +336,7 @@ chen      7987  0.0  0.1 285640 10352 ?        S    10:44   0:00      \_ php5 -f
 
 <p><code class="highlighter-rouge">*kill -l*</code></p>
 
-<div class="highlighter-rouge">chen@chen-pc:/var/www/html/test/swoole$ kill -l
+<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ kill -l
  1) SIGHUP   2) SIGINT   3) SIGQUIT  4) SIGILL   5) SIGTRAP
  6) SIGABRT  7) SIGBUS   8) SIGFPE   9) SIGKILL 10) SIGUSR1
 11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM
@@ -356,7 +360,7 @@ TERM   15    终止
 KILL    9    强制终止
 CONT   18    继续（与STOP相反， fg/bg命令）
 STOP    19    暂停（同 Ctrl + Z）
-</div>
+</code></pre></div>
 
 <blockquote>
   <p>实例2：先用ps查找进程，然后用kill杀掉</p>
@@ -383,7 +387,7 @@ STOP    19    暂停（同 Ctrl + Z）
 
 <p><code class="highlighter-rouge">kill -9 1</code></p>
 
-<div class="highlighter-rouge">[root@localhost ~]# ps -ef|grep init
+<div class="highlighter-rouge"><pre class="codehilite"><code>[root@localhost ~]# ps -ef|grep init
 root         1     0  0 Nov02 ?        00:00:00 init [3]                  
 root     17563 17534  0 17:37 pts/1    00:00:00 grep init
 [root@localhost ~]# kill -9 1
@@ -396,13 +400,13 @@ root     17565 17534  0 17:38 pts/1    00:00:00 grep init
 root         1     0  0 Nov02 ?        00:00:00 init [3]                  
 root     17567 17534  0 17:38 pts/1    00:00:00 grep init
 [root@localhost ~]#
-</div>
+</code></pre></div>
 
 <blockquote>
   <p>现在我们要杀死一个tcp_server.php 的重复进程</p>
 </blockquote>
 
-<div class="highlighter-rouge">chen@chen-pc:/var/www/html/test/swoole$ `kill 7974`
+<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ `kill 7974`
 chen@chen-pc:/var/www/html/test/swoole$ ps auxf | grep php
 root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
 www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
@@ -419,50 +423,11 @@ chen      7968  0.0  0.1 285640 12980 ?        S    10:44   0:00      \_ php5 -f
 chen      7969  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
 chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
 
-</div>
+</code></pre></div>
 
 
 
                 <hr style="visibility: hidden;">
-
-                
-                <!-- 多说 Share start -->
-                <div class="ds-share"
-                    style="text-align: right"
-                    data-thread-key="/2016/12/18/linux ps进程管理命令"
-                    data-title="ps 进程管理命令"
-                    data-url="https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/"
-                    data-images="https://chenyingqiao.github.io//img/post-bg-e2e-ux.jpg"
-                    data-content="查看所有用户的进程
-
-  ps aux
-
-
-
-  ps aux | grep [key]     可以进行筛选
-
-
-一些基本用法
-
-    ps a 显示... | 陈映峤的博客 | Lerko Blog " >
-                    <div class="ds-share-inline">
-                      <style> 
-                        .ds-share-icons-16 {display:none;} 
-                      </style>
-                      <ul class="ds-share-icons-16">
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- 多说 Share end-->
-                
-
 
                 <ul class="pager">
                     
@@ -485,19 +450,8 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
 
 
                 
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread"
-                        data-thread-key="/2016/12/18/linux ps进程管理命令"
-                        data-title="ps 进程管理命令"
-                        data-url="https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/" >
-                    </div>
-                </div>
-                <!-- 多说评论框 end -->
-                
 
                 
-
             </div>  
 
     <!-- Side Catalog Container -->
@@ -535,7 +489,7 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
                             
         				
                             
-                				<a href="/tags/#database" title="database" rel="3">
+                				<a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -543,6 +497,12 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
                             
                 				<a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
         				
@@ -560,28 +520,6 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
             </div>
@@ -590,24 +528,6 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
 </article>
 
 
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _user = 'lerko';
-
-    // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
 
 
 
@@ -678,7 +598,7 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -696,6 +616,7 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -703,16 +624,8 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -727,15 +640,15 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -793,13 +706,26 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
 
 
 
-
 <!-- Side Catalog -->
 
 <script type="text/javascript">
     function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
         a.each(function () {
             n = $(this).prop('tagName').toLowerCase();
             i = "#"+$(this).prop('id');
@@ -808,7 +734,7 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
-        return true;    
+        return true;
     }
 
     generateCatalog(".catalog-body");
@@ -840,6 +766,9 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
     });
 </script>
 
+
+
+<!-- Multi-Lingual -->
 
 
 

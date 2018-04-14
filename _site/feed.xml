@@ -5,9 +5,572 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 30 Dec 2016 14:22:10 +0800</pubDate>
-    <lastBuildDate>Fri, 30 Dec 2016 14:22:10 +0800</lastBuildDate>
+    <pubDate>Sat, 14 Apr 2018 20:56:07 +0800</pubDate>
+    <lastBuildDate>Sat, 14 Apr 2018 20:56:07 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Byte转换工具类</title>
+        <description>&lt;h1 id=&quot;byte&quot;&gt;Byte转换工具类&lt;/h1&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;代码&lt;/h2&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;common&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;sd&quot;&gt;/**
+ * @Author: CYQ19931115
+ * @Date:   2017-11-28 17:51:52
+ * @Last Modified by:   CYQ19931115
+ * @Last Modified time: 2017-11-29 11:11:41
+ */&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bytes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 转换一个String字符串为byte数组
+     * @param $str 需要转换的字符串
+     * @param $bytes 目标byte数组
+     * @author Zikie
+     */&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;nv&quot;&gt;$len&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;strlen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+           &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+               &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+                   &lt;span class=&quot;nv&quot;&gt;$byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+               &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                   &lt;span class=&quot;nv&quot;&gt;$byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+               &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$byte&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 将字节数组转化为String类型的数据
+     * @param $bytes 字节数组
+     * @param $str 目标字符串
+     * @return 一个String类型的数据
+     */&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;toStr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 转换一个int为byte数组
+     * @param $byt 目标byte数组
+     * @param $val 需要转换的字符串
+     * @author Zikie
+     */&lt;/span&gt;
+   
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;integerToBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 
+     * @author Lerko
+     * @dateTime 2017-11-29T11:07:41+0800
+     * @throws   Exception                         可能抛出异常
+     * @param    [type]                   $val     [description]
+     * @param    boolean                  $reverse [description]
+     * @return   [type]                            [description]
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;longToBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;48&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;384&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;768&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 从字节数组中指定的位置读取一个Integer类型的数据
+     * @param $bytes 字节数组
+     * @param $position 指定的开始位置
+     * @return 一个Integer类型的数据
+     */&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bytesToInteger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 转换一个shor字符串为byte数组
+     * @param $byt 目标byte数组
+     * @param $val 需要转换的字符串
+     * @author Zikie
+     */&lt;/span&gt;
+   
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shortToBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * @author Lerko
+     * @dateTime 2017-11-28T17:41:31+0800
+     * @throws   Exception                     可能抛出异常
+     * @param    [type]                   $val [description]
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tinyIntToBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$byt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * 从字节数组中指定的位置读取一个Short类型的数据。
+     * @param $bytes 字节数组
+     * @param $position 指定的开始位置
+     * @return 一个Short类型的数据
+     */&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bytesToShort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xFF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xFF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 14 Apr 2018 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/</guid>
+        
+        <category>php</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>mysql 深入学习</title>
+        <description>&lt;h2 id=&quot;mysql&quot;&gt;mysql的锁机制&lt;/h2&gt;
+
+&lt;h4 id=&quot;deadlock&quot;&gt;什么情况下会出现deadlock&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一般在一个长事务执行的时候如果两个事务相互抢夺资源的话就会造成死锁
+innodb是行锁 MyISAM是表锁
+但是innodb在搜索范围为全表的时候也是会形成表锁
+比如下面这个更新语句&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;lerko&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;phone&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;186%&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在innodb如何出现行的死锁
+下面是一个例子&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sql1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transaction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;video_cat&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;test&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;Rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matched&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sql1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transaction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;这里就会出现&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deadlock&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;因为&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;已经吧&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;为&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;的数据上锁了&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;video_cat&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;test22&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1205&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HY000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Lock&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wait&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exceeded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;restarting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transaction&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;mysqldeadlock&quot;&gt;mysql如何检查deadlock&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mysql有一个参数可以设置死锁超时时间
+但是只有在innodb里面可以设置这个参数
+&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_lock_wait_timeout&lt;/code&gt; 默认是50秒&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;如何应对死锁&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;通过调整innodb_lock_wait_timeout的值，默认50，增加这个值不是一个好办法，会从某种程序上减少响应速度。&lt;/li&gt;
+  &lt;li&gt;调整隔离模式(isolation)为应用可以接受的比较低的级别，例如设置为：READ COMMITTED
+如果应用接收不了，低的隔离级别，可以考虑使用session，在执行容易产生deadlock的事务之前执行命令：SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;然后执行事务。&lt;/li&gt;
+  &lt;li&gt;调整事务为合理的大小，事务越小越不容易产生死锁。&lt;/li&gt;
+  &lt;li&gt;对于容易产生死锁的事务来说，可以一直指定需要的资源，既加锁所有涉及的表，不使用先使用意向锁，在使用排它锁。例如：
+set autocommit=0;
+lock tables t1 write, t2, write , t3 read;
+update statement;
+commit;
+unlock tables t1,t2,t3;&lt;/li&gt;
+  &lt;li&gt;对不同的应用访问同一表，使用相同的顺序，对于表里面的数据，访问里面的行也使用相同次序。&lt;/li&gt;
+  &lt;li&gt;优化表的索引，因为innodb是row lock, row lock是对索引上的索引项加锁，优化调整索引在一定程度上能避免一些死锁问题。&lt;/li&gt;
+  &lt;li&gt;使用show innodb status 来分析TRANSACTIONS里面的内容，分析那些语句产生死锁，从而做出一些调整。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;锁和性能&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://xm-king.iteye.com/blog/770721&quot;&gt;参考网址&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;表锁 不会产生死锁 因为事务有原子性 必须commit之后才能更改数据
+而且表是我们操作最大的一个数据单位
+表上锁之后一个事务就只占用一张表，等这个事务处理完了之后才会进来第二个事务
+而行锁就不是这样
+行锁是一个行可以由一个事务来处理&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。&lt;/li&gt;
+  &lt;li&gt;行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最,并发度也最高。&lt;/li&gt;
+  &lt;li&gt;页面锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;脏读(Drity Read)：允许读取其他的事务写入更新的数据&lt;/li&gt;
+  &lt;li&gt;不可重复读(Non-repeatable read) 幻读(Phantom Read):在事务中进行查找的时候 有其他的事务commit了改变了数据 mysql解决了幻读=》保持了数据在事务中读取都是一样的&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;HOLDLOCK 持有共享锁，直到整个事务完成，应该在被锁对象不需要时立即释放，等于SERIALIZABLE事务隔离级别
+NOLOCK 语句执行时不发出共享锁，允许脏读 ，等于 READ UNCOMMITTED事务隔离级别
+PAGLOCK 在使用一个表锁的地方用多个页锁
+READPAST 让sql server跳过任何锁定行，执行事务，适用于READ UNCOMMITTED事务隔离级别只跳过RID锁，不跳过页，区域和表锁
+ROWLOCK 强制使用行锁
+TABLOCKX 强制使用独占表级锁，这个锁在事务期间阻止任何其他事务使用这个表
+UPLOCK 强制在读表时使用更新而不用共享锁
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;mysql-1&quot;&gt;mysql的索引&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;查看索引&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;查看索引
+mysql&amp;gt; show index from tblname;
+mysql&amp;gt; show keys from tblname;
+· Table
+表的名称。
+· Non_unique
+如果索引不能包括重复词，则为0。如果可以，则为1。
+· Key_name
+索引的名称。
+· Seq_in_index
+索引中的列序列号，从1开始。
+· Column_name
+列名称。
+· Collation
+列以什么方式存储在索引中。在MySQL中，有值‘A’（升序）或NULL（无分类）。
+· Cardinality
+索引中唯一值的数目的估计值。通过运行ANALYZE TABLE或myisamchk -a可以更新。基数根据被存储为整数的统计数据来计数，所以即使对于小型表，该值也没有必要是精确的。基数越大，当进行联合时，MySQL使用该索引的机 会就越大。
+· Sub_part
+如果列只是被部分地编入索引，则为被编入索引的字符的数目。如果整列被编入索引，则为NULL。
+· Packed
+指示关键字如何被压缩。如果没有被压缩，则为NULL。
+· Null
+如果列含有NULL，则含有YES。如果没有，则该列含有NO。
+· Index_type
+用过的索引方法（BTREE, FULLTEXT, HASH, RTREE）。
+· Comment
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;聚集概念&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/aspnethot/articles/1504082.html&quot;&gt;参考概念&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;聚集索引&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;一种索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序。 
+　　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 
+　　　　 
+　　　　 聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。例如，如果应用程序执行 的一个查询经常检索某一日期范围内的记录，则使用聚集索引可以迅速找到包含开始日期的行，然后检索表中所有相邻的行，直到到达结束日期。这样有助于提高此 类查询的性能。同样，如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节 省成本。 
+　　　　 
+　　　　 当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列 emp_id 查找特定雇员的最快速的方法，是在 emp_id 列上创建聚集索引或 PRIMARY KEY 约束。
+
+InnoDB按照主键进行聚集，如果没有定义主键，InnoDB会试着使用唯一的非空索引来代替。如果没有这种索引，InnoDB就会定义隐藏的主键然后在上面进行聚集。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;非聚集索引&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;一种索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;应用场景&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;动作描述                        使用聚集索引              使用非聚集索引
+列经常被分组排序            应                                 应
+返回某范围内的数据        应                                不应
+一个或极少不同值           不应                            不应
+小数目的不同值               应                               不应
+大数目的不同值               不应                           应
+频繁更新的列                  不应                           应
+外键列                            应                              应
+主键列                           应                               应
+频繁修改索引列             不应                              应
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;section-4&quot;&gt;索引的数据结构&lt;/h4&gt;
+
+&lt;h4 id=&quot;where-&quot;&gt;where 上各种索引类型的速度&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;    `没有索引`
+    （1）仅在主键上建立聚集索引，并且不划分时间段：
+    Select gid,fariqi,neibuyonghu,title from tgongwen
+    用时：128470毫秒（即：128秒）
+
+`非聚集索引`
+    （2）在主键上建立聚集索引，在fariq上建立非聚集索引：
+    select gid,fariqi,neibuyonghu,title from Tgongwen
+    where fariqi&amp;gt; dateadd(day,-90,getdate())
+    用时：53763毫秒（54秒）
+
+`聚集索引`
+    （3）将聚合索引建立在日期列（fariqi）上：
+    select gid,fariqi,neibuyonghu,title from Tgongwen
+    where fariqi&amp;gt; dateadd(day,-90,getdate())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;索引和锁的关系&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;索引以及查询语句的使用都会影响到innodb的锁
+比如查询中使用的where是主键唯一索引,那么就这行被锁
+如 &lt;code class=&quot;highlighter-rouge&quot;&gt;select * from table where id=1&lt;/code&gt;  =&amp;gt;就锁定id=1这行
+如果是查询一个有聚集索引的列,那么就是锁定符合条件的行
+如 &lt;code class=&quot;highlighter-rouge&quot;&gt;select * from table where clusteredIndexField=&#39;kk&#39;&lt;/code&gt; =&amp;gt; 这个就锁定  clusteredIndexField=’kk’的列
+如果查询的是一个没有索引的列 整个表都会锁住&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;mysql-2&quot;&gt;mysql的存储引擎&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;show engines;&lt;/code&gt;可以查看现在mysql支持的数据库引擎、
+&lt;code class=&quot;highlighter-rouge&quot;&gt;alter table table_name engine=innodb;&lt;/code&gt;修改表的数据库引擎&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------+---------+----------------------------------------------------------------+--------------+------+------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Engine&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Support&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Comment&lt;/span&gt;                                                        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Transactions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XA&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Savepoints&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------+---------+----------------------------------------------------------------+--------------+------+------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MRG_MYISAM&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Collection&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identical&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyISAM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;                          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CSV&lt;/span&gt;                &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CSV&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;                                             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyISAM&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyISAM&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;                                          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLACKHOLE&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;anything&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;you&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;disappears&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEMORY&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Hash&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;based&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stored&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;useful&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;temporary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Supports&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;level&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locking&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;foreign&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ARCHIVE&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Archive&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;                                         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PERFORMANCE_SCHEMA&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Performance&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Schema&lt;/span&gt;                                             &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FEDERATED&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NO&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Federated&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MySQL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;                                 &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;--------------------+---------+----------------------------------------------------------------+--------------+------+------------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;  `ISAM`：ISAM是一个定义明确且历经时间考验的数据表格管理方法，它在设计之时就考虑到 数据库被查询的次数要远大于更新的次数。因此，ISAM执行读取操作的速度很快，而且不占用大量的内存和存储资源。ISAM的两个主要不足之处在于，它不 支持事务处理，也不能够容错：如果你的硬盘崩溃了，那么数据文件就无法恢复了。如果你正在把ISAM用在关键任务应用程序里，那就必须经常备份你所有的实 时数据，通过其复制特性，MYSQL能够支持这样的备份应用程序。
+
+    `MyISAM`：MyISAM是MySQL的ISAM扩展格式和缺省的数据库引擎。除了提供ISAM里所没有的索引和字段管理的大量功能，MyISAM还使用一种表格锁定的机制，来优化多个并发的读写操作，其代价是你需要经常运行OPTIMIZE TABLE命令，来恢复被更新机制所浪费的空间。MyISAM还有一些有用的扩展，例如用来修复数据库文件的MyISAMCHK工具和用来恢复浪费空间的 MyISAMPACK工具。MYISAM强调了快速读取操作，这可能就是为什么MySQL受到了WEB开发如此青睐的主要原因：在WEB开发中你所进行的大量数据操作都是读取操作。所以，大多数虚拟主机提供商和INTERNET平台提供商只允许使用MYISAM格式。MyISAM格式的一个重要缺陷就是不能在表损坏后恢复数据。
+
+    `HEAP`：HEAP允许只驻留在内存里的临时表格。驻留在内存里让HEAP要比ISAM和MYISAM都快，但是它所管理的数据是不稳定的，而且如果在关机之前没有进行保存，那么所有的数据都会丢失。在数据行被删除的时候，HEAP也不会浪费大量的空间。HEAP表格在你需要使用SELECT表达式来选择和操控数据的时候非常有用。要记住，在用完表格之后就删除表格。
+
+    `InnoDB`：InnoDB数据库引擎都是造就MySQL灵活性的技术的直接产品，这项技术就是MYSQL++ API。在使用MYSQL的时候，你所面对的每一个挑战几乎都源于ISAM和MyISAM数据库引擎不支持事务处理（transaction process）也不支持外来键。尽管要比ISAM和 MyISAM引擎慢很多，但是InnoDB包括了对事务处理和外来键的支持，这两点都是前两个引擎所没有的。如前所述，如果你的设计需要这些特性中的一者 或者两者，那你就要被迫使用后两个引擎中的一个了。 
+
+    MySQL 官方对InnoDB是这样解释的：InnoDB给MySQL提供了具有提交、回滚和崩溃恢复能力的事务安全（ACID兼容）存储引擎。InnoDB锁定在行级并且也在SELECT语句提供一个Oracle风格一致的非锁定读，这些特色增加了多用户部署和性能。没有在InnoDB中扩大锁定的需要，因为在InnoDB中行级锁定适合非常小的空间。InnoDB也支持FOREIGN KEY强制。在SQL查询中，你可以自由地将InnoDB类型的表与其它MySQL的表的类型混合起来，甚至在同一个查询中也可以混合。
+
+    InnoDB是为处理巨大数据量时的最大性能设计，它的CPU效率可能是任何其它基于磁盘的关系数据库引擎所不能匹敌的。
+
+    InnoDB存储引擎被完全与MySQL服务器整合，InnoDB存储引擎为在主内存中缓存数据和索引而维持它自己的缓冲池。InnoDB存储它的表＆索引在一个表空间中，表空间可以包含数个文件（或原始磁盘分区）。这与MyISAM表不同，比如在MyISAM表中每个表被存在分离的文件中。InnoDB 表可以是任何尺寸，即使在文件尺寸被限制为2GB的操作系统上。
+
+    InnoDB默认地被包含在MySQL二进制分发中。Windows Essentials installer使InnoDB成为Windows上MySQL的默认表。
+
+    InnoDB被用来在众多需要高性能的大型数据库站点上产生。著名的Internet新闻站点Slashdot.org运行在InnoDB上。 Mytrix, Inc.在InnoDB上存储超过1TB的数据，还有一些其它站点在InnoDB上处理平均每秒800次插入/更新的
+
+
+
+    一般来说，MyISAM适合：(1)做很多count 的计算；(2)插入不频繁，查询非常频繁；(3)没有事务。
+    InnoDB适合：(1)可靠性要求比较高，或者要求事务；(2)表更新和查询都相当的频繁，并且表锁定的机会比较大的情况。
+
+
+
+    所有的性能测试在：Micrisoft window xp sp2 ， Intel(R) Pentinum(R) M processor 1.6oGHz 1G 内存的电脑上测试。
+
+    测试方法：连续提交10个query， 表记录总数：38万 ， 时间单位 s
+
+        引擎类型                    MyISAM                InnoDB              性能相差
+
+        count                      0.0008357            3.0163                3609
+
+        查询主键                   0.005708              0.1574                27.57
+
+        查询非主键                  24.01                   80.37                 3.348
+
+        更新主键                   0.008124             0.8183                 100.7
+
+        更新非主键                0.004141             0.02625               6.338
+
+        插入                         0.004188             0.3694                 88.21
+
+    （1）加了索引以后，对于MyISAM查询可以加快：4 206.09733倍，对InnoDB查询加快510.72921倍，同时对MyISAM更新速度减慢为原来的1/2，InnoDB的更新速度减慢为原来的1/30。要看情况决定是否要加索引，比如不查询的log表，不要做任何的索引。
+
+    （2）如果你的数据量是百万级别的，并且没有任何的事务处理，那么用MyISAM是性能最好的选择。
+
+    （3）InnoDB表的大小更加的大，用MyISAM可省很多的硬盘空间。
+
+        在我们测试的这个38w的表中，表占用空间的情况如下：
+            引擎类型                    MyISAM               InnoDB
+            数据                       53,924 KB           58,976 KB
+            索引                       13,640 KB           21,072 KB
+            占用总空间              67,564 KB           80,048 KB
+ 
+        另外一个176W万记录的表， 表占用空间的情况如下：
+
+            引擎类型                MyIsam               InnorDB
+            数据                   56,166 KB           90,736 KB
+            索引                   67,103 KB           88,848 KB
+            占用总空间        123,269 KB         179,584 KB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;mysql-3&quot;&gt;mysql中的慢查询分析&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;#首先查看设置变量
+show variables like &#39;slow_query_log&#39;;
+#查看设置参数
+show variable like &#39;%log%&#39;;
+#设置记录没有使用索引的查询
+set global log_queries_not_using_indexes=on;
+#查看慢查询筛选时间
+mysql&amp;gt; show variables like &#39;long_query_time&#39;;
++-----------------+-----------+
+| Variable_name   | Value     |
++-----------------+-----------+
+| long_query_time | 10.000000 |
++-----------------+-----------+
+1 row in set (0.00 sec)
+# 设置慢查询时间
+set global long_query_time;
+# 设置开启满查询日志
+set global slow_query_log=on;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Fri, 13 Jan 2017 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/</guid>
+        
+        <category>database</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>机器学习算法</title>
+        <description>&lt;h1 id=&quot;section&quot;&gt;机器学习&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;朴素贝叶斯&lt;/h2&gt;
+&lt;p&gt;决策树（树型if）&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;梯度下降&lt;/h2&gt;
+&lt;p&gt;1.线性回归{计算方差}&lt;/p&gt;
+
+&lt;p&gt;2.支持向量机器
+比如4个点 2个红 2个绿用一个函数进行分类
+计算点到线的最小距离 那个大 说明这条线可以最好的分割数据&lt;/p&gt;
+</description>
+        <pubDate>Mon, 09 Jan 2017 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2017/01/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2017/01/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>sass入门</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;什么是协程&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;和线程的区别&lt;/h4&gt;
+
+&lt;p&gt;参考网站：&lt;a href=&quot;http://www.cnblogs.com/wonderKK/p/4062591.html&quot;&gt;http://www.cnblogs.com/wonderKK/p/4062591.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;说到Coroutine，我们必须提到两个更远的东西。在操作系统（os）级别，有进程（process）和线程（thread）两个（仅从我们常见的讲）实际的“东西”（不说概念是因为这两个家伙的确不仅仅是概念，而是实际存在的，os的代码管理的资源）。这两个东西都是用来模拟“并行”的，写操作系统的程序员通过用一定的策略给不同的进程和线程分配CPU计算资源，来让用户“以为”几个不同的事情在“同时”进行“。在单CPU上，是os代码强制把一个进程或者线程挂起，换成另外一个来计算，所以，实际上是串行的，只是“概念上的并行”。在现在的多核的cpu上，线程可能是“真正并行的”。
+
+Coroutine，翻译成”协程“，初始碰到的人马上就会跟上面两个概念联系起来。直接先说区别，Coroutine是编译器级的，Process和Thread是操作系统级的。Coroutine的实现，通常是对某个语言做相应的提议，然后通过后成编译器标准，然后编译器厂商来实现该机制。Process和Thread看起来也在语言层次，但是内生原理却是操作系统先有这个东西，然后通过一定的API暴露给用户使用，两者在这里有不同。Process和Thread是os通过调度算法，保存当前的上下文，然后从上次暂停的地方再次开始计算，重新开始的地方不可预期，每次CPU计算的指令数量和代码跑过的CPU时间是相关的，跑到os分配的cpu时间到达后就会被os强制挂起。Coroutine是编译器的魔术，通过插入相关的代码使得代码段能够实现分段式的执行，重新开始的地方是yield关键字指定的，一次一定会跑到一个yield对应的地方。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;php&quot;&gt;php协程序的例子&lt;/h4&gt;
+
+&lt;p&gt;生成器类文档:&lt;a href=&quot;http://php.net/manual/zh/class.generator.php&quot;&gt;http://php.net/manual/zh/class.generator.php&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;function logger($fileName) {
+	$fileHandle = fopen($fileName, &#39;a&#39;);
+	while (true) {
+		fwrite($fileHandle, yield  . &quot;\n&quot;);
+	}
+}
+
+$logger = logger(__DIR__ . &#39;/log&#39;);
+var_dump($logger); //object(Generator)#1 (0) {}
+$logger-&amp;gt;send(&#39;Foo&#39;);
+$logger-&amp;gt;send(&#39;Bar&#39;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/</guid>
+        
+        <category>web</category>
+        
+        
+      </item>
     
       <item>
         <title>有限状态机</title>
@@ -32,7 +595,7 @@
 该库提供一个全局对象StateMachine，使用该对象的create方法，可以生成有限状态机的实例。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StateMachine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StateMachine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//生成的时候，需要提供一个参数对象，用来描述实例的性质。比如，交通信号灯（红绿灯）可以这样描述：&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StateMachine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
@@ -47,18 +610,18 @@
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;　　&lt;/span&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;交通信号灯的初始状态（initial）为green，events属性是触发状态改变的各种事件，比如warn事件使得green状态变成yellow状态，stop事件使得yellow状态变成red状态等等。
 生成实例以后，就可以随时查询当前状态。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;current&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回当前状态。&lt;/span&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt; &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;current&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回当前状态。&lt;/span&gt;
  &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示状态s是否为当前状态。&lt;/span&gt;
  &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;can&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示事件e是否能在当前状态触发。&lt;/span&gt;
  &lt;span class=&quot;nx&quot;&gt;fsm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cannot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//返回一个布尔值，表示事件e是否不能在当前状态触发。&lt;/span&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;更多概念查看&lt;a href=&quot;http://www.ruanyifeng.com/blog/2013/09/finite-state_machine_for_javascript.html&quot;&gt;阮一峰博客&lt;/a&gt;&lt;/p&gt;
 
@@ -81,7 +644,7 @@
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;嵌套&lt;/h2&gt;
-&lt;p&gt;## 变量&lt;/p&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;变量&lt;/h2&gt;
 </description>
         <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
         <link>https://chenyingqiao.github.io//2016/12/26/sass%E5%85%A5%E9%97%A8/</link>
@@ -130,7 +693,7 @@
   &lt;p&gt;Illuminate\Foundation\Http\Kernel  $bootstrappers 初始化一些系统的必须类 包括下面的几个类  （都有bootstrap()方法  初始化了系统绝大多数东西）&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;    protected $bootstrappers = [
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;    protected $bootstrappers = [
         &#39;Illuminate\Foundation\Bootstrap\DetectEnvironment&#39;,
         &#39;Illuminate\Foundation\Bootstrap\LoadConfiguration&#39;,
         &#39;Illuminate\Foundation\Bootstrap\ConfigureLogging&#39;,
@@ -142,13 +705,13 @@
         //调用Applocation实例到ioc容器中
         &#39;Illuminate\Foundation\Bootstrap\BootProviders&#39;,
     ];
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;application 注册核心的别名到ioc容器中  契约以及契约的实现类&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt; public function registerCoreContainerAliases(){
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt; public function registerCoreContainerAliases(){
         $aliases = [ &#39;app&#39; =&amp;gt; [&#39;Illuminate\Foundation\Application&#39;, &#39;Illuminate\Contracts\Container\Container&#39;, &#39;Illuminate\Contracts\Foundation\Application&#39;],
             &#39;auth&#39;                 =&amp;gt; [&#39;Illuminate\Auth\AuthManager&#39;, &#39;Illuminate\Contracts\Auth\Factory&#39;],
             &#39;auth.driver&#39;          =&amp;gt; [&#39;Illuminate\Contracts\Auth\Guard&#39;],
@@ -214,11 +777,11 @@ static::class --&amp;gt; 返回的是php这个类的域名以及类名的全部s
 callable 标示一个可以调用的类型
 
 接口：ArrayAccess：让类可以像数组一样的进行使用
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;//laravel的基础类
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;//laravel的基础类
 Macroable：实现了一个注册callable类型就可以添加到类中的trait
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;applocatin-&quot;&gt;applocatin 分析&lt;/h2&gt;
 
@@ -239,97 +802,128 @@ interface Application extends Container
   public function version();&lt;/li&gt;
     &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   * 获取laravel框架的基本路径（项目根目录）
-   * @return string
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;获取laravel框架的基本路径（项目根目录）&lt;/li&gt;
+      &lt;li&gt;@return string
    */
-  public function basePath();&lt;/p&gt;
+  public function basePath();&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;取得环境&lt;/li&gt;
+      &lt;li&gt;@return string
+   */
+  public function environment();&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;判断框架是否是在维护&lt;/li&gt;
+      &lt;li&gt;@return bool
+   */
+  public function isDownForMaintenance();&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;注册所有的配置提供者&lt;/li&gt;
+      &lt;li&gt;@return void
+   */
+  public function registerConfiguredProviders();&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;注册服务提供者到applocation中  并且调用服务的register方法&lt;/li&gt;
+      &lt;li&gt;
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;@param  \Illuminate\Support\ServiceProvider&lt;/td&gt;
+              &lt;td&gt;string  $provider&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;@param  array  $options&lt;/li&gt;
+      &lt;li&gt;@param  bool   $force&lt;/li&gt;
+      &lt;li&gt;@return \Illuminate\Support\ServiceProvider
+   */
+  public function register($provider, $options = [], $force = false);&lt;/li&gt;
+    &lt;/ul&gt;
 
     &lt;p&gt;/**
-   * 取得环境
-   * @return string
+   *注册一个延迟的服务提供者（如果已经有注册服务的话就从deferredServices中unset服务 然后在调用register方法注册服务）&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;@param  string  $provider&lt;/li&gt;
+      &lt;li&gt;@param  string  $service&lt;/li&gt;
+      &lt;li&gt;@return void
    */
-  public function environment();&lt;/p&gt;
+  public function registerDeferredProvider($provider, $service = null);&lt;/li&gt;
+    &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   * 判断框架是否是在维护
-   * @return bool
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;调用所有的boot的callback并且吧所有注册的服务提供者都调用boot方法&lt;/li&gt;
+      &lt;li&gt;@return void
    */
-  public function isDownForMaintenance();&lt;/p&gt;
+  public function boot();&lt;/li&gt;
+    &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   * 注册所有的配置提供者
-   * @return void
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;注册一个boot（框架启动的回调函数）
+   *&lt;/li&gt;
+      &lt;li&gt;@param  mixed  $callback&lt;/li&gt;
+      &lt;li&gt;@return void
    */
-  public function registerConfiguredProviders();&lt;/p&gt;
+  public function booting($callback);&lt;/li&gt;
+    &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   * 注册服务提供者到applocation中  并且调用服务的register方法
-   * @param  \Illuminate\Support\ServiceProvider|string  $provider
-   * @param  array  $options
-   * @param  bool   $force
-   * @return \Illuminate\Support\ServiceProvider
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;注册一个框架启动完成之后的回调函数
+   *&lt;/li&gt;
+      &lt;li&gt;@param  mixed  $callback&lt;/li&gt;
+      &lt;li&gt;@return void
    */
-  public function register($provider, $options = [], $force = false);&lt;/p&gt;
+  public function booted($callback);&lt;/li&gt;
+    &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   *注册一个延迟的服务提供者（如果已经有注册服务的话就从deferredServices中unset服务 然后在调用register方法注册服务）
-   * @param  string  $provider
-   * @param  string  $service
-   * @return void
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Get the path to the cached “compiled.php” file.
+   *&lt;/li&gt;
+      &lt;li&gt;@return string
    */
-  public function registerDeferredProvider($provider, $service = null);&lt;/p&gt;
+  public function getCachedCompilePath();&lt;/li&gt;
+    &lt;/ul&gt;
 
-    &lt;p&gt;/**
-   * 调用所有的boot的callback并且吧所有注册的服务提供者都调用boot方法
-   * @return void
-   */
-  public function boot();&lt;/p&gt;
-
-    &lt;p&gt;/**
-   * 注册一个boot（框架启动的回调函数）
-   *
-   * @param  mixed  $callback
-   * @return void
-   */
-  public function booting($callback);&lt;/p&gt;
-
-    &lt;p&gt;/**
-   * 注册一个框架启动完成之后的回调函数
-   *
-   * @param  mixed  $callback
-   * @return void
-   */
-  public function booted($callback);&lt;/p&gt;
-
-    &lt;p&gt;/**
-   * Get the path to the cached “compiled.php” file.
-   *
-   * @return string
-   */
-  public function getCachedCompilePath();&lt;/p&gt;
-
-    &lt;p&gt;/**
-   * Get the path to the cached services.php file.
-   *
-   * @return string
+    &lt;p&gt;/**&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Get the path to the cached services.php file.
+   *&lt;/li&gt;
+      &lt;li&gt;@return string
    */
   public function getCachedServicesPath();
 }
-```&lt;/p&gt;
+```&lt;/li&gt;
+    &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//http接口
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;//http接口
 interface HttpKernelInterface
 {
     const MASTER_REQUEST = 1;
     const SUB_REQUEST = 2;
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true);
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//依赖注入容器
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;//依赖注入容器
 interface Container
 {
     /**
@@ -468,7 +1062,7 @@ interface Container
      */
     public function afterResolving($abstract, Closure $callback = null);
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Illuminate\Config\Repository&lt;/code&gt;读取配置文件的数据&lt;/li&gt;
@@ -523,8 +1117,10 @@ class RoutingServiceProvider extends ServiceProvider
         &lt;p&gt;$this-&amp;gt;registerResponseFactory();
  }
 }
-```
-&amp;gt; 其实大部分初始化工作都在这两个服务里面&lt;/p&gt;
+```&lt;/p&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;其实大部分初始化工作都在这两个服务里面&lt;/p&gt;
+        &lt;/blockquote&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
@@ -533,10 +1129,12 @@ class RoutingServiceProvider extends ServiceProvider
 &lt;p&gt;主要关注 &lt;code class=&quot;highlighter-rouge&quot;&gt;EventServiceProvider&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;核心概念&lt;/h2&gt;
-&lt;p&gt;### 依赖注入
-&amp;gt; 依赖注入接口&lt;/p&gt;
+&lt;h3 id=&quot;section-3&quot;&gt;依赖注入&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;依赖注入接口&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//Application 是这个接口的子类
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;//Application 是这个接口的子类
 &lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Illuminate\Contracts\Container&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -571,7 +1169,7 @@ class RoutingServiceProvider extends ServiceProvider
 &lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;afterResolving&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$abstract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Closure&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$callback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;依赖注入的一些类型&lt;/p&gt;
@@ -583,9 +1181,9 @@ class RoutingServiceProvider extends ServiceProvider
   &lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;服务提供者&lt;/h3&gt;
+&lt;h3 id=&quot;section-4&quot;&gt;服务提供者&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;服务提供者是一个在框架运行流程中可以注册到框架的applocation中 然后有两个主要的方法
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;服务提供者是一个在框架运行流程中可以注册到框架的applocation中 然后有两个主要的方法
 1. register
 2. boot
 
@@ -593,15 +1191,15 @@ class RoutingServiceProvider extends ServiceProvider
 
 app.php配置文件中有许多初始化的服务提供者
 系统的启动也是这些提供者提供的
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;门面&lt;/h3&gt;
+&lt;h3 id=&quot;section-5&quot;&gt;门面&lt;/h3&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;门面抽象类中的getFacadeAccessor（）方法（重载） 就是用来获取ioc容器中alias别名容器中对应的【契约=》类】；&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;//门面就是一个注册函数或者对象到类中 之后可以通过__callStatic 来访问这些方法
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;//门面就是一个注册函数或者对象到类中 之后可以通过__callStatic 来访问这些方法
 // 使得很多注册的门面可以直接通过static的方式进行访问
 //门面类
 namespace Illuminate\Support\Facades;
@@ -610,17 +1208,17 @@ abstract class Facade
 //门面注册类
 namespace Illuminate\Foundation\Bootstrap;
 class RegisterFacades
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;http&quot;&gt;主要使用（http）&lt;/h2&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;路由&lt;/h3&gt;
+&lt;h3 id=&quot;section-6&quot;&gt;路由&lt;/h3&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;路由文件web.php在App\Providers\RouteServiceProvider中被包含 并且吧这些都包含在一个group中&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;protected function mapWebRoutes()
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;protected function mapWebRoutes()
 {
     Route::group([
         &#39;middleware&#39; =&amp;gt; &#39;web&#39;,
@@ -629,11 +1227,11 @@ class RegisterFacades
         require base_path(&#39;routes/web.php&#39;);
     });
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;section-6&quot;&gt;控制器&lt;/h3&gt;
+&lt;h3 id=&quot;section-7&quot;&gt;控制器&lt;/h3&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;abstract class Controller
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;abstract class Controller
 {
     /**
      * The middleware registered on the controller.
@@ -710,12 +1308,12 @@ class RegisterFacades
         throw new BadMethodCallException(&quot;Method [{$method}] does not exist.&quot;);
     }
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;section-7&quot;&gt;中间件&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;用来过滤请求 然后可以对请求进行处理
+&lt;h3 id=&quot;section-8&quot;&gt;中间件&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;用来过滤请求 然后可以对请求进行处理
 比如 验证 跳转 过滤
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;php artisan make:middleware CheckAge 可以直接生成中间件&lt;/p&gt;
@@ -725,20 +1323,20 @@ class RegisterFacades
   &lt;li&gt;普通中间件（中间件前）&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;class CheckAge
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;class CheckAge
 {
     public function handle($request, Closure $next)
     {
         return $next($request);
     }
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
   &lt;li&gt;后置中间件&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;class AfterMiddleware
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;class AfterMiddleware
 {
     public function handle($request, Closure $next)
     {
@@ -747,9 +1345,9 @@ class RegisterFacades
         return $response;
     }
 }
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;section-8&quot;&gt;队列&lt;/h3&gt;
+&lt;h3 id=&quot;section-9&quot;&gt;队列&lt;/h3&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;队列的实现  QueueServiceProvider 提供了队列的初始化
@@ -761,17 +1359,6 @@ Worker类通过pcntl系列的函数创建队列线程&lt;/p&gt;
         <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/laravel%E6%B7%B1%E5%BA%A6%E5%85%A5%E9%97%A8/</guid>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Js规范总结</title>
-        <description>
-</description>
-        <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/</guid>
         
         
       </item>
@@ -845,14 +1432,14 @@ y&amp;lt;-c(0.11,0.12,0.13,0.15,0.18)&lt;/p&gt;
   &lt;p&gt;一般配置文件的存放路径以及nginx的主要程序存放路径&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;server配置（nginx.conf） /usr/local/nginx/conf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ubuntu一般在 /etc/nginx/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;server配置（nginx.conf） /usr/local/nginx/conf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ubuntu一般在 /etc/nginx/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 主程序                             /etc/init.d/ngin
 
 科普centos的一些基本命令
 yum ：安装软件包 yum install &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;软件包名称]
 rpm ：软件包管理工具  查看说有软件包 rpm -qa |grep httpd ---&amp;gt;后面是过滤选项
 
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;现在是配置文件的内容&lt;/h2&gt;
 
@@ -860,7 +1447,7 @@ rpm ：软件包管理工具  查看说有软件包 rpm -qa |grep httpd ---&amp;
   &lt;p&gt;nginx 主要的配置文件nginx.conf&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;user www www;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;user www www;
 worker_processes auto;
 
 error_log /data/wwwlogs/error_nginx.log crit;
@@ -952,31 +1539,30 @@ http &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     include vhost/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.conf; &lt;span class=&quot;c&quot;&gt;#这里包含了其他文件加里面的配置文件&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;apache-&quot;&gt;附带我本机与apache共存的配置 （其实就改了一下端口）&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;端口更改需要service nginx restart一下进程&lt;/code&gt;
-```shell
-server {
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;端口更改需要service nginx restart一下进程&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;server &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     listen 8080 default_server;
-    listen [::]:8080 default_server;&lt;/p&gt;
+    listen &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;::]:8080 default_server;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;root /var/www/Nginx;
+    root /var/www/Nginx;
 
-# 这里需要加index.php 如果你开启了php的支持
-index index.html index.php index.htm index.nginx-debian.html;
-server_name _;
-#location字段需要深入学习
-location / {
-    try_files $uri $uri/ =404;
-}
-location ~ \.php$ {
-    include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-} }
-&lt;/div&gt;
+    &lt;span class=&quot;c&quot;&gt;# 这里需要加index.php 如果你开启了php的支持&lt;/span&gt;
+    index index.html index.php index.htm index.nginx-debian.html;
+    server_name _;
+    &lt;span class=&quot;c&quot;&gt;#location字段需要深入学习&lt;/span&gt;
+    location / &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        try_files &lt;span class=&quot;nv&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$uri&lt;/span&gt;/ &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    location ~ &lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;php&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;fastcgi&quot;&gt;科普一下fastcgi&lt;/h2&gt;
 
@@ -1003,335 +1589,6 @@ FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可�
         <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/</guid>
         
         <category>server</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>crontab工具的使用</title>
-        <description>&lt;h2 id=&quot;crontab&quot;&gt;如何查看crontab是否安装？以及初次使用&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;crontab -l
-如果出现 no crontab for root的话输入
-crontab -e
-会有如下的选项
-no crontab for root - using an empty one
-
-Select an editor.  To change later, run &#39;select-editor&#39;.
-  1. /bin/ed
-  2. /bin/nano        &amp;lt;---- easiest
-  3. /usr/bin/vim.basic
-  4. /usr/bin/vim.tiny
-
-Choose 1-4 [2]: 4     ----&amp;gt;我们一般选择的是第4个配置文件
-
-之后我们就可以输入crontab -e对配置文件进行编辑
-
-配置文件默认的内容是一些注释的说明 可以删除
-
-比如我们要创建一个任务 
-    {每分钟执行往tmp目录下的某个文件写如当前日期信息}
-我们就可以这样写（&amp;gt;&amp;gt;标示的是将data输出的内容保存到文件中）
-*/1 * * * * date &amp;gt;&amp;gt; /tmp/crontab_log.txt
-&lt;/div&gt;
-
-&lt;p&gt;## crontab -e 中配置文件的配置格式&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;
-* * * * * command
-第一个× ：分钟 0-59
-第二个× ：小时0-23
-第三个× ：日期1-31
-第四个× ：月份1-12
-第五个× ：星期0-7
-
-下面有几个实例
-每晚的21:30 从其apache
-    30 21 * * *　　service httpd restart
-每月1好10号22号的４：４５重启apache
-    45 4 1,10,22 * * service httpd result
-每月的1-10号de 4:45 重启apache
-    45 4 1-10 * * service httpd result
-每分钟从启apache
-    */2 * * * * service httpd restart
-    1-59/2 * * * * service httpd restart
-晚上１１点到早上７点之间，每个一小时从启ａｐａｃｈｅ
-    0 23-7/1 * * * service httpd restart
-每天固定2点时间启动ｐｙｔｈｏｎ脚本
-    0 2 * * * python xxx.py
-
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 18 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/</guid>
-        
-        <category>server</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>ps 进程管理命令</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;查看所有用户的进程&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;ps aux&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;ps aux | grep [key]     可以进行筛选&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;一些基本用法&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
-    ps -A 显示所有程序。 
-    ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。 
-    ps -e 此参数的效果和指定&quot;A&quot;参数相同。 
-    ps e 列出程序时，显示每个程序所使用的环境变量。 
-    ps f 用ASCII字符显示树状结构，表达程序间的相互关系。 
-    ps -H 显示树状结构，表示程序间的相互关系。 
-    ps -N 显示所有的程序，除了执行ps指令终端机下的程序之外。 
-    ps s 采用程序信号的格式显示程序状况。 
-    ps S 列出程序时，包括已中断的子程序资料。 
-    ps -t&amp;lt;终端机编号&amp;gt; 指定终端机编号，并列出属于该终端机的程序的状况。 
-    ps u 以用户为主的格式来显示程序状况。 
-    ps x 显示所有程序，不以终端机来区分。
-&lt;/div&gt;
-
-&lt;h4 id=&quot;section-2&quot;&gt;下面是一个例子&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.0 121764  5856 ?        Ss   09:59   0:01 /sbin/init splash
-root         2  0.0  0.0      0     0 ?        S    09:59   0:00 [kthreadd]
-root         3  0.0  0.0      0     0 ?        S    09:59   0:00 [ksoftirqd/0]
-root         5  0.0  0.0      0     0 ?        S&amp;lt;   09:59   0:00 [kworker/0:0H]
-root         7  0.1  0.0      0     0 ?        S    09:59   0:04 [rcu_sched]
-root         8  0.0  0.0      0     0 ?        S    09:59   0:00 [rcu_bh]
-root         9  0.0  0.0      0     0 ?        S    09:59   0:00 [migration/0]
-root        10  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/0]
-root        11  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/1]
-root        12  0.0  0.0      0     0 ?        S    09:59   0:00 [migration/1]
-root        13  0.0  0.0      0     0 ?        S    09:59   0:00 [ksoftirqd/1]
-root        15  0.0  0.0      0     0 ?        S&amp;lt;   09:59   0:00 [kworker/1:0H]
-root        16  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/2]
-
-USER:该进程属于哪个用户账号的
-PID：该进程的进程标识符
-%CPU：该进程使用掉的CPU资源百分比
-%MEM：该进程所占用掉的物理内存百分比
-VSZ：该进程使用掉的虚拟内存量（KB）
-RSS：该进程占用的固定的内存量（KB）
-TTY：该进程是在哪个终端机上运行，若与终端机无关则显示“？”
-STAT：该进程目前的状态，与ps -l显示的S标识相同
-START：该进程被触发启动的时间
-TIME：该进程实际占用的CPU时间
-COMMAND：该进程的实际命令
-&lt;/div&gt;
-
-&lt;h4 id=&quot;stat&quot;&gt;关于stat标示列&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;    D    不可中断     Uninterruptible sleep (usually IO)
-    R    正在运行，或在队列中的进程
-    S    处于休眠状态
-    T    停止或被追踪
-    Z    僵尸进程
-    W    进入内存交换（从内核2.6开始无效）
-    X    死掉的进程
-
-
-    &amp;lt;    高优先级
-    N    低优先级
-    L    有些页被锁进内存
-    s    包含子进程
-    +    位于后台的进程组；
-    l    多线程，克隆线程  multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;想在我运行一个swoole的tcpserver
-然后我查看 &lt;code class=&quot;highlighter-rouge&quot;&gt;ps aux |grep php&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;chen@chen-pc:/var/www/html/test/swoole$ *ps auxf | grep php*
-root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
-www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-www-data  1116  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-chen     14639  0.0  0.0  14464  2148 pts/1    S+   11:27   0:00      \_ grep php
-chen      7957  0.0  0.1 595384 10916 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7958  0.0  0.1 299436 10104 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7963  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7964  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7965  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7966  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7967  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7968  0.0  0.1 285640 12980 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7969  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7974  0.0  0.1 595384 10900 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7975  0.0  0.0 299436 10028 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7980  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7981  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7982  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7983  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7984  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7985  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7986  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7987  0.0  0.1 285640 10352 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-&lt;/div&gt;
-
-&lt;p&gt;我们可以看到有两个 stat为 Ssl的tcp_server.php的进程&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;因为我不小心运行了两次&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;section-3&quot;&gt;学习如何杀死进程&lt;/h2&gt;
-
-&lt;h4 id=&quot;kill-&quot;&gt;kill 命令的使用&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*kill[参数][进程号]*&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称
--a  当处理当前进程时，不限制命令名和进程号的对应关系
--p  指定kill 命令只打印相关进程的进程号，而不发送任何信号
--s  指定发送信号
--u  指定用户 
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实例1：列出所有信号名称&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*kill -l*&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;chen@chen-pc:/var/www/html/test/swoole$ kill -l
- 1) SIGHUP   2) SIGINT   3) SIGQUIT  4) SIGILL   5) SIGTRAP
- 6) SIGABRT  7) SIGBUS   8) SIGFPE   9) SIGKILL 10) SIGUSR1
-11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM
-16) SIGSTKFLT   17) SIGCHLD 18) SIGCONT 19) SIGSTOP 20) SIGTSTP
-21) SIGTTIN 22) SIGTTOU 23) SIGURG  24) SIGXCPU 25) SIGXFSZ
-26) SIGVTALRM   27) SIGPROF 28) SIGWINCH    29) SIGIO   30) SIGPWR
-31) SIGSYS  34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3
-38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
-43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13
-48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12
-53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7
-58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
-63) SIGRTMAX-1  64) SIGRTMAX    
-
-
-只有第9种信号(SIGKILL)才可以无条件终止进程，其他信号进程都有权利忽略。    下面是常用的信号：
-HUP    1    终端断线
-INT     2    中断（同 Ctrl + C）
-QUIT    3    退出（同 Ctrl + \）
-TERM   15    终止
-KILL    9    强制终止
-CONT   18    继续（与STOP相反， fg/bg命令）
-STOP    19    暂停（同 Ctrl + Z）
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实例2：先用ps查找进程，然后用kill杀掉&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*kill 3268*&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实例3：彻底杀死进程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*kill -9 223*&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实例4：杀死指定用户所有进程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -9 $(ps -ef | grep peidalinux)&lt;/code&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -u peidalinux&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;实例5：init进程是不可杀的&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kill -9 1&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17563 17534  0 17:37 pts/1    00:00:00 grep init
-[root@localhost ~]# kill -9 1
-[root@localhost ~]# kill -HUP 1
-[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17565 17534  0 17:38 pts/1    00:00:00 grep init
-[root@localhost ~]# kill -KILL 1
-[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17567 17534  0 17:38 pts/1    00:00:00 grep init
-[root@localhost ~]#
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;现在我们要杀死一个tcp_server.php 的重复进程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;chen@chen-pc:/var/www/html/test/swoole$ `kill 7974`
-chen@chen-pc:/var/www/html/test/swoole$ ps auxf | grep php
-root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
-www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-www-data  1116  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-chen     15469  0.0  0.0  14464  2224 pts/1    S+   11:41   0:00      \_ grep php
-chen      7957  0.0  0.1 595384 10916 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7958  0.0  0.1 299436 10104 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7963  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7964  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7965  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7966  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7967  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7968  0.0  0.1 285640 12980 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7969  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sun, 18 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/</guid>
-        
-        <category>server</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>webpack入门</title>
-        <description>&lt;h2 id=&quot;webpack&quot;&gt;webpack&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;webpack 是一个可以让程序员可以使用require()
-可以包含js以及css和各种web资源  并且支持一些资源的转换
-吧这些资源打包到在一起&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;初次使用&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;npm install webpack&lt;/code&gt;安装webpack&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;项目目录&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;---app
-	
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 15 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</guid>
-        
-        <category>database</category>
         
         
       </item>

@@ -15,6 +15,7 @@ tags:
 ## 代码
 
 ```php
+
 <?php
 namespace common;
 
@@ -177,4 +178,5 @@ class Bytes {
         return $val;
     }
 }
+
 ```

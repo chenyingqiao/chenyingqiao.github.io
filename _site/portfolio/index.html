@@ -12,6 +12,10 @@
     
     <title>Portfolio - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -417,7 +418,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -435,6 +436,7 @@
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -442,16 +444,8 @@
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -466,15 +460,15 @@
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -532,9 +526,11 @@
 
 
 
-
 <!-- Side Catalog -->
 
+
+
+<!-- Multi-Lingual -->
 
 
 
