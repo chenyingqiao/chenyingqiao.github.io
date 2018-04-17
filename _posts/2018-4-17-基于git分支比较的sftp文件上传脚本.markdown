@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "基于git分支比较的sftp文件上传脚本.markdown"
-subtitle:   "基于git分支比较的sftp文件上传脚本.markdown"
+title:      "基于git分支比较的sftp文件上传脚本"
+subtitle:   "基于git分支比较的sftp文件上传脚本"
 date:       2018-04-14
 author:     "lerko"
 header-img: "img/post-bg-universe.jpg"
@@ -11,6 +11,8 @@ tags:
 ---
 
 # 基于git分支比较的sftp文件上传脚本
+
+## 脚本代码
 
 ```shell
 #!/bin/bash
@@ -90,7 +92,7 @@ fi
 sftp_upload_file
 ```
 
-> 使用方法
+## 使用方法
 
 ```shell
 upload-diff-file [远端文件夹] [比对分支] [上传的服务器]

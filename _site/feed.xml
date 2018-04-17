@@ -5,13 +5,15 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 17 Apr 2018 17:19:40 +0800</pubDate>
-    <lastBuildDate>Tue, 17 Apr 2018 17:19:40 +0800</lastBuildDate>
+    <pubDate>Tue, 17 Apr 2018 17:26:36 +0800</pubDate>
+    <lastBuildDate>Tue, 17 Apr 2018 17:26:36 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>2018-4-17-基于git分支比较的sftp文件上传脚本.markdown</title>
+        <title>基于git分支比较的sftp文件上传脚本</title>
         <description>&lt;h1 id=&quot;gitsftp&quot;&gt;基于git分支比较的sftp文件上传脚本&lt;/h1&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;脚本代码&lt;/h2&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 
@@ -90,9 +92,7 @@ checkGitRep
 &lt;/span&gt;sftp_upload_file
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;使用方法&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;使用方法&lt;/h2&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;upload-diff-file &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;远端文件夹] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;比对分支] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;上传的服务器]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
