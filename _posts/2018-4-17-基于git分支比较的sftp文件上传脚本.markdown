@@ -1,0 +1,97 @@
+---
+layout:     post
+title:      "2018-4-17-基于git分支比较的sftp文件上传脚本.markdown"
+subtitle:   "2018-4-17-基于git分支比较的sftp文件上传脚本.markdown"
+date:       2018-04-14
+author:     "lerko"
+header-img: "img/post-bg-universe.jpg"
+catalog: true
+tags:
+    - git
+---
+
+# 基于git分支比较的sftp文件上传脚本
+
+```shell
+#!/bin/bash
+
+localpath=`pwd`
+if [[ $1 == '' ]]; then
+    echo "没有写根目录"
+    exit
+fi
+remotepath="/var/www/html/$1/"
+branch=${2-'master'}
+envMathine=${3-'138'}
+//这里你可以根据第3个参数输入匹配到不同的sftp地址
+if [[ $envMathine == '138' ]]; then
+    envPtpCmd='sftp://deploy:deploy@12301*@192.168.20.138:22'
+else
+    envPtpCmd='sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301'
+fi
+
+function sftp_upload_file(){
+    if [[ $remotepath == "" ]]; then
+        echo "没有远程目录的参数"
+        exit
+    fi
+    echo "需要上传的文件如下"
+    for file in `git diff --raw --diff-filter=ACMRTUXB $branch |awk '{print $6}'`; do
+        echo $file
+        remoteDir=$remotepath${file%/*}
+        cmd=${cmd}$'\n'"cd $remoteDir; put $localpath/$file;"
+    done
+    cmd="${cmd} bye"
+    echo ""
+    echo "=================="
+    echo "上传远程路径:$remotepath"
+    echo "上传的pft:$envPtpCmd"
+    echo "是否上传数据 yes|no"
+    read -a uploadAsk
+
+    if [[ $uploadAsk == 'yes' ]]; then
+        echo "上传"
+        lftp $envPtpCmd -e "$cmd"
+    else
+        echo "取消上传"
+    fi
+    echo "=================="
+}
+
+function getPftPath(){
+    if [[ $1 == "dev" ]]; then
+        echo 'sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301'
+    elif [[ $1 == "138" ]]; then
+        echo 'sftp://deploy:deploy@12301*@192.168.20.138:22'
+    else
+        echo 'sftp://deploy:deploy@12301*@192.168.20.138:22'
+    fi
+    return 1;
+}
+
+
+function checkGitRep(){
+    log=`git log|grep fatal`
+    if [[ $log == '' ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+
+checkGitRep 
+
+if [[ $? == 0 ]]; then
+    echo "不是一个git仓库!"
+    exit
+fi
+
+sftp_upload_file
+```
+
+> 使用方法
+
+```shell
+upload-diff-file [远端文件夹] [比对分支] [上传的服务器]
+```
