@@ -12,6 +12,10 @@
     
     <title>Tags - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -181,13 +182,15 @@
 				
 				<a href="#Phero" title="Phero" rel="1">Phero</a>
 				
-				<a href="#database" title="database" rel="3">database</a>
+				<a href="#database" title="database" rel="4">database</a>
 				
 				<a href="#server" title="server" rel="4">server</a>
 				
-				<a href="#web" title="web" rel="1">web</a>
+				<a href="#web" title="web" rel="2">web</a>
 				
 				<a href="#数据结构与算法" title="数据结构与算法" rel="1">数据结构与算法</a>
+				
+				<a href="#php" title="php" rel="1">php</a>
 				
 			</div>
 
@@ -255,6 +258,25 @@
 			  	<span class="fa fa-tag listing-seperator" id="database">
                     <span class="tag-text">database</span>
                 </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-13">2017-01-13</time>
+				  <a href="/2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/" title="mysql 深入学习">mysql 深入学习</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/">
+				        <h2 class="post-title">
+                            mysql 深入学习
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            深入学习mysql的基础原理
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-13</p> -->
+				</div>
+				<hr>
 				
 				  <!-- <li class="listing-item">
 				  <time datetime="2016-12-26">2016-12-26</time>
@@ -405,6 +427,25 @@
 				
 				  <!-- <li class="listing-item">
 				  <time datetime="2016-12-26">2016-12-26</time>
+				  <a href="/2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/" title="sass入门">sass入门</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/">
+				        <h2 class="post-title">
+                            sass入门
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            sass入门笔记
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2016-12-26</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2016-12-26">2016-12-26</time>
 				  <a href="/2016/12/26/sass%E5%85%A5%E9%97%A8/" title="sass入门">sass入门</a>
 				  </li> -->
 				 <div class="post-preview">
@@ -450,6 +491,32 @@
 				
 			</div>
 			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="php">
+                    <span class="tag-text">php</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-04-14">2018-04-14</time>
+				  <a href="/2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/" title="Byte转换工具类">Byte转换工具类</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/">
+				        <h2 class="post-title">
+                            Byte转换工具类
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Byte转换工具类
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-04-14</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
 
 		</div>
 	</div>
@@ -484,7 +551,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -502,6 +569,7 @@
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -509,16 +577,8 @@
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -533,15 +593,15 @@
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -599,9 +659,11 @@
 
 
 
-
 <!-- Side Catalog -->
 
+
+
+<!-- Multi-Lingual -->
 
 
 

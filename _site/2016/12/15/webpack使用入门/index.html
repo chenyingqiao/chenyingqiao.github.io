@@ -12,6 +12,10 @@
     
     <title>webpack入门 - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -203,6 +204,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
+                <!-- Multi-Lingual -->
+                
+
 				<h2 id="webpack">webpack</h2>
 
 <blockquote>
@@ -217,47 +221,171 @@
   <p>使用<code class="highlighter-rouge">npm install webpack</code>安装webpack</p>
 </blockquote>
 
-<p>项目目录</p>
+<blockquote>
+  <p>创建webpack.config.js这个文件
+配置output以及entry
+运行<code class="highlighter-rouge">webpack</code>命令</p>
+</blockquote>
 
-<div class="highlighter-rouge">---app
-	
-</div>
+<h2 id="vue-clivuewebpack">使用vue-cli创建vue的webpack工程</h2>
+
+<h4 id="section-1">初始化</h4>
+
+<blockquote>
+  <p>运行vue init webapck <code class="highlighter-rouge">你的项目名称</code></p>
+</blockquote>
+
+<h4 id="section-2">配置依赖</h4>
+
+<blockquote>
+  <p>package.json</p>
+</blockquote>
+
+<div class="language-json highlighter-rouge"><pre class="codehilite"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blog"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A Vue.js project"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CYQ19931115 &lt;614325722@QQ.COM&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"private"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cross-env NODE_ENV=development webpack-dev-server --open --inline --hot"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cross-env NODE_ENV=production webpack --progress --hide-modules"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"handlebars"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^4.0.6"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"handlebars-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.4.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"style-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.13.1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"vue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"vue-router"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="err">//es2015载入</span><span class="w">
+    </span><span class="nt">"babel-core"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^6.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"babel-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^6.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"babel-preset-es2015"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^6.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cross-env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^3.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"css-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.25.0"</span><span class="p">,</span><span class="w">
+    </span><span class="err">//文件集中管理插件(webpack2的要使用2.0.0)</span><span class="w">
+    </span><span class="nt">"extract-text-webpack-plugin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.0.0-beta.4"</span><span class="p">,</span><span class="w">
+    </span><span class="err">//.png等文件</span><span class="w">
+    </span><span class="nt">"file-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.9.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"html-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.4.4"</span><span class="p">,</span><span class="w">
+    </span><span class="err">//生成html文件</span><span class="w">
+    </span><span class="nt">"html-webpack-plugin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.26.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"vue-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^10.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"vue-template-compiler"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"webpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0-beta.25"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"webpack-dev-server"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.1.0-beta.9"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div>
+
+<h4 id="webpack-1">配置webpack</h4>
+
+<blockquote>
+  <p>webpack.config.js</p>
+</blockquote>
+
+<div class="language-js highlighter-rouge"><pre class="codehilite"><code><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webpack'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">htmlWebpackPlugin</span><span class="o">=</span><span class="nx">require</span><span class="p">(</span><span class="s1">'html-webpack-plugin'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">Ex</span><span class="o">=</span><span class="nx">require</span><span class="p">(</span><span class="s2">"extract-text-webpack-plugin"</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+<span class="c1">//入口文件 可以是多个 用数组标示</span>
+  <span class="na">entry</span><span class="p">:</span> <span class="s1">'./src/main.js'</span><span class="p">,</span>
+  <span class="c1">//输出位置</span>
+  <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'./dist'</span><span class="p">),</span>
+    <span class="na">publicPath</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="na">filename</span><span class="p">:</span> <span class="s1">'js/[name].js'</span>
+  <span class="p">},</span>
+  <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">vue$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'vue-loader'</span><span class="p">,</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">loaders</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// Since sass-loader (weirdly) has SCSS as its default parse mode, we map</span>
+            <span class="c1">// the "scss" and "sass" values for the lang attribute to the right configs here.</span>
+            <span class="c1">// other preprocessors should work out of the box, no loader config like this nessessary.</span>
+            <span class="s1">'scss'</span><span class="p">:</span> <span class="s1">'vue-style-loader!css-loader!sass-loader'</span><span class="p">,</span>
+            <span class="s1">'sass'</span><span class="p">:</span> <span class="s1">'vue-style-loader!css-loader!sass-loader?indentedSyntax'</span>
+          <span class="p">}</span>
+          <span class="c1">// other vue-loader options go here</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">js$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="na">exclude</span><span class="p">:</span> <span class="sr">/node_modules/</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">png|jpg|gif|svg</span><span class="se">)</span><span class="sr">$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'file-loader'</span><span class="p">,</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="s1">'assets/images/[name].[ext]?[hash]'</span>
+        <span class="p">},</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">handlebars$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="s2">"handlebars-loader"</span><span class="p">},</span>
+      <span class="p">{</span> <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">css$/</span><span class="p">,</span> <span class="na">loader</span><span class="p">:</span> <span class="nx">Ex</span><span class="p">.</span><span class="nx">extract</span><span class="p">({</span> <span class="na">fallbackLoader</span><span class="p">:</span> <span class="s1">'style-loader'</span><span class="p">,</span> <span class="na">loader</span><span class="p">:</span> <span class="s1">'css-loader'</span> <span class="p">})</span> <span class="p">},</span>
+      <span class="c1">// {</span>
+      <span class="c1">//   test:/\.html$/,</span>
+      <span class="c1">//   loader:'html-loader'</span>
+      <span class="c1">// }</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="na">resolve</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">alias</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s1">'vue$'</span><span class="p">:</span> <span class="s1">'vue/dist/vue.common.js'</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">devServer</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">historyApiFallback</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">noInfo</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="na">performance</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">hints</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="na">devtool</span><span class="p">:</span> <span class="s1">'#eval-source-map'</span><span class="p">,</span>
+  <span class="na">plugins</span><span class="p">:[</span>
+    <span class="k">new</span> <span class="nx">htmlWebpackPlugin</span><span class="p">({</span>
+      <span class="na">filename</span><span class="p">:</span><span class="s2">"index.html"</span><span class="p">,</span>
+      <span class="na">favicon</span><span class="p">:</span><span class="s1">'./src/assets/favicon.ico'</span><span class="p">,</span>
+      <span class="na">template</span><span class="p">:</span><span class="s1">'./src/tpl/jstpl/index.js'</span><span class="p">,</span>
+    <span class="p">}),</span>
+    <span class="c1">//集中管理css文件</span>
+    <span class="k">new</span> <span class="nx">Ex</span><span class="p">(</span><span class="s2">"assets/css/[name].css"</span><span class="p">)</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s1">'production'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">devtool</span> <span class="o">=</span> <span class="s1">'#source-map'</span>
+  <span class="c1">// http://vue-loader.vuejs.org/en/workflow/production.html</span>
+  <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">plugins</span> <span class="o">=</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">plugins</span> <span class="o">||</span> <span class="p">[]).</span><span class="nx">concat</span><span class="p">([</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">DefinePlugin</span><span class="p">({</span>
+      <span class="s1">'process.env'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">NODE_ENV</span><span class="p">:</span> <span class="s1">'"production"'</span>
+      <span class="p">}</span>
+    <span class="p">}),</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">optimize</span><span class="p">.</span><span class="nx">UglifyJsPlugin</span><span class="p">({</span>
+      <span class="na">sourceMap</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="na">compress</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">warnings</span><span class="p">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">}),</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">LoaderOptionsPlugin</span><span class="p">({</span>
+      <span class="na">minimize</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">})</span>
+  <span class="p">])</span>
+<span class="p">}</span>
+</code></pre></div>
+
 
 
                 <hr style="visibility: hidden;">
-
-                
-                <!-- 多说 Share start -->
-                <div class="ds-share"
-                    style="text-align: right"
-                    data-thread-key="/2016/12/15/webpack使用入门"
-                    data-title="webpack入门"
-                    data-url="https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/"
-                    data-images="https://chenyingqiao.github.io//img/post-bg-unix-linux.jpg"
-                    data-content="webpack
-
-
-  webpack 是一个可以让程序员可以使用require()
-可以包含js以及css和各种web资源  并且支持一些资源的转换
-吧... | 陈映峤的博客 | Lerko Blog " >
-                    <div class="ds-share-inline">
-                      <style> 
-                        .ds-share-icons-16 {display:none;} 
-                      </style>
-                      <ul class="ds-share-icons-16">
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- 多说 Share end-->
-                
-
 
                 <ul class="pager">
                     
@@ -280,19 +408,8 @@
 
 
                 
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread"
-                        data-thread-key="/2016/12/15/webpack使用入门"
-                        data-title="webpack入门"
-                        data-url="https://chenyingqiao.github.io//2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/" >
-                    </div>
-                </div>
-                <!-- 多说评论框 end -->
-                
 
                 
-
             </div>  
 
     <!-- Side Catalog Container -->
@@ -330,7 +447,7 @@
                             
         				
                             
-                				<a href="/tags/#database" title="database" rel="3">
+                				<a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -338,6 +455,12 @@
                             
                 				<a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
         				
@@ -355,28 +478,6 @@
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
             </div>
@@ -385,24 +486,6 @@
 </article>
 
 
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _user = 'lerko';
-
-    // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
 
 
 
@@ -473,7 +556,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -491,6 +574,7 @@
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -498,16 +582,8 @@
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -522,15 +598,15 @@
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -588,13 +664,26 @@
 
 
 
-
 <!-- Side Catalog -->
 
 <script type="text/javascript">
     function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
         a.each(function () {
             n = $(this).prop('tagName').toLowerCase();
             i = "#"+$(this).prop('id');
@@ -603,7 +692,7 @@
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
-        return true;    
+        return true;
     }
 
     generateCatalog(".catalog-body");
@@ -635,6 +724,9 @@
     });
 </script>
 
+
+
+<!-- Multi-Lingual -->
 
 
 

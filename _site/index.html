@@ -12,6 +12,10 @@
     
     <title>陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -187,6 +188,129 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/">
+        <h2 class="post-title">
+            Byte转换工具类
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Byte转换工具类
+        </h3>
+        
+        <div class="post-content-preview">
+            Byte转换工具类
+
+代码
+
+
+&lt;?php
+namespace common;
+
+/**
+ * @Author: CYQ19931115
+ * @Date:   2017-11-28 17:51:52
+ * @Last Modified by:   CYQ19931115
+ * @Last Modified time: 2017-11-29 11:11:41
+ */
+
+class By...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by lerko on April 14, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/">
+        <h2 class="post-title">
+            mysql 深入学习
+        </h2>
+        
+        <h3 class="post-subtitle">
+            深入学习mysql的基础原理
+        </h3>
+        
+        <div class="post-content-preview">
+            mysql的锁机制
+
+什么情况下会出现deadlock
+
+
+  一般在一个长事务执行的时候如果两个事务相互抢夺资源的话就会造成死锁
+innodb是行锁 MyISAM是表锁
+但是innodb在搜索范围为全表的时候也是会形成表锁
+比如下面这个更新语句
+
+
+update user set username='lerko' where phone like '186%';
+
+
+
+  在innodb如...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on January 13, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/">
+        <h2 class="post-title">
+            机器学习算法
+        </h2>
+        
+        <div class="post-content-preview">
+            机器学习
+
+朴素贝叶斯
+决策树（树型if）
+
+梯度下降
+1.线性回归{计算方差}
+
+2.支持向量机器
+比如4个点 2个红 2个绿用一个函数进行分类
+计算点到线的最小距离 那个大 说明这条线可以最好的分割数据
+
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko Blog on January 9, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2016/12/26/%E5%85%B3%E4%BA%8E%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8D%8F%E7%A8%8B/">
+        <h2 class="post-title">
+            sass入门
+        </h2>
+        
+        <h3 class="post-subtitle">
+            sass入门笔记
+        </h3>
+        
+        <div class="post-content-preview">
+            什么是协程
+
+和线程的区别
+
+参考网站：http://www.cnblogs.com/wonderKK/p/4062591.html
+
+说到Coroutine，我们必须提到两个更远的东西。在操作系统（os）级别，有进程（process）和线程（thread）两个（仅从我们常见的讲）实际的“东西”（不说概念是因为这两个家伙的确不仅仅是概念，而是实际存在的，os的代码管理的资源）。这两个东西都是...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on December 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2016/12/26/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8/">
         <h2 class="post-title">
             有限状态机
@@ -242,7 +366,7 @@
 
 
 嵌套
-## 变量
+变量
 
         </div>
     </a>
@@ -285,23 +409,6 @@ http 的初始化
     </a>
     <p class="post-meta">
         Posted by Lerko on December 26, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/12/26/js%E8%A7%84%E8%8C%83%E6%80%BB%E7%BB%93/">
-        <h2 class="post-title">
-            Js规范总结
-        </h2>
-        
-        <div class="post-content-preview">
-            
-
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Lerko Blog on December 26, 2016
     </p>
 </div>
 <hr>
@@ -394,111 +501,6 @@ server配置（nginx.conf） /usr/local/nginx/conf(ubuntu一般在 /etc/nginx/)
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/">
-        <h2 class="post-title">
-            crontab工具的使用
-        </h2>
-        
-        <h3 class="post-subtitle">
-            crontab是一个linux重要的计划任务工具
-        </h3>
-        
-        <div class="post-content-preview">
-            如何查看crontab是否安装？以及初次使用
-
-
-  我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装
-
-
-crontab -l
-如果出现 no crontab for root的话输入
-crontab -e
-会有如下的选项
-no crontab for root - using an empty one
-
-Select an editor.  To chan...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Lerko on December 18, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/">
-        <h2 class="post-title">
-            ps 进程管理命令
-        </h2>
-        
-        <h3 class="post-subtitle">
-            ps命令很强大！
-        </h3>
-        
-        <div class="post-content-preview">
-            查看所有用户的进程
-
-  ps aux
-
-
-
-  ps aux | grep [key]     可以进行筛选
-
-
-一些基本用法
-
-    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
-    ps -A 显示所有程序。 
-    ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。 
-    ps -e 此参数的效果和指定"A"参数相同。 ...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Lerko on December 18, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/">
-        <h2 class="post-title">
-            webpack入门
-        </h2>
-        
-        <h3 class="post-subtitle">
-            webpack入门笔记
-        </h3>
-        
-        <div class="post-content-preview">
-            webpack
-
-
-  webpack 是一个可以让程序员可以使用require()
-可以包含js以及css和各种web资源  并且支持一些资源的转换
-吧这些资源打包到在一起
-
-
-初次使用
-
-
-  使用npm install webpack安装webpack
-
-
-项目目录
-
----app
-	
-
-
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Lerko on December 15, 2016
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -533,7 +535,7 @@ Select an editor.  To chan...
                             
                         
                             
-                                <a href="/tags/#database" title="database" rel="3">
+                                <a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -541,6 +543,12 @@ Select an editor.  To chan...
                             
                                 <a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
                         
@@ -589,28 +597,6 @@ Select an editor.  To chan...
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
     		</div>
@@ -647,7 +633,7 @@ Select an editor.  To chan...
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -665,6 +651,7 @@ Select an editor.  To chan...
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -672,16 +659,8 @@ Select an editor.  To chan...
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -696,15 +675,15 @@ Select an editor.  To chan...
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -762,9 +741,11 @@ Select an editor.  To chan...
 
 
 
-
 <!-- Side Catalog -->
 
+
+
+<!-- Multi-Lingual -->
 
 
 

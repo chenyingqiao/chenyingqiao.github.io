@@ -12,6 +12,10 @@
     
     <title>crontab工具的使用 - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -203,13 +204,16 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
+                <!-- Multi-Lingual -->
+                
+
 				<h2 id="crontab">如何查看crontab是否安装？以及初次使用</h2>
 
 <blockquote>
   <p>我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装</p>
 </blockquote>
 
-<div class="highlighter-rouge">crontab -l
+<div class="highlighter-rouge"><pre class="codehilite"><code>crontab -l
 如果出现 no crontab for root的话输入
 crontab -e
 会有如下的选项
@@ -231,11 +235,11 @@ Choose 1-4 [2]: 4     ----&gt;我们一般选择的是第4个配置文件
     {每分钟执行往tmp目录下的某个文件写如当前日期信息}
 我们就可以这样写（&gt;&gt;标示的是将data输出的内容保存到文件中）
 */1 * * * * date &gt;&gt; /tmp/crontab_log.txt
-</div>
+</code></pre></div>
 
 <p>## crontab -e 中配置文件的配置格式</p>
 
-<div class="highlighter-rouge">
+<div class="highlighter-rouge"><pre class="codehilite"><code>
 * * * * * command
 第一个× ：分钟 0-59
 第二个× ：小时0-23
@@ -258,44 +262,10 @@ Choose 1-4 [2]: 4     ----&gt;我们一般选择的是第4个配置文件
 每天固定2点时间启动ｐｙｔｈｏｎ脚本
     0 2 * * * python xxx.py
 
-</div>
+</code></pre></div>
 
 
                 <hr style="visibility: hidden;">
-
-                
-                <!-- 多说 Share start -->
-                <div class="ds-share"
-                    style="text-align: right"
-                    data-thread-key="/2016/12/18/linux计划任务Crontab工具"
-                    data-title="crontab工具的使用"
-                    data-url="https://chenyingqiao.github.io//2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/"
-                    data-images="https://chenyingqiao.github.io//img/post-bg-digital-native.jpg"
-                    data-content="如何查看crontab是否安装？以及初次使用
-
-
-  我们可以铜鼓 crontab -l就可以查看是否crontab这个工具是否有安装
-
-
-crontab... | 陈映峤的博客 | Lerko Blog " >
-                    <div class="ds-share-inline">
-                      <style> 
-                        .ds-share-icons-16 {display:none;} 
-                      </style>
-                      <ul class="ds-share-icons-16">
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- 多说 Share end-->
-                
-
 
                 <ul class="pager">
                     
@@ -318,19 +288,8 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
 
 
                 
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread"
-                        data-thread-key="/2016/12/18/linux计划任务Crontab工具"
-                        data-title="crontab工具的使用"
-                        data-url="https://chenyingqiao.github.io//2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/" >
-                    </div>
-                </div>
-                <!-- 多说评论框 end -->
-                
 
                 
-
             </div>  
 
     <!-- Side Catalog Container -->
@@ -368,7 +327,7 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
                             
         				
                             
-                				<a href="/tags/#database" title="database" rel="3">
+                				<a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -376,6 +335,12 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
                             
                 				<a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
         				
@@ -393,28 +358,6 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
             </div>
@@ -423,24 +366,6 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
 </article>
 
 
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _user = 'lerko';
-
-    // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
 
 
 
@@ -511,7 +436,7 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -529,6 +454,7 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -536,16 +462,8 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -560,15 +478,15 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -626,13 +544,26 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
 
 
 
-
 <!-- Side Catalog -->
 
 <script type="text/javascript">
     function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
         a.each(function () {
             n = $(this).prop('tagName').toLowerCase();
             i = "#"+$(this).prop('id');
@@ -641,7 +572,7 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
-        return true;    
+        return true;
     }
 
     generateCatalog(".catalog-body");
@@ -673,6 +604,9 @@ crontab... | 陈映峤的博客 | Lerko Blog " >
     });
 </script>
 
+
+
+<!-- Multi-Lingual -->
 
 
 

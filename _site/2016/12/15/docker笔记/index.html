@@ -12,6 +12,10 @@
     
     <title>docker入门 - 陈映峤的博客 | Lerko Blog</title>
 
+    <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
+    <script >hljs.initHighlightingOnLoad();</script>
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
@@ -79,7 +83,7 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                   <!--  
+                    
                     <li>
                         <a href="/about/">About</a>
                     </li>
@@ -91,10 +95,7 @@
                     <li>
                         <a href="/tags/">Tags</a>
                     </li>
-                     -->
-                    <li>
-                        <a href="/tags/">Tags</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -203,6 +204,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
+                <!-- Multi-Lingual -->
+                
+
 				<blockquote>
   <p>是时候用docker部署开发环境了 （ngixn apache ubuntu mysql memcache 。。。一应俱全）</p>
 </blockquote>
@@ -240,23 +244,23 @@
   <li>我们从网易蜂巢下载镜像</li>
 </ul>
 
-<div class="language-shell highlighter-rouge">//https://c.163.com/hub#/m/repository/?repoId<span class="o">=</span>3096
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code>//https://c.163.com/hub#/m/repository/?repoId<span class="o">=</span>3096
 docker pull hub.c.163.com/library/busybox:latest
-</div>
+</code></pre></div>
 <ul>
   <li>然后运行镜像（运行一个交互的shell） –关闭后自动退出</li>
 </ul>
 
-<div class="language-shell highlighter-rouge"><span class="c"># -i Keep STDIN open even if not attached（交互式的）</span>
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="c"># -i Keep STDIN open even if not attached（交互式的）</span>
 <span class="c"># -t Allocate a pseudo-TTY（有终端）</span>
 sudo docker run -i -t ubuntu /bin/bash
-</div>
+</code></pre></div>
 
 <ul>
   <li>运行一个长期运行的实例</li>
 </ul>
 
-<div class="language-shell highlighter-rouge"><span class="c"># 开始一个长时间运行的docker实例 运行的是后面的那条shell</span>
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="c"># 开始一个长时间运行的docker实例 运行的是后面的那条shell</span>
 <span class="nv">JOB</span><span class="o">=</span><span class="k">$(</span>sudo docker run -d ubuntu /bin/sh -c <span class="s2">"while true; do echo Hello world; sleep 1; done"</span><span class="k">)</span>
 
 <span class="c"># Collect（收集） the output of the job so far  这里的$JoB也可以是容器的id</span>
@@ -264,7 +268,7 @@ sudo docker logs <span class="nv">$JOB</span>
 
 <span class="c"># Kill the job</span>
 sudo docker <span class="nb">kill</span> <span class="nv">$JOB</span>
-</div>
+</code></pre></div>
 
 <ul>
   <li>运行一个ssh 用主机链接</li>
@@ -274,7 +278,7 @@ sudo docker <span class="nb">kill</span> <span class="nv">$JOB</span>
   <p>docker 的commit标示的是提交当前的状态 不然如果容器停止了就会恢复到原来的情况</p>
 </blockquote>
 
-<div class="language-shell highlighter-rouge"><span class="c"># -d, --detach Run container in background and print container ID（保持后台守护运行）</span>
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="c"># -d, --detach Run container in background and print container ID（保持后台守护运行）</span>
 <span class="c"># -p, --publish=[] Publish a container's port(s) to the host(分配端口)</span>
 <span class="c"># Hello! We are going to try and install openssh on a container and run it as a service</span>
 <span class="c"># let's pull ubuntu to get a base ubuntu image.</span>
@@ -331,25 +335,25 @@ sudo docker <span class="nb">kill</span> <span class="nv">$JOB</span>
 <span class="gp">$ </span>ifconfig
 <span class="gp">$ </span>ssh root@192.168.33.10 -p 49154
 <span class="c"># Thanks for watching, Thatcher thatcher@dotcloud.com</span>
-</div>
+</code></pre></div>
 
 <h2 id="docker-">docker 导入导出</h2>
 
 <p>导出</p>
 
-<div class="language-shell highlighter-rouge"><span class="gp">$ </span>sudo docker ps -a
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="gp">$ </span>sudo docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                    PORTS               NAMES
 7691a814370e        ubuntu:14.04        <span class="s2">"/bin/bash"</span>         36 hours ago        Exited <span class="o">(</span>0<span class="o">)</span> 21 hours ago                       <span class="nb">test</span>
 <span class="gp">$ </span>sudo docker <span class="nb">export </span>7691a814370e &gt; ubuntu.tar
-</div>
+</code></pre></div>
 
 <p>导入</p>
 
-<div class="language-shell highlighter-rouge"><span class="gp">$ </span>cat ubuntu.tar | sudo docker import - <span class="nb">test</span>/ubuntu:v1.0
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="gp">$ </span>cat ubuntu.tar | sudo docker import - <span class="nb">test</span>/ubuntu:v1.0
 <span class="gp">$ </span>sudo docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
 <span class="nb">test</span>/ubuntu         v1.0                9d37a6082e97        About a minute ago   171.3 MB
-</div>
+</code></pre></div>
 
 <h2 id="docker-2">如何进入docker容器</h2>
 
@@ -404,38 +408,6 @@ commit 之后就会产生一个新的镜像
 
                 <hr style="visibility: hidden;">
 
-                
-                <!-- 多说 Share start -->
-                <div class="ds-share"
-                    style="text-align: right"
-                    data-thread-key="/2016/12/15/docker笔记"
-                    data-title="docker入门"
-                    data-url="https://chenyingqiao.github.io//2016/12/15/docker%E7%AC%94%E8%AE%B0/"
-                    data-images="https://chenyingqiao.github.io//img/post-bg-universe.jpg"
-                    data-content="
-  是时候用docker部署开发环境了 （ngixn apache ubuntu mysql memcache 。。。一应俱全）
-
-
-docker的一些... | 陈映峤的博客 | Lerko Blog " >
-                    <div class="ds-share-inline">
-                      <style> 
-                        .ds-share-icons-16 {display:none;} 
-                      </style>
-                      <ul class="ds-share-icons-16">
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- 多说 Share end-->
-                
-
-
                 <ul class="pager">
                     
                     
@@ -450,19 +422,8 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
 
 
                 
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread"
-                        data-thread-key="/2016/12/15/docker笔记"
-                        data-title="docker入门"
-                        data-url="https://chenyingqiao.github.io//2016/12/15/docker%E7%AC%94%E8%AE%B0/" >
-                    </div>
-                </div>
-                <!-- 多说评论框 end -->
-                
 
                 
-
             </div>  
 
     <!-- Side Catalog Container -->
@@ -500,7 +461,7 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
                             
         				
                             
-                				<a href="/tags/#database" title="database" rel="3">
+                				<a href="/tags/#database" title="database" rel="4">
                                     database
                                 </a>
                             
@@ -508,6 +469,12 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
                             
                 				<a href="/tags/#server" title="server" rel="4">
                                     server
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#web" title="web" rel="2">
+                                    web
                                 </a>
                             
         				
@@ -525,28 +492,6 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://su.gallery/">Su</a></li>
-                    
-                        <li><a href="http://mida.re/">乱序</a></li>
-                    
-                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
-                    
-                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
-                    
-                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
-                    
-                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
-                    
-                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
-                    
-                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
-                    
-                        <li><a href="http://dhong.co">DHong Say</a></li>
-                    
-                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
-                    
-                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
-                    
                 </ul>
                 
             </div>
@@ -555,24 +500,6 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
 </article>
 
 
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    // dynamic User by Hux
-    var _user = 'lerko';
-
-    // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
 
 
 
@@ -643,7 +570,7 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lerko Blog 2016
+                    Copyright &copy; Lerko Blog 2018
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
@@ -661,6 +588,7 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
 <script src="/js/jquery.min.js "></script>
 
 <!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
 <script src="/js/bootstrap.min.js "></script>
 
 <!-- Custom Theme JavaScript -->
@@ -668,16 +596,8 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
 
 <!-- Service Worker -->
 
-<script type="text/javascript">
-    if(navigator.serviceWorker){
-        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {console.log('Service Worker Registered. ', registration)})
-            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
-    }
-</script>
-
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
 <!-- async load function -->
@@ -692,15 +612,15 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
      so Huxblog drops it officially.
 
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
-     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
 -->
 <!--
     <script>
@@ -758,13 +678,26 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
 
 
 
-
 <!-- Side Catalog -->
 
 <script type="text/javascript">
     function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
         a.each(function () {
             n = $(this).prop('tagName').toLowerCase();
             i = "#"+$(this).prop('id');
@@ -773,7 +706,7 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
-        return true;    
+        return true;
     }
 
     generateCatalog(".catalog-body");
@@ -805,6 +738,9 @@ docker的一些... | 陈映峤的博客 | Lerko Blog " >
     });
 </script>
 
+
+
+<!-- Multi-Lingual -->
 
 
 
