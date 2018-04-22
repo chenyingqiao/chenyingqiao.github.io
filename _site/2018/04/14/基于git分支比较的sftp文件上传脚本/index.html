@@ -10,7 +10,7 @@
     <meta name="keywords"  content="一个不知道在干什么的人">
     <meta name="theme-color" content="#000000">
     
-    <title>ps 进程管理命令 - 陈映峤的博客 | Lerko Blog</title>
+    <title>基于git分支比较的sftp文件上传脚本 - 陈映峤的博客 | Lerko Blog</title>
 
     <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
     <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
@@ -23,7 +23,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://chenyingqiao.github.io//2016/12/18/linux-ps%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/">
+    <link rel="canonical" href="https://chenyingqiao.github.io//2018/04/14/%E5%9F%BA%E4%BA%8Egit%E5%88%86%E6%94%AF%E6%AF%94%E8%BE%83%E7%9A%84sftp%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%84%9A%E6%9C%AC/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -159,13 +159,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/post-bg-e2e-ux.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-universe.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/post-bg-e2e-ux.jpg')
+        background-image: url('/img/post-bg-universe.jpg')
     }
 
     
@@ -178,15 +178,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#server" title="server">server</a>
+                        <a class="tag" href="/tags/#git" title="git">git</a>
                         
                     </div>
-                    <h1>ps 进程管理命令</h1>
+                    <h1>基于git分支比较的sftp文件上传脚本</h1>
                     
                     
-                    <h2 class="subheading">ps命令很强大！</h2>
+                    <h2 class="subheading">基于git分支比较的sftp文件上传脚本</h2>
                     
-                    <span class="meta">Posted by Lerko on December 18, 2016</span>
+                    <span class="meta">Posted by lerko on April 14, 2018</span>
                 </div>
             </div>
         </div>
@@ -207,224 +207,91 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h2 id="section">查看所有用户的进程</h2>
-<blockquote>
-  <p>ps aux</p>
-</blockquote>
+				<h1 id="gitsftp">基于git分支比较的sftp文件上传脚本</h1>
 
-<blockquote>
-  <p>ps aux | grep [key]     可以进行筛选</p>
-</blockquote>
+<h2 id="section">脚本代码</h2>
 
-<h2 id="section-1">一些基本用法</h2>
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code><span class="c">#!/bin/bash</span>
 
-<div class="highlighter-rouge"><pre class="codehilite"><code>    ps a 显示现行终端机下的所有程序，包括其他用户的程序。 
-    ps -A 显示所有程序。 
-    ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。 
-    ps -e 此参数的效果和指定"A"参数相同。 
-    ps e 列出程序时，显示每个程序所使用的环境变量。 
-    ps f 用ASCII字符显示树状结构，表达程序间的相互关系。 
-    ps -H 显示树状结构，表示程序间的相互关系。 
-    ps -N 显示所有的程序，除了执行ps指令终端机下的程序之外。 
-    ps s 采用程序信号的格式显示程序状况。 
-    ps S 列出程序时，包括已中断的子程序资料。 
-    ps -t&lt;终端机编号&gt; 指定终端机编号，并列出属于该终端机的程序的状况。 
-    ps u 以用户为主的格式来显示程序状况。 
-    ps x 显示所有程序，不以终端机来区分。
+<span class="nv">localpath</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$1</span> <span class="o">==</span> <span class="s1">''</span> <span class="o">]]</span>; <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"没有写根目录"</span>
+    <span class="nb">exit
+</span><span class="k">fi
+</span><span class="nv">remotepath</span><span class="o">=</span><span class="s2">"/var/www/html/</span><span class="nv">$1</span><span class="s2">/"</span>
+<span class="nv">branch</span><span class="o">=</span><span class="k">${</span><span class="nv">2</span><span class="p">-</span><span class="s1">'master'</span><span class="k">}</span>
+<span class="nv">envMathine</span><span class="o">=</span><span class="k">${</span><span class="nv">3</span><span class="p">-</span><span class="s1">'138'</span><span class="k">}</span>
+//这里你可以根据第3个参数输入匹配到不同的sftp地址
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$envMathine</span> <span class="o">==</span> <span class="s1">'138'</span> <span class="o">]]</span>; <span class="k">then
+    </span><span class="nv">envPtpCmd</span><span class="o">=</span><span class="s1">'sftp://deploy:deploy@12301*@192.168.20.138:22'</span>
+<span class="k">else
+    </span><span class="nv">envPtpCmd</span><span class="o">=</span><span class="s1">'sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301'</span>
+<span class="k">fi
+
+function </span>sftp_upload_file<span class="o">(){</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$remotepath</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]]</span>; <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"没有远程目录的参数"</span>
+        <span class="nb">exit
+    </span><span class="k">fi
+    </span><span class="nb">echo</span> <span class="s2">"需要上传的文件如下"</span>
+    <span class="k">for </span>file <span class="k">in</span> <span class="sb">`</span>git diff --raw --diff-filter<span class="o">=</span>ACMRTUXB <span class="nv">$branch</span> |awk <span class="s1">'{print $6}'</span><span class="sb">`</span>; <span class="k">do
+        </span><span class="nb">echo</span> <span class="nv">$file</span>
+        <span class="nv">remoteDir</span><span class="o">=</span><span class="nv">$remotepath</span><span class="k">${</span><span class="nv">file</span><span class="p">%/*</span><span class="k">}</span>
+        <span class="nv">cmd</span><span class="o">=</span><span class="k">${</span><span class="nv">cmd</span><span class="k">}</span><span class="s1">$'</span><span class="se">\n</span><span class="s1">'</span><span class="s2">"cd </span><span class="nv">$remoteDir</span><span class="s2">; put </span><span class="nv">$localpath</span><span class="s2">/</span><span class="nv">$file</span><span class="s2">;"</span>
+    <span class="k">done
+    </span><span class="nv">cmd</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">cmd</span><span class="k">}</span><span class="s2"> bye"</span>
+    <span class="nb">echo</span> <span class="s2">""</span>
+    <span class="nb">echo</span> <span class="s2">"=================="</span>
+    <span class="nb">echo</span> <span class="s2">"上传远程路径:</span><span class="nv">$remotepath</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"上传的pft:</span><span class="nv">$envPtpCmd</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"是否上传数据 yes|no"</span>
+    <span class="nb">read</span> -a uploadAsk
+
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$uploadAsk</span> <span class="o">==</span> <span class="s1">'yes'</span> <span class="o">]]</span>; <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"上传"</span>
+        lftp <span class="nv">$envPtpCmd</span> -e <span class="s2">"</span><span class="nv">$cmd</span><span class="s2">"</span>
+    <span class="k">else
+        </span><span class="nb">echo</span> <span class="s2">"取消上传"</span>
+    <span class="k">fi
+    </span><span class="nb">echo</span> <span class="s2">"=================="</span>
+<span class="o">}</span>
+
+<span class="k">function </span>getPftPath<span class="o">(){</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$1</span> <span class="o">==</span> <span class="s2">"dev"</span> <span class="o">]]</span>; <span class="k">then
+        </span><span class="nb">echo</span> <span class="s1">'sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301'</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="nv">$1</span> <span class="o">==</span> <span class="s2">"138"</span> <span class="o">]]</span>; <span class="k">then
+        </span><span class="nb">echo</span> <span class="s1">'sftp://deploy:deploy@12301*@192.168.20.138:22'</span>
+    <span class="k">else
+        </span><span class="nb">echo</span> <span class="s1">'sftp://deploy:deploy@12301*@192.168.20.138:22'</span>
+    <span class="k">fi
+    return </span>1;
+<span class="o">}</span>
+
+
+<span class="k">function </span>checkGitRep<span class="o">(){</span>
+    <span class="nv">log</span><span class="o">=</span><span class="sb">`</span>git log|grep fatal<span class="sb">`</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$log</span> <span class="o">==</span> <span class="s1">''</span> <span class="o">]]</span>; <span class="k">then
+        return </span>1
+    <span class="k">else
+        return </span>0
+    <span class="k">fi</span>
+<span class="o">}</span>
+
+
+checkGitRep 
+
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$?</span> <span class="o">==</span> 0 <span class="o">]]</span>; <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"不是一个git仓库!"</span>
+    <span class="nb">exit
+</span><span class="k">fi
+
+</span>sftp_upload_file
 </code></pre></div>
 
-<h4 id="section-2">下面是一个例子</h4>
+<h2 id="section-1">使用方法</h2>
 
-<div class="highlighter-rouge"><pre class="codehilite"><code>USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.0 121764  5856 ?        Ss   09:59   0:01 /sbin/init splash
-root         2  0.0  0.0      0     0 ?        S    09:59   0:00 [kthreadd]
-root         3  0.0  0.0      0     0 ?        S    09:59   0:00 [ksoftirqd/0]
-root         5  0.0  0.0      0     0 ?        S&lt;   09:59   0:00 [kworker/0:0H]
-root         7  0.1  0.0      0     0 ?        S    09:59   0:04 [rcu_sched]
-root         8  0.0  0.0      0     0 ?        S    09:59   0:00 [rcu_bh]
-root         9  0.0  0.0      0     0 ?        S    09:59   0:00 [migration/0]
-root        10  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/0]
-root        11  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/1]
-root        12  0.0  0.0      0     0 ?        S    09:59   0:00 [migration/1]
-root        13  0.0  0.0      0     0 ?        S    09:59   0:00 [ksoftirqd/1]
-root        15  0.0  0.0      0     0 ?        S&lt;   09:59   0:00 [kworker/1:0H]
-root        16  0.0  0.0      0     0 ?        S    09:59   0:00 [watchdog/2]
-
-USER:该进程属于哪个用户账号的
-PID：该进程的进程标识符
-%CPU：该进程使用掉的CPU资源百分比
-%MEM：该进程所占用掉的物理内存百分比
-VSZ：该进程使用掉的虚拟内存量（KB）
-RSS：该进程占用的固定的内存量（KB）
-TTY：该进程是在哪个终端机上运行，若与终端机无关则显示“？”
-STAT：该进程目前的状态，与ps -l显示的S标识相同
-START：该进程被触发启动的时间
-TIME：该进程实际占用的CPU时间
-COMMAND：该进程的实际命令
+<div class="language-shell highlighter-rouge"><pre class="codehilite"><code>upload-diff-file <span class="o">[</span>远端文件夹] <span class="o">[</span>比对分支] <span class="o">[</span>上传的服务器]
 </code></pre></div>
-
-<h4 id="stat">关于stat标示列</h4>
-<div class="highlighter-rouge"><pre class="codehilite"><code>    D    不可中断     Uninterruptible sleep (usually IO)
-    R    正在运行，或在队列中的进程
-    S    处于休眠状态
-    T    停止或被追踪
-    Z    僵尸进程
-    W    进入内存交换（从内核2.6开始无效）
-    X    死掉的进程
-
-
-    &lt;    高优先级
-    N    低优先级
-    L    有些页被锁进内存
-    s    包含子进程
-    +    位于后台的进程组；
-    l    多线程，克隆线程  multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
-</code></pre></div>
-
-<blockquote>
-  <p>想在我运行一个swoole的tcpserver
-然后我查看 <code class="highlighter-rouge">ps aux |grep php</code></p>
-</blockquote>
-
-<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ *ps auxf | grep php*
-root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
-www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-www-data  1116  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-chen     14639  0.0  0.0  14464  2148 pts/1    S+   11:27   0:00      \_ grep php
-chen      7957  0.0  0.1 595384 10916 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7958  0.0  0.1 299436 10104 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7963  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7964  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7965  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7966  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7967  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7968  0.0  0.1 285640 12980 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7969  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7974  0.0  0.1 595384 10900 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7975  0.0  0.0 299436 10028 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7980  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7981  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7982  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7983  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7984  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7985  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7986  0.0  0.1 285640 10348 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7987  0.0  0.1 285640 10352 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-</code></pre></div>
-
-<p>我们可以看到有两个 stat为 Ssl的tcp_server.php的进程</p>
-
-<p><code class="highlighter-rouge">因为我不小心运行了两次</code></p>
-
-<h2 id="section-3">学习如何杀死进程</h2>
-
-<h4 id="kill-">kill 命令的使用</h4>
-
-<p><code class="highlighter-rouge">*kill[参数][进程号]*</code></p>
-
-<div class="highlighter-rouge"><pre class="codehilite"><code>-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称
--a  当处理当前进程时，不限制命令名和进程号的对应关系
--p  指定kill 命令只打印相关进程的进程号，而不发送任何信号
--s  指定发送信号
--u  指定用户 
-</code></pre></div>
-
-<blockquote>
-  <p>实例1：列出所有信号名称</p>
-</blockquote>
-
-<p><code class="highlighter-rouge">*kill -l*</code></p>
-
-<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ kill -l
- 1) SIGHUP   2) SIGINT   3) SIGQUIT  4) SIGILL   5) SIGTRAP
- 6) SIGABRT  7) SIGBUS   8) SIGFPE   9) SIGKILL 10) SIGUSR1
-11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM
-16) SIGSTKFLT   17) SIGCHLD 18) SIGCONT 19) SIGSTOP 20) SIGTSTP
-21) SIGTTIN 22) SIGTTOU 23) SIGURG  24) SIGXCPU 25) SIGXFSZ
-26) SIGVTALRM   27) SIGPROF 28) SIGWINCH    29) SIGIO   30) SIGPWR
-31) SIGSYS  34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3
-38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
-43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13
-48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12
-53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7
-58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
-63) SIGRTMAX-1  64) SIGRTMAX    
-
-
-只有第9种信号(SIGKILL)才可以无条件终止进程，其他信号进程都有权利忽略。    下面是常用的信号：
-HUP    1    终端断线
-INT     2    中断（同 Ctrl + C）
-QUIT    3    退出（同 Ctrl + \）
-TERM   15    终止
-KILL    9    强制终止
-CONT   18    继续（与STOP相反， fg/bg命令）
-STOP    19    暂停（同 Ctrl + Z）
-</code></pre></div>
-
-<blockquote>
-  <p>实例2：先用ps查找进程，然后用kill杀掉</p>
-</blockquote>
-
-<p><code class="highlighter-rouge">*kill 3268*</code></p>
-
-<blockquote>
-  <p>实例3：彻底杀死进程</p>
-</blockquote>
-
-<p><code class="highlighter-rouge">*kill -9 223*</code></p>
-
-<blockquote>
-  <p>实例4：杀死指定用户所有进程</p>
-</blockquote>
-
-<p><code class="highlighter-rouge">kill -9 $(ps -ef | grep peidalinux)</code>
-<code class="highlighter-rouge">kill -u peidalinux</code></p>
-
-<blockquote>
-  <p>实例5：init进程是不可杀的</p>
-</blockquote>
-
-<p><code class="highlighter-rouge">kill -9 1</code></p>
-
-<div class="highlighter-rouge"><pre class="codehilite"><code>[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17563 17534  0 17:37 pts/1    00:00:00 grep init
-[root@localhost ~]# kill -9 1
-[root@localhost ~]# kill -HUP 1
-[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17565 17534  0 17:38 pts/1    00:00:00 grep init
-[root@localhost ~]# kill -KILL 1
-[root@localhost ~]# ps -ef|grep init
-root         1     0  0 Nov02 ?        00:00:00 init [3]                  
-root     17567 17534  0 17:38 pts/1    00:00:00 grep init
-[root@localhost ~]#
-</code></pre></div>
-
-<blockquote>
-  <p>现在我们要杀死一个tcp_server.php 的重复进程</p>
-</blockquote>
-
-<div class="highlighter-rouge"><pre class="codehilite"><code>chen@chen-pc:/var/www/html/test/swoole$ `kill 7974`
-chen@chen-pc:/var/www/html/test/swoole$ ps auxf | grep php
-root      1069  0.0  0.2 317444 28224 ?        Ss   09:59   0:00 php-fpm: master process (/etc/php5/fpm/php-fpm.conf)
-www-data  1115  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-www-data  1116  0.0  0.0 317444  8860 ?        S    09:59   0:00  \_ php-fpm: pool www
-chen     15469  0.0  0.0  14464  2224 pts/1    S+   11:41   0:00      \_ grep php
-chen      7957  0.0  0.1 595384 10916 ?        Ssl  10:44   0:00 php5 -f tcp_server.php
-chen      7958  0.0  0.1 299436 10104 ?        S    10:44   0:00  \_ php5 -f tcp_server.php
-chen      7963  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7964  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7965  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7966  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7967  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7968  0.0  0.1 285640 12980 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7969  0.0  0.1 285640 10392 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f tcp_server.php
-
-</code></pre></div>
-
 
 
                 <hr style="visibility: hidden;">
@@ -432,19 +299,12 @@ chen      7970  0.0  0.1 285640 10396 ?        S    10:44   0:00      \_ php5 -f
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/12/15/webpack%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/" data-toggle="tooltip" data-placement="top" title="webpack入门">
+                        <a href="/2018/04/14/Byte%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB/" data-toggle="tooltip" data-placement="top" title="Byte转换工具类">
                         Previous<br>
-                        <span>webpack入门</span>
+                        <span>Byte转换工具类</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/12/18/linux%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1Crontab%E5%B7%A5%E5%85%B7/" data-toggle="tooltip" data-placement="top" title="crontab工具的使用">
-                        Next<br>
-                        <span>crontab工具的使用</span>
-                        </a>
-                    </li>
                     
                 </ul>
 

@@ -518,6 +518,12 @@ set global long_query_time;
 set global slow_query_log=on;
 </code></pre></div>
 
+<h2 id="section-6">业务分表查询</h2>
+
+<blockquote>
+  <p>如果是不进行关联查询,应该提前将扩展字段加到主表上面进行查询(扩展字段指的是那些在子表中作为查询条件会有很多数据的字段)</p>
+</blockquote>
+
 
                 <hr style="visibility: hidden;">
 
@@ -596,6 +602,8 @@ set global slow_query_log=on;
                 				<a href="/tags/#web" title="web" rel="2">
                                     web
                                 </a>
+                            
+        				
                             
         				
                             

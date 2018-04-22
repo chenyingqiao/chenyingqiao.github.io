@@ -5,9 +5,106 @@
     <description>迷茫</description>
     <link>https://chenyingqiao.github.io//</link>
     <atom:link href="https://chenyingqiao.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 14 Apr 2018 20:56:07 +0800</pubDate>
-    <lastBuildDate>Sat, 14 Apr 2018 20:56:07 +0800</lastBuildDate>
+    <pubDate>Tue, 17 Apr 2018 17:29:12 +0800</pubDate>
+    <lastBuildDate>Tue, 17 Apr 2018 17:29:12 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>基于git分支比较的sftp文件上传脚本</title>
+        <description>&lt;h1 id=&quot;gitsftp&quot;&gt;基于git分支比较的sftp文件上传脚本&lt;/h1&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;脚本代码&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;localpath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;没有写根目录&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;remotepath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/var/www/html/&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;branch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;master&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;envMathine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;138&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+//这里你可以根据第3个参数输入匹配到不同的sftp地址
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$envMathine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;138&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;envPtpCmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sftp://deploy:deploy@12301*@192.168.20.138:22&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else
+    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;envPtpCmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi
+
+function &lt;/span&gt;sftp_upload_file&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$remotepath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;没有远程目录的参数&quot;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;exit
+    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;需要上传的文件如下&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;file &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;git diff --raw --diff-filter&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ACMRTUXB &lt;span class=&quot;nv&quot;&gt;$branch&lt;/span&gt; |awk &lt;span class=&quot;s1&quot;&gt;&#39;{print $6}&#39;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;remoteDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$remotepath&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%/*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;$&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$remoteDir&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;; put &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$localpath&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;;&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;done
+    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; bye&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==================&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;上传远程路径:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$remotepath&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;上传的pft:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$envPtpCmd&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;是否上传数据 yes|no&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt; -a uploadAsk
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$uploadAsk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yes&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;上传&quot;&lt;/span&gt;
+        lftp &lt;span class=&quot;nv&quot;&gt;$envPtpCmd&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$cmd&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;取消上传&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fi
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==================&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;getPftPath&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;dev&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sftp://chenyq:ru4jxasIRKYyz5oa@121.196.193.109:12301&#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;138&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sftp://deploy:deploy@12301*@192.168.20.138:22&#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sftp://deploy:deploy@12301*@192.168.20.138:22&#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fi
+    return &lt;/span&gt;1;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;checkGitRep&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;git log|grep fatal&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$log&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+        return &lt;/span&gt;1
+    &lt;span class=&quot;k&quot;&gt;else
+        return &lt;/span&gt;0
+    &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+checkGitRep 
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;不是一个git仓库!&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi
+
+&lt;/span&gt;sftp_upload_file
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;使用方法&lt;/h2&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;upload-diff-file &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;远端文件夹] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;比对分支] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;上传的服务器]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 14 Apr 2018 00:00:00 +0800</pubDate>
+        <link>https://chenyingqiao.github.io//2018/04/14/%E5%9F%BA%E4%BA%8Egit%E5%88%86%E6%94%AF%E6%AF%94%E8%BE%83%E7%9A%84sftp%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%84%9A%E6%9C%AC/</link>
+        <guid isPermaLink="true">https://chenyingqiao.github.io//2018/04/14/%E5%9F%BA%E4%BA%8Egit%E5%88%86%E6%94%AF%E6%AF%94%E8%BE%83%E7%9A%84sftp%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%84%9A%E6%9C%AC/</guid>
+        
+        <category>git</category>
+        
+        
+      </item>
     
       <item>
         <title>Byte转换工具类</title>
@@ -502,6 +599,12 @@ set global long_query_time;
 # 设置开启满查询日志
 set global slow_query_log=on;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;业务分表查询&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果是不进行关联查询,应该提前将扩展字段加到主表上面进行查询(扩展字段指的是那些在子表中作为查询条件会有很多数据的字段)&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         <pubDate>Fri, 13 Jan 2017 00:00:00 +0800</pubDate>
         <link>https://chenyingqiao.github.io//2017/01/13/mysql%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/</link>
@@ -1409,184 +1512,6 @@ y&amp;lt;-c(0.11,0.12,0.13,0.15,0.18)&lt;/p&gt;
         <pubDate>Sun, 18 Dec 2016 00:00:00 +0800</pubDate>
         <link>https://chenyingqiao.github.io//2016/12/18/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</link>
         <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</guid>
-        
-        <category>server</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>nginx服务器配置</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;首先找到配置文件&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;服务器是centos的环境
-使用的是OneinStack这个php，java的运行环境一键安装工具&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这个工具里面集成了一些列的sh脚本工具可以一键使用&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;一般配置文件的存放路径以及nginx的主要程序存放路径&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;server配置（nginx.conf） /usr/local/nginx/conf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ubuntu一般在 /etc/nginx/&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-主程序                             /etc/init.d/ngin
-
-科普centos的一些基本命令
-yum ：安装软件包 yum install &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;软件包名称]
-rpm ：软件包管理工具  查看说有软件包 rpm -qa |grep httpd ---&amp;gt;后面是过滤选项
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;现在是配置文件的内容&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;nginx 主要的配置文件nginx.conf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;user www www;
-worker_processes auto;
-
-error_log /data/wwwlogs/error_nginx.log crit;
-pid /var/run/nginx.pid;
-worker_rlimit_nofile 51200;
-
-events &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    use epoll;
-    worker_connections 51200;
-    multi_accept on;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-http &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    include mime.types;
-    default_type application/octet-stream;
-    server_names_hash_bucket_size 128;
-    client_header_buffer_size 32k;
-    large_client_header_buffers 4 32k;
-    client_max_body_size 1024m;
-    sendfile on;
-    tcp_nopush on;
-    keepalive_timeout 120;
-    server_tokens off;
-    tcp_nodelay on;
-    
-    fastcgi_connect_timeout 300;
-    fastcgi_send_timeout 300;
-    fastcgi_read_timeout 300;
-    fastcgi_buffer_size 64k;
-    fastcgi_buffers 4 64k;
-    fastcgi_busy_buffers_size 128k;
-    fastcgi_temp_file_write_size 128k;
-
-    &lt;span class=&quot;c&quot;&gt;#Gzip Compression&lt;/span&gt;
-    gzip on;
-    gzip_buffers 16 8k;
-    gzip_comp_level 6;
-    gzip_http_version 1.1;
-    gzip_min_length 256;
-    gzip_proxied any;
-    gzip_vary on;
-    gzip_types
-        text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
-        text/javascript application/javascript application/x-javascript
-        text/x-json application/json application/x-web-app-manifest+json
-        text/css text/plain text/x-component
-        font/opentype application/x-font-ttf application/vnd.ms-fontobject
-        image/x-icon;
-    gzip_disable &lt;span class=&quot;s2&quot;&gt;&quot;MSIE [1-6]&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;(?!.*SV1)&quot;&lt;/span&gt;;
-
-    &lt;span class=&quot;c&quot;&gt;#If you have a lot of static files to serve through Nginx then caching of the files&#39; metadata (not the actual files&#39; contents) can save some latency.&lt;/span&gt;
-    open_file_cache &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000 &lt;span class=&quot;nv&quot;&gt;inactive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20s;
-    open_file_cache_valid 30s;
-    open_file_cache_min_uses 2;
-    open_file_cache_errors on;
-
-&lt;span class=&quot;c&quot;&gt;######################## default ############################&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#默认的代理配置（反向代理是nginx的一个重要功能）&lt;/span&gt;
-    server &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    listen 80;
-    server_name 121.42.48.14;
-    access_log /data/wwwlogs/access_nginx.log combined;
-    root /data/wwwroot/default;
-    index index.html index.htm index.php;
-    location /nginx_status &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        stub_status on;
-        access_log off;
-        allow 127.0.0.1;
-        deny all;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    location ~ &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;^/]&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;php&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/|&lt;span class=&quot;nv&quot;&gt;$)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;#fastcgi_pass remote_php_ip:9000;&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;#这里对接fastcgi接口  &lt;/span&gt;
-        fastcgi_pass unix:/dev/shm/php-cgi.sock;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    location ~ .&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gif|jpg|jpeg|png|bmp|swf|flv|ico&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        expires 30d;
-        access_log off;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    location ~ .&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;js|css&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;?&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        expires 7d;
-        access_log off;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;########################## vhost #############################&lt;/span&gt;
-    include vhost/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.conf; &lt;span class=&quot;c&quot;&gt;#这里包含了其他文件加里面的配置文件&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;apache-&quot;&gt;附带我本机与apache共存的配置 （其实就改了一下端口）&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;端口更改需要service nginx restart一下进程&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;codehilite&quot;&gt;&lt;code&gt;server &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    listen 8080 default_server;
-    listen &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;::]:8080 default_server;
-
-    root /var/www/Nginx;
-
-    &lt;span class=&quot;c&quot;&gt;# 这里需要加index.php 如果你开启了php的支持&lt;/span&gt;
-    index index.html index.php index.htm index.nginx-debian.html;
-    server_name _;
-    &lt;span class=&quot;c&quot;&gt;#location字段需要深入学习&lt;/span&gt;
-    location / &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        try_files &lt;span class=&quot;nv&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$uri&lt;/span&gt;/ &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;404;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    location ~ &lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;php&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;fastcgi&quot;&gt;科普一下fastcgi&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Nginx不支持对外部程序的直接调用或者解析，所有的外部程序（包括PHP）必须通过FastCGI接口来调用。
-FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可以是ip socket）。
-为了调用CGI程序，还需要一个FastCGI的wrapper（wrapper可以理解为用于启动另一个程序的程序），
-这个wrapper绑定在某个固定socket上，如端口或者文件socket。当Nginx将CGI请求发送给这个socket的时候，
-通过FastCGI接口，wrapper接收到请求，然后派生出一个新的线程，
-这个线程调用解释器或者外部程序处理脚本并读取返回数据；
-接着，wrapper再将返回的数据通过FastCGI接口，
-沿着固定的socket传递给Nginx；最后，Nginx将返回的数据发送给客户端。这就是Nginx+FastCGI的整个运作过程&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;php-fpm&quot;&gt;php-fpm&lt;/h2&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;上面说明了fastcgi  php-fpm其实是一个fastcgi的管理器
-百度百科上面这样说明的
-&lt;code class=&quot;highlighter-rouge&quot;&gt;PHP-FPM是一个PHPFastCGI管理器，是只用于PHP的。&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sun, 18 Dec 2016 00:00:00 +0800</pubDate>
-        <link>https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/</link>
-        <guid isPermaLink="true">https://chenyingqiao.github.io//2016/12/18/nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/</guid>
         
         <category>server</category>
         
