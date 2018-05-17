@@ -1,0 +1,37 @@
+---
+layout:     post
+title:      "2018-5-16-cmake使用.markdown"
+subtitle:   "2018-5-16-cmake使用.markdown"
+date:       2018-5-16
+author:     "lerko"
+header-img: "img/post-bg-universe.jpg"
+catalog: true
+tags:
+    - c
+---
+
+
+# cmake的使用
+
+## cmake是什么?
+
+CMake是一个跨平台的安装（编译）工具，可以用简单的语句来描述所有平台的安装(编译过程)。他能够输出各种各样的makefile或者project文件，能测试编译器所支持的C++特性,类似UNIX下的automake。
+只是 CMake 的组态档取名为 CMakeLists.txt。Cmake 并不直接建构出最终的软件，
+而是产生标准的建构档（如 Unix 的 Makefile 或 Windows Visual C++ 的 projects/workspaces），然后再依一般的建构方式使用。这使得熟悉某个集成开发环境（IDE）的开发者可以用标准的方式建构他的软件，
+这种可以使用各平台的原生建构系统的能力是 CMake 和 SCons 等其他类似系统的区别之处。
+
+## 一些cmake的基本指令
+
+| 名称 | 解释 |
+| ------------- | ------------- |
+| cmake_minimum_required | 使用的cmake的最低版本号 |
+| project | 项目名称 |
+| add_executable | 指定生成目标 |
+| aux_source_directory | 查找目录下的所有源文件,并将名称保存到 DIR_SRCS 变量 |
+| add_library | 指定生成动态链接库 |
+| add_subdirectory | 添加子目录,子目录里面包含另外一个cmake项目 :add_subdirectory([子目录名称]) |
+| target_link_libraries | 添加动态链接库 : target_link_libraries(\[当前项目名称\] \[动态链接库项目名称\]) |
+|configure_file|添加配置文件,常量可以在c中使用|
+|open|cmake的配置文件|
+
+
