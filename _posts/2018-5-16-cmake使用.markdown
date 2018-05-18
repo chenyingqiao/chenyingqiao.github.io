@@ -25,9 +25,9 @@ CMake是一个跨平台的安装（编译）工具，可以用简单的语句来
 > https://cmake.org/cmake/help/v3.9/manual/cmake-commands.7.html
 
 cmake的指令分为下面几种
-1.Scripting Commands(脚本指令)
-2.Project Commands(项目指令)
-3.CTest Commands(测试指令)
+1. Scripting Commands(脚本指令)
+2. Project Commands(项目指令)
+3. CTest Commands(测试指令)
 
 
 ### 脚本指令
@@ -80,6 +80,8 @@ cmake的指令分为下面几种
 |variable_watch|   |
 |while|   |
 
+
+### 项目指令
 
 | 名称 | 解释 |
 | ------------- | ------------- |
