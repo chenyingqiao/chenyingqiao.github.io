@@ -22,6 +22,65 @@ CMake是一个跨平台的安装（编译）工具，可以用简单的语句来
 
 ## 一些cmake的基本指令
 
+> https://cmake.org/cmake/help/v3.9/manual/cmake-commands.7.html
+
+cmake的指令分为下面几种
+1.Scripting Commands(脚本指令)
+2.Project Commands(项目指令)
+3.CTest Commands(测试指令)
+
+
+### 脚本指令
+
+| 名称 | 解释 |
+| ------------- | ------------- |
+|break|  退出指令 |
+|cmake_host_system_information|   |
+|cmake_minimum_required|  使用的cmake的最低版本号 |
+|cmake_parse_arguments|   |
+|cmake_policy|   |
+|configure_file|   |
+|continue|   |
+|elseif|   |
+|else|   |
+|endforeach|   |
+|endfunction|   |
+|endif|   |
+|endmacro|   |
+|endwhile|   |
+|execute_process|   |
+|file|   |
+|find_file|   |
+|find_library|   |
+|find_package|   |
+|find_path|   |
+|find_program|   |
+|foreach|   |
+|function|   |
+|get_cmake_property|   |
+|get_directory_property|   |
+|get_filename_component|   |
+|get_property|   |
+|if|   |
+|include|   |
+|list|   |
+|macro|   |
+|mark_as_advanced|   |
+|math|   |
+|message|   |
+|option|   |
+|return|   |
+|separate_arguments|   |
+|set_directory_properties|   |
+|set_property|   |
+|set|   |
+|site_name|   |
+|string|   |
+|unset|   |
+|variable_watch|   |
+|while|   |
+
+
 | 名称 | 解释 |
 | ------------- | ------------- |
 | cmake_minimum_required | 使用的cmake的最低版本号 |
@@ -32,6 +91,27 @@ CMake是一个跨平台的安装（编译）工具，可以用简单的语句来
 | add_subdirectory | 添加子目录,子目录里面包含另外一个cmake项目 :add_subdirectory([子目录名称]) |
 | target_link_libraries | 添加动态链接库 : target_link_libraries(\[当前项目名称\] \[动态链接库项目名称\]) |
 |configure_file|添加配置文件,常量可以在c中使用|
-|open|cmake的配置文件|
+|options|cmake的配置文件|
+|||
 
+
+## 常见内置变量
+
+> 变量的引用方式是使用“${}”，在IF中，不需要使用这种方式，直接使用变量名即可
+
+> 定义变量 : set(NAME xxxx)
+> 使用变量 : ${NAME}
+
+### 一些常用的变量
+
+| 名称 | 解释 |
+| ------------- | ------------- |
+| CMAKE_SOURCE_DIR PROJECT_SOURCE_DIR PROJECT_SOURCE_DIR | 这三个变量内容一致，都指的是工程的顶级目录。 |
+| CMAKE_CURRENT_BINARY_DIR | 外部编译时，指的是target目录，内部编译时，指的是顶级目录 |
+|CMAKE_CURRENT_SOURCE_DIR|CMakeList.txt所在的目录|
+|CMAKE_CURRENT_LIST_DIR|CMakeList.txt的完整路径|
+|CMAKE_CURRENT_LIST_LINE|当前所在的行|
+|CMAKE_MODULE_PATH|如果工程复杂，可能需要编写一些cmake模块，这里通过SET指定这个变量|
+|LIBRARY_OUTPUT_DIR BINARY_OUTPUT_DIR|库和可执行的最终存放目录 |
+| PROJECT_NAME | 项目名称 |
 
