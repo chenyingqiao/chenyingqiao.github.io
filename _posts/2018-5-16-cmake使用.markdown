@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "2018-5-16-cmake使用.markdown"
-subtitle:   "2018-5-16-cmake使用.markdown"
+title:      "cmake使用"
+subtitle:   "cmake的一些基本使用已经笔记记录"
 date:       2018-5-16
 author:     "lerko"
 header-img: "img/post-bg-universe.jpg"
