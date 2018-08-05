@@ -188,13 +188,43 @@
             ">
     			
 <div class="post-preview">
-    <a href="/2018/05/16/cmake%E4%BD%BF%E7%94%A8/">
+    <a href="/2018/08/05/php%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E6%94%BB%E5%87%BB%E8%A7%A3%E6%9E%90/">
         <h2 class="post-title">
-            2018-5-16-cmake使用.markdown
+            php哈希冲突攻击解析
         </h2>
         
         <h3 class="post-subtitle">
-            2018-5-16-cmake使用.markdown
+            哈希冲突攻击
+        </h3>
+        
+        <div class="post-content-preview">
+            php哈希冲突攻击解析
+
+一段攻击代码
+
+&lt;?php
+$size = pow(2, 16);
+ 
+$startTime = microtime(true);
+$array = array();
+for ($key = 0, $maxKey = ($size - 1) * $size; $key &lt;= $maxKey; $key += $size) {
+    $array[$ke...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Lerko on August 5, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2018/05/16/cmake%E4%BD%BF%E7%94%A8/">
+        <h2 class="post-title">
+            cmake使用
+        </h2>
+        
+        <h3 class="post-subtitle">
+            cmake的一些基本使用已经笔记记录
         </h3>
         
         <div class="post-content-preview">
@@ -473,29 +503,6 @@ http 的初始化
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2016/12/24/%E4%BB%8Eflv.js%E8%AF%B4LLVM/">
-        <h2 class="post-title">
-            从flv.js说llvm
-        </h2>
-        
-        <div class="post-content-preview">
-            什么是LLVM
-
-
-  LLVM 命名最早源自于底层虚拟机（Low Level Virtual Machine）的缩写,由于命名带来的混乱，目前LLVM就是该项目的全称。LLVM 核心库提供了与编译器相关的支持，可以作为多种语言编译器的后台来使用。能够进行程序语言的编译期优化、链接优化、在线编译优化、代码生成。
-
-
-
-  LLVM的项目是一个模块化和可重复使用的编译器和工具技术的集合。LLV...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Lerko Blog on December 24, 2016
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -545,6 +552,8 @@ http 的初始化
                                 <a href="/tags/#web" title="web" rel="2">
                                     web
                                 </a>
+                            
+                        
                             
                         
                             

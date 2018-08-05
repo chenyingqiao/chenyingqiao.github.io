@@ -10,7 +10,7 @@
     <meta name="keywords"  content="一个不知道在干什么的人">
     <meta name="theme-color" content="#000000">
     
-    <title>2018-5-16-cmake使用.markdown - 陈映峤的博客 | Lerko Blog</title>
+    <title>cmake使用 - 陈映峤的博客 | Lerko Blog</title>
 
     <link rel="stylesheet" href="https://sf-static.b0.upaiyun.com/v-576b52d9/3rd/highlightjs/styles/solarized_light.css">
     <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js">        </script>  
@@ -181,10 +181,10 @@
                         <a class="tag" href="/tags/#c" title="c">c</a>
                         
                     </div>
-                    <h1>2018-5-16-cmake使用.markdown</h1>
+                    <h1>cmake使用</h1>
                     
                     
-                    <h2 class="subheading">2018-5-16-cmake使用.markdown</h2>
+                    <h2 class="subheading">cmake的一些基本使用已经笔记记录</h2>
                     
                     <span class="meta">Posted by lerko on May 16, 2018</span>
                 </div>
@@ -217,6 +217,212 @@
 这种可以使用各平台的原生建构系统的能力是 CMake 和 SCons 等其他类似系统的区别之处。</p>
 
 <h2 id="cmake-2">一些cmake的基本指令</h2>
+
+<blockquote>
+  <p>https://cmake.org/cmake/help/v3.9/manual/cmake-commands.7.html</p>
+</blockquote>
+
+<p>cmake的指令分为下面几种</p>
+<ol>
+  <li>Scripting Commands(脚本指令)</li>
+  <li>Project Commands(项目指令)</li>
+  <li>CTest Commands(测试指令)</li>
+</ol>
+
+<h3 id="section">脚本指令</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>break</td>
+      <td>退出指令</td>
+    </tr>
+    <tr>
+      <td>cmake_host_system_information</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>cmake_minimum_required</td>
+      <td>使用的cmake的最低版本号</td>
+    </tr>
+    <tr>
+      <td>cmake_parse_arguments</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>cmake_policy</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>configure_file</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>continue</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>elseif</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>else</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>endforeach</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>endfunction</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>endif</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>endmacro</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>endwhile</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>execute_process</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>file</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>find_file</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>find_library</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>find_package</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>find_path</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>find_program</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>foreach</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>function</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>get_cmake_property</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>get_directory_property</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>get_filename_component</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>get_property</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>if</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>include</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>list</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>macro</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>mark_as_advanced</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>math</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>message</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>option</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>return</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>separate_arguments</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>set_directory_properties</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>set_property</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>set</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>site_name</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>string</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>unset</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>variable_watch</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>while</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-1">项目指令</h3>
 
 <table>
   <thead>
@@ -259,8 +465,68 @@
       <td>添加配置文件,常量可以在c中使用</td>
     </tr>
     <tr>
-      <td>open</td>
+      <td>options</td>
       <td>cmake的配置文件</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-2">常见内置变量</h2>
+
+<blockquote>
+  <p>变量的引用方式是使用“${}”，在IF中，不需要使用这种方式，直接使用变量名即可</p>
+</blockquote>
+
+<blockquote>
+  <p>定义变量 : set(NAME xxxx)
+使用变量 : ${NAME}</p>
+</blockquote>
+
+<h3 id="section-3">一些常用的变量</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CMAKE_SOURCE_DIR PROJECT_SOURCE_DIR PROJECT_SOURCE_DIR</td>
+      <td>这三个变量内容一致，都指的是工程的顶级目录。</td>
+    </tr>
+    <tr>
+      <td>CMAKE_CURRENT_BINARY_DIR</td>
+      <td>外部编译时，指的是target目录，内部编译时，指的是顶级目录</td>
+    </tr>
+    <tr>
+      <td>CMAKE_CURRENT_SOURCE_DIR</td>
+      <td>CMakeList.txt所在的目录</td>
+    </tr>
+    <tr>
+      <td>CMAKE_CURRENT_LIST_DIR</td>
+      <td>CMakeList.txt的完整路径</td>
+    </tr>
+    <tr>
+      <td>CMAKE_CURRENT_LIST_LINE</td>
+      <td>当前所在的行</td>
+    </tr>
+    <tr>
+      <td>CMAKE_MODULE_PATH</td>
+      <td>如果工程复杂，可能需要编写一些cmake模块，这里通过SET指定这个变量</td>
+    </tr>
+    <tr>
+      <td>LIBRARY_OUTPUT_DIR BINARY_OUTPUT_DIR</td>
+      <td>库和可执行的最终存放目录</td>
+    </tr>
+    <tr>
+      <td>PROJECT_NAME</td>
+      <td>项目名称</td>
     </tr>
   </tbody>
 </table>
@@ -278,6 +544,13 @@
                         </a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/2018/08/05/php%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E6%94%BB%E5%87%BB%E8%A7%A3%E6%9E%90/" data-toggle="tooltip" data-placement="top" title="php哈希冲突攻击解析">
+                        Next<br>
+                        <span>php哈希冲突攻击解析</span>
+                        </a>
+                    </li>
                     
                 </ul>
 
@@ -337,6 +610,8 @@
                 				<a href="/tags/#web" title="web" rel="2">
                                     web
                                 </a>
+                            
+        				
                             
         				
                             

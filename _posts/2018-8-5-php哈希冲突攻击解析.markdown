@@ -37,9 +37,18 @@ echo '插入 ', $size, ' 个普通元素需要 ', $endTime - $startTime, ' 秒',
 
 插入结果
 
+> php5(5.2)
+
 ```
-插入 65536 个恶意的元素需要 43.1438360214 秒
-插入 65536 个普通元素需要 0.0210378170013 秒
+插入 65536 个恶意的元素需要 79.778307914734 秒
+插入 65536 个普通元素需要 0.028948068618774 秒
+```
+
+> php7
+
+```
+插入 65536 个恶意的元素需要 9.2177460193634 秒
+插入 65536 个普通元素需要 0.004227876663208 秒
 ```
 
 ## php 数组的实现
@@ -125,7 +134,7 @@ typedef struct _Bucket {
 } Bucket;
 ```
 
-这个是 php7 hashtable的数据分布 
+这个是 php7 hashtable的数据分布
 数据分布是这样的 映射表 + bucket(顺序插入)
 
 ```c
@@ -143,17 +152,21 @@ typedef struct _Bucket {
  *                 | Bucket[ht->nTableSize-1]    |
  *                 +=============================+
  */
- ```
- 
- ![数据分布](/img/php哈希攻击/bucket1.png  "数据分布")
- 
- ## 内部冲突的解决
- 
+```
+
+
+
+![数据分布](/img/php哈希攻击/bucket1.png  "数据分布")
+
+
+## 内部冲突的解决
+
  那么 php 的内部冲突 php 是怎么解决的那？
  首先涉及到的一个常量是 php hashtable 中 nTableMask。
  我们先来看php数组是如何初始化的
- 
- ```c
+
+
+```c
  ZEND_API void ZEND_FASTCALL _zend_hash_init(HashTable *ht, uint32_t nSize, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
 {
 	GC_REFCOUNT(ht) = 1;
@@ -163,28 +176,33 @@ typedef struct _Bucket {
 	HT_SET_DATA_ADDR(ht, &uninitialized_bucket);
 	ht->nNumUsed = 0;
 	ht->nNumOfElements = 0;
-	ht->nInternalPointer = HT_INVALID_IDX; 
+	ht->nInternalPointer = HT_INVALID_IDX;
 	ht->nNextFreeElement = 0;
 	ht->pDestructor = pDestructor;
 	ht->nTableSize = zend_hash_check_size(nSize);
 }
- ```
- 
- 下面是上面关键常量的定义
- ```c
- #define HT_MIN_MASK ((uint32_t) -2) // 11111111111111111111111111111000
- #define HT_MIN_SIZE 8 //初始化最大nTableSize
- ```
+```
+
+
+下面是上面关键常量的定义
+```c
+#define HT_MIN_MASK ((uint32_t) -2) // 11111111111111111111111111111000
+#define HT_MIN_SIZE 8 //初始化最大nTableSize
+```
+
  `uint32_t` 是无符号的int类型，吧 -2 转换成无符号就是将-2原码区反加一
- 
+
+
  php 添加数据到hashTable的代码
  主要关注的变量 `nIndex` `h` `u2.next`
- 
- - nIndex:哈希槽
- - h:当前的数组的key
- - u2.next:冲突链表前一个bucket的位置记录（Bucket是顺序插入的，php7性能提高就是因为做了hashTable的数据结构重构）
- 
- ```c
+
+
+- nIndex:哈希槽
+- h:当前的数组的key
+- u2.next:冲突链表前一个bucket的位置记录（Bucket是顺序插入的，php7性能提高就是因为做了hashTable的数据结构重构）
+
+
+```c
  ...
  add_to_hash:
 	idx = ht->nNumUsed++;
@@ -208,7 +226,7 @@ typedef struct _Bucket {
 
 	return &p->val;
 ...
- ```
+```
 
 我们知道了hash的计算方式了，就可以分析上面的攻击代码了。
 我们取出来几个数据进行调试测试，新建一个 php 文件使用`php -f` 运行文件
@@ -226,30 +244,39 @@ $arr1 = [
 下面的nIndex的变化
 
 
-![数据分布](/img/php哈希攻击/65536.png  "数据分布")
-![数据分布](/img/php哈希攻击/131072.png  "数据分布")
-![数据分布](/img/php哈希攻击/196608.png  "数据分布")
-![数据分布](/img/php哈希攻击/262144.png  "数据分布")
+![数据分布1](/img/php哈希攻击/65536.png  "数据分布1")
+
+![数据分布2](/img/php哈希攻击/1311072.png  "数据分布2")
+
+![数据分布3](/img/php哈希攻击/196608.png  "数据分布4")
+
+![数据分布5](/img/php哈希攻击/262144.png  "数据分布6")
+
 
 我们可以看到nIndex几次都没有变化,这说明我们的Bucket都是放到同一个hash槽中，我们在通过`p *(Bucket*)ht.arData@5`，
 查看bucket数据中u2.next指向。
 
-```
+```json
 {
-{val = {value = {lval = 140737216089280, dval = 6.9533423561049197e-310, counted = 0x7fffefc58cc0, str = 0x7fffefc58cc0, arr = 0x7fffefc58cc0, obj = 0x7fffefc58cc0, res = 0x7fffefc58cc0, ref = 0x7fffefc58cc0, ast = 0x7fffefc58cc0, zv = 0x7fffefc58cc0, ptr = 0x7fffefc58cc0, ce = 0x7fffefc58cc0, func = 0x7fffefc58cc0, ww = {w1 = 4022701248, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 4294967295, cache_slot = 4294967295, lineno = 4294967295, num_args = 4294967295, fe_pos = 4294967295, fe_iter_idx = 4294967295, access_flags = 4294967295, property_guard = 4294967295, extra = 4294967295}}, h = 0, key = 0x0}, 
+{val = {value = {lval = 140737216089280, dval = 6.9533423561049197e-310, counted = 0x7fffefc58cc0, str = 0x7fffefc58cc0, arr = 0x7fffefc58cc0, obj = 0x7fffefc58cc0, res = 0x7fffefc58cc0, ref = 0x7fffefc58cc0, ast = 0x7fffefc58cc0, zv = 0x7fffefc58cc0, ptr = 0x7fffefc58cc0, ce = 0x7fffefc58cc0, func = 0x7fffefc58cc0, ww = {w1 = 4022701248, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 4294967295, cache_slot = 4294967295, lineno = 4294967295, num_args = 4294967295, fe_pos = 4294967295, fe_iter_idx = 4294967295, access_flags = 4294967295, property_guard = 4294967295, extra = 4294967295}}, h = 0, key = 0x0},
 {val = {value = {lval = 140737216089344, dval = 6.9533423561080818e-310, counted = 0x7fffefc58d00, str = 0x7fffefc58d00, arr = 0x7fffefc58d00, obj = 0x7fffefc58d00, res = 0x7fffefc58d00, ref = 0x7fffefc58d00, ast = 0x7fffefc58d00, zv = 0x7fffefc58d00, ptr = 0x7fffefc58d00, ce = 0x7fffefc58d00, func = 0x7fffefc58d00, ww = {w1 = 4022701312, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 0, cache_slot = 0, lineno = 0, num_args = 0, fe_pos = 0, fe_iter_idx = 0, access_flags = 0, property_guard = 0, extra = 0}}, h = 65536, key = 0x0},
-{val = {value = {lval = 140737216089408, dval = 6.9533423561112438e-310, counted = 0x7fffefc58d40, str = 0x7fffefc58d40, arr = 0x7fffefc58d40, obj = 0x7fffefc58d40, res = 0x7fffefc58d40, ref = 0x7fffefc58d40, ast = 0x7fffefc58d40, zv = 0x7fffefc58d40, ptr = 0x7fffefc58d40, ce = 0x7fffefc58d40, func = 0x7fffefc58d40, ww = {w1 = 4022701376, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 1, cache_slot = 1, lineno = 1, num_args = 1, fe_pos = 1, fe_iter_idx = 1, access_flags = 1, property_guard = 1, extra = 1}}, h = 131072, key = 0x0}, 
-{val = {value = {lval = 140737216089472, dval = 6.9533423561144058e-310, counted = 0x7fffefc58d80, str = 0x7fffefc58d80, arr = 0x7fffefc58d80, obj = 0x7fffefc58d80, res = 0x7fffefc58d80, ref = 0x7fffefc58d80, ast = 0x7fffefc58d80, zv = 0x7fffefc58d80, ptr = 0x7fffefc58d80, ce = 0x7fffefc58d80, func = 0x7fffefc58d80, ww = {w1 = 4022701440, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 2, cache_slot = 2, lineno = 2, num_args = 2, fe_pos = 2, fe_iter_idx = 2, access_flags = 2, property_guard = 2, extra = 2}}, h = 196608, key = 0x0}, 
+{val = {value = {lval = 140737216089408, dval = 6.9533423561112438e-310, counted = 0x7fffefc58d40, str = 0x7fffefc58d40, arr = 0x7fffefc58d40, obj = 0x7fffefc58d40, res = 0x7fffefc58d40, ref = 0x7fffefc58d40, ast = 0x7fffefc58d40, zv = 0x7fffefc58d40, ptr = 0x7fffefc58d40, ce = 0x7fffefc58d40, func = 0x7fffefc58d40, ww = {w1 = 4022701376, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 1, cache_slot = 1, lineno = 1, num_args = 1, fe_pos = 1, fe_iter_idx = 1, access_flags = 1, property_guard = 1, extra = 1}}, h = 131072, key = 0x0},
+{val = {value = {lval = 140737216089472, dval = 6.9533423561144058e-310, counted = 0x7fffefc58d80, str = 0x7fffefc58d80, arr = 0x7fffefc58d80, obj = 0x7fffefc58d80, res = 0x7fffefc58d80, ref = 0x7fffefc58d80, ast = 0x7fffefc58d80, zv = 0x7fffefc58d80, ptr = 0x7fffefc58d80, ce = 0x7fffefc58d80, func = 0x7fffefc58d80, ww = {w1 = 4022701440, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 2, cache_slot = 2, lineno = 2, num_args = 2, fe_pos = 2, fe_iter_idx = 2, access_flags = 2, property_guard = 2, extra = 2}}, h = 196608, key = 0x0},
 {val = {value = {lval = 140737216089536, dval = 6.9533423561175678e-310, counted = 0x7fffefc58dc0, str = 0x7fffefc58dc0, arr = 0x7fffefc58dc0, obj = 0x7fffefc58dc0, res = 0x7fffefc58dc0, ref = 0x7fffefc58dc0, ast = 0x7fffefc58dc0, zv = 0x7fffefc58dc0, ptr = 0x7fffefc58dc0, ce = 0x7fffefc58dc0, func = 0x7fffefc58dc0, ww = {w1 = 4022701504, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 3, cache_slot = 3, lineno = 3, num_args = 3, fe_pos = 3, fe_iter_idx = 3, access_flags = 3, property_guard = 3, extra = 3}}, h = 262144, key = 0x0}
 }
 ```
 
- ![冲突结构](/img/php哈希攻击/bucket2.png  "冲突结构")
+为什么第一个是4294967295 因为这个是第一个引用的hash槽的位置
 
- 
- ## 为何会有攻击效果
- 
- 如果所有的元素都进了同一个hash槽，那么我们的Hashtable查询和插入的时间复杂度就会从 O(1) => O(n)
- 当然 php7 有所改善，如果在php5中的插入方式会慢很多。
- 
- ![hash冲突](http://laruence-blog.stor.sinaapp.com/uploads/2011/12/Untitled3-1.png "hash")
+
+![冲突结构](/img/php哈希攻击/butcket2.png)
+
+
+## 为何会有攻击效果
+
+
+如果所有的元素都进了同一个hash槽，那么我们的Hashtable查询和插入的时间复杂度就会从 O(1) => O(n)
+当然 php7 有所改善，如果在php5中的插入方式会慢很多。
+
+
+![hash冲突](http://laruence-blog.stor.sinaapp.com/uploads/2011/12/Untitled3-1.png "hash")
