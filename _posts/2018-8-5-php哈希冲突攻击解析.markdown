@@ -1,0 +1,255 @@
+---
+layout:     post
+title:      "php哈希冲突攻击解析"
+subtitle:   "哈希冲突攻击"
+date:       2018-8-5
+author:     "Lerko"
+header-img: "img/post-bg-e2e-ux.jpg"
+catalog: true
+tags:
+    - php内核
+---
+
+# php哈希冲突攻击解析
+
+## 一段攻击代码
+
+```php
+<?php
+$size = pow(2, 16);
+ 
+$startTime = microtime(true);
+$array = array();
+for ($key = 0, $maxKey = ($size - 1) * $size; $key <= $maxKey; $key += $size) {
+    $array[$key] = 0;
+}
+$endTime = microtime(true);
+echo '插入 ', $size, ' 个恶意的元素需要 ', $endTime - $startTime, ' 秒', "\n";
+ 
+$startTime = microtime(true);
+$array = array();
+for ($key = 0, $maxKey = $size - 1; $key <= $maxKey; ++$key) {
+    $array[$key] = 0;
+}
+$endTime = microtime(true);
+echo '插入 ', $size, ' 个普通元素需要 ', $endTime - $startTime, ' 秒', "\n";
+```
+
+插入结果
+
+```
+插入 65536 个恶意的元素需要 43.1438360214 秒
+插入 65536 个普通元素需要 0.0210378170013 秒
+```
+
+## php 数组的实现
+
+php 中的数组是 php 中非常好用的一个数据结构，有了这个数据结构的加持 php 的开发效率才能如此之高。
+但是我们知道世界上并没有完美的事物，php 的数组虽然给我们带来的简单易用的一些特性，但是也会给我们带来一些隐患。
+`哈希表`是我们非常常见的一个数据结构，php 的数组就是通过`哈希表`来实现的。
+php 的`哈希表`解决冲突采用的是拉链法，冲突的元素通过加入相应hash槽的链表来解决。
+
+php 经历了很多的版本，我们常用熟悉的版本有`5.3`、`5.6`、`7.0` 这几个版本。
+其中 php5 版本的 hashtable 的实现与 php7 的有所不同。
+
+*php5*
+```c++
+//hashTable的数据结构
+typedef struct _hashtable {
+    uint nTableSize;// hashtable 的大小
+    uint nTableMask;//这个和 ntableSize 是对应的关系，为 nTableSize 的负数
+    uint nNumOfElements;
+    ulong nNextFreeElement;
+    Bucket *pInternalPointer;   /* Used for element traversal */
+    Bucket *pListHead;
+    Bucket *pListTail;
+    Bucket **arBuckets; // 指向第一个桶链表
+    dtor_func_t pDestructor; // 元素删除的函数
+    zend_bool persistent;
+    unsigned char nApplyCount;
+    zend_bool bApplyProtection;
+#if ZEND_DEBUG
+    int inconsistent;
+#endif
+} HashTable;
+```
+
+```c
+//保存数据的单链表结构
+typedef struct bucket {
+   ulong h;                  /* Used for numeric indexing */
+   uint nKeyLength;        //key长度
+   void *pData;        //指向bucket中保存的数据的指针
+   void *pDataPtr;    //指针数据
+   struct bucket *pListNext;    //指向hashtable桶列中下一个元素
+   struct bucket *pListLast;    //指向hashtable桶列前一个元素
+   struct bucket *pNext;        //指向具有同一个hash index的桶列的后一个元素
+   struct bucket *pLast;        //指向具有同一个hash index的桶列的前一个元素
+   const char *arKey;        //必须是最后一个成员，key的名称
+} Bucket;
+```
+
+*php7*
+```
+struct _zend_array {
+	zend_refcounted_h gc;
+	union {
+		struct {
+			ZEND_ENDIAN_LOHI_4(
+				zend_uchar    flags,
+				zend_uchar    nApplyCount,
+				zend_uchar    nIteratorsCount,
+				zend_uchar    consistency)
+		} v;
+		uint32_t flags;
+	} u;
+	uint32_t          nTableMask; //散列函数的映射数
+	Bucket           *arData;     //指向当前桶的第一个数据
+	uint32_t          nNumUsed;   //已用的Bucket的数量（包含的是那些被删除的或者是无效的bucket）
+	uint32_t          nNumOfElements;//有效的bucket的数量
+	uint32_t          nTableSize;//可以容纳的bucket的数量
+	uint32_t          nInternalPointer;
+	zend_long         nNextFreeElement;//用来自动确定php数组的索引
+	dtor_func_t       pDestructor;//自动清理无用bucket的函数
+};
+
+```
+
+php7 的 Bucket 实现就简单的多
+
+```c
+typedef struct _Bucket {
+	zval              val;//元素的数据
+	zend_ulong        h;                /* hash value (or numeric index)   */
+	zend_string      *key;              /* string key or NULL for numerics */
+} Bucket;
+```
+
+这个是 php7 hashtable的数据分布 
+数据分布是这样的 映射表 + bucket(顺序插入)
+
+```c
+/*
+ * HashTable Data Layout
+ * =====================
+ *
+ *                 +=============================+
+ *                 | HT_HASH(ht, ht->nTableMask) |
+ *                 | ...                         |
+ *                 | HT_HASH(ht, -1)             |
+ *                 +-----------------------------+
+ * ht->arData ---> | Bucket[0]                   |
+ *                 | ...                         |
+ *                 | Bucket[ht->nTableSize-1]    |
+ *                 +=============================+
+ */
+ ```
+ 
+ ![数据分布](/img/php哈希攻击/bucket1.png  "数据分布")
+ 
+ ## 内部冲突的解决
+ 
+ 那么 php 的内部冲突 php 是怎么解决的那？
+ 首先涉及到的一个常量是 php hashtable 中 nTableMask。
+ 我们先来看php数组是如何初始化的
+ 
+ ```c
+ ZEND_API void ZEND_FASTCALL _zend_hash_init(HashTable *ht, uint32_t nSize, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
+{
+	GC_REFCOUNT(ht) = 1;
+	GC_TYPE_INFO(ht) = IS_ARRAY;
+	ht->u.flags = (persistent ? HASH_FLAG_PERSISTENT : 0) | HASH_FLAG_APPLY_PROTECTION | HASH_FLAG_STATIC_KEYS;
+	ht->nTableMask = HT_MIN_MASK; //这里对 nTableMask 进行了定义
+	HT_SET_DATA_ADDR(ht, &uninitialized_bucket);
+	ht->nNumUsed = 0;
+	ht->nNumOfElements = 0;
+	ht->nInternalPointer = HT_INVALID_IDX; 
+	ht->nNextFreeElement = 0;
+	ht->pDestructor = pDestructor;
+	ht->nTableSize = zend_hash_check_size(nSize);
+}
+ ```
+ 
+ 下面是上面关键常量的定义
+ ```c
+ #define HT_MIN_MASK ((uint32_t) -2) // 11111111111111111111111111111000
+ #define HT_MIN_SIZE 8 //初始化最大nTableSize
+ ```
+ `uint32_t` 是无符号的int类型，吧 -2 转换成无符号就是将-2原码区反加一
+ 
+ php 添加数据到hashTable的代码
+ 主要关注的变量 `nIndex` `h` `u2.next`
+ 
+ - nIndex:哈希槽
+ - h:当前的数组的key
+ - u2.next:冲突链表前一个bucket的位置记录（Bucket是顺序插入的，php7性能提高就是因为做了hashTable的数据结构重构）
+ 
+ ```c
+ ...
+ add_to_hash:
+	idx = ht->nNumUsed++;
+	ht->nNumOfElements++;
+	if (ht->nInternalPointer == HT_INVALID_IDX) {
+		ht->nInternalPointer = idx;
+	}
+	zend_hash_iterators_update(ht, HT_INVALID_IDX, idx);
+	p = ht->arData + idx;
+	p->key = key;
+	if (!ZSTR_IS_INTERNED(key)) {
+		zend_string_addref(key);
+		ht->u.flags &= ~HASH_FLAG_STATIC_KEYS;
+		zend_string_hash_val(key);
+	}
+	p->h = h = ZSTR_H(key);
+	ZVAL_COPY_VALUE(&p->val, pData);
+	nIndex = h | ht->nTableMask;  //这里就是计算的方法  nTableMask初始值11111111111111111111111111111000
+	Z_NEXT(p->val) = HT_HASH(ht, nIndex); // 这里将上一个bucket的u2.next的值放到下一个Bucket的u2.next
+	HT_HASH(ht, nIndex) = HT_IDX_TO_HASH(idx);
+
+	return &p->val;
+...
+ ```
+
+我们知道了hash的计算方式了，就可以分析上面的攻击代码了。
+我们取出来几个数据进行调试测试，新建一个 php 文件使用`php -f` 运行文件
+
+```php
+$arr1 = [
+	0 => '!',//4294967288
+	65536 => '@',//4294967288
+	131072 => '#',
+	196608 => '$',
+	262144 => '%',
+];
+```
+
+下面的nIndex的变化
+
+
+![数据分布](/img/php哈希攻击/65536.png  "数据分布")
+![数据分布](/img/php哈希攻击/131072.png  "数据分布")
+![数据分布](/img/php哈希攻击/196608.png  "数据分布")
+![数据分布](/img/php哈希攻击/262144.png  "数据分布")
+
+我们可以看到nIndex几次都没有变化,这说明我们的Bucket都是放到同一个hash槽中，我们在通过`p *(Bucket*)ht.arData@5`，
+查看bucket数据中u2.next指向。
+
+```
+{
+{val = {value = {lval = 140737216089280, dval = 6.9533423561049197e-310, counted = 0x7fffefc58cc0, str = 0x7fffefc58cc0, arr = 0x7fffefc58cc0, obj = 0x7fffefc58cc0, res = 0x7fffefc58cc0, ref = 0x7fffefc58cc0, ast = 0x7fffefc58cc0, zv = 0x7fffefc58cc0, ptr = 0x7fffefc58cc0, ce = 0x7fffefc58cc0, func = 0x7fffefc58cc0, ww = {w1 = 4022701248, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 4294967295, cache_slot = 4294967295, lineno = 4294967295, num_args = 4294967295, fe_pos = 4294967295, fe_iter_idx = 4294967295, access_flags = 4294967295, property_guard = 4294967295, extra = 4294967295}}, h = 0, key = 0x0}, 
+{val = {value = {lval = 140737216089344, dval = 6.9533423561080818e-310, counted = 0x7fffefc58d00, str = 0x7fffefc58d00, arr = 0x7fffefc58d00, obj = 0x7fffefc58d00, res = 0x7fffefc58d00, ref = 0x7fffefc58d00, ast = 0x7fffefc58d00, zv = 0x7fffefc58d00, ptr = 0x7fffefc58d00, ce = 0x7fffefc58d00, func = 0x7fffefc58d00, ww = {w1 = 4022701312, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 0, cache_slot = 0, lineno = 0, num_args = 0, fe_pos = 0, fe_iter_idx = 0, access_flags = 0, property_guard = 0, extra = 0}}, h = 65536, key = 0x0},
+{val = {value = {lval = 140737216089408, dval = 6.9533423561112438e-310, counted = 0x7fffefc58d40, str = 0x7fffefc58d40, arr = 0x7fffefc58d40, obj = 0x7fffefc58d40, res = 0x7fffefc58d40, ref = 0x7fffefc58d40, ast = 0x7fffefc58d40, zv = 0x7fffefc58d40, ptr = 0x7fffefc58d40, ce = 0x7fffefc58d40, func = 0x7fffefc58d40, ww = {w1 = 4022701376, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 1, cache_slot = 1, lineno = 1, num_args = 1, fe_pos = 1, fe_iter_idx = 1, access_flags = 1, property_guard = 1, extra = 1}}, h = 131072, key = 0x0}, 
+{val = {value = {lval = 140737216089472, dval = 6.9533423561144058e-310, counted = 0x7fffefc58d80, str = 0x7fffefc58d80, arr = 0x7fffefc58d80, obj = 0x7fffefc58d80, res = 0x7fffefc58d80, ref = 0x7fffefc58d80, ast = 0x7fffefc58d80, zv = 0x7fffefc58d80, ptr = 0x7fffefc58d80, ce = 0x7fffefc58d80, func = 0x7fffefc58d80, ww = {w1 = 4022701440, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 2, cache_slot = 2, lineno = 2, num_args = 2, fe_pos = 2, fe_iter_idx = 2, access_flags = 2, property_guard = 2, extra = 2}}, h = 196608, key = 0x0}, 
+{val = {value = {lval = 140737216089536, dval = 6.9533423561175678e-310, counted = 0x7fffefc58dc0, str = 0x7fffefc58dc0, arr = 0x7fffefc58dc0, obj = 0x7fffefc58dc0, res = 0x7fffefc58dc0, ref = 0x7fffefc58dc0, ast = 0x7fffefc58dc0, zv = 0x7fffefc58dc0, ptr = 0x7fffefc58dc0, ce = 0x7fffefc58dc0, func = 0x7fffefc58dc0, ww = {w1 = 4022701504, w2 = 32767}}, u1 = {v = {type = 6 '\\006', type_flags = 20 '\\024', const_flags = 0 '\\000', reserved = 0 '\\000'}, type_info = 5126}, u2 = {next = 3, cache_slot = 3, lineno = 3, num_args = 3, fe_pos = 3, fe_iter_idx = 3, access_flags = 3, property_guard = 3, extra = 3}}, h = 262144, key = 0x0}
+}
+```
+
+ ![冲突结构](/img/php哈希攻击/bucket2.png  "冲突结构")
+
+ 
+ ## 为何会有攻击效果
+ 
+ 如果所有的元素都进了同一个hash槽，那么我们的Hashtable查询和插入的时间复杂度就会从 O(1) => O(n)
+ 当然 php7 有所改善，如果在php5中的插入方式会慢很多。
+ 
+ ![hash冲突](http://laruence-blog.stor.sinaapp.com/uploads/2011/12/Untitled3-1.png "hash")
