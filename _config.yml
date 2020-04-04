@@ -4,7 +4,7 @@ SEOTitle: 陈映峤的博客 | Lerko Blog
 header-img: img/home-bg.jpg
 email: chenyingqiao19931115@gmail.com
 description: "迷茫"
-keyword: "一个不知道在干什么的人"
+keyword: ""
 url: "https://chenyingqiao.github.io/"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -26,7 +26,7 @@ github_username:    chenyingqiao
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
+exclude: ["less","node_modules","Gruntfile.js","package.json"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 
 
