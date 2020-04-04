@@ -16,7 +16,6 @@ tags:
 
 ```php
 
-<?php
 namespace common;
 
 /**
