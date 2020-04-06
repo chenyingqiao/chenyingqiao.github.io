@@ -34,7 +34,10 @@ tags:
 
 > package.json
 
-```json
+```js
+
+//配置文件实例
+
 {
   "name": "blog",
   "description": "A Vue.js project",
