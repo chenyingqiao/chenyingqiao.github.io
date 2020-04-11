@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "[leetcode] 对称的二叉树"
+title:      ""
 subtitle:   "对称的二叉树"
 date:       2020-04-06
 author:     "Lerko"
