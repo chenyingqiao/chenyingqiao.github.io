@@ -6,6 +6,7 @@ date:       2016-12-26
 author:     "Lerko"
 header-img: "img/post-bg-2015.jpgs"
 catalog: true
+multilingual: false
 tags:
     - 数据结构与算法
 ---

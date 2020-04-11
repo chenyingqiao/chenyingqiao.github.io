@@ -6,6 +6,7 @@ date:       2016-12-15
 author:     "Lerko"
 header-img: "img/post-bg-unix-linux.jpg"
 catalog: true
+multilingual: false
 tags:
     - database
 ---

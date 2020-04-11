@@ -1,0 +1,26 @@
+---
+layout:     post
+title:      "网络分层和协议以及封包"
+subtitle:   "网络分层和协议以及封包"
+date:       2020-04-06
+author:     "Lerko"
+header-img: "img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - networt
+---
+
+# 网络分层级
+
+网络分层分为2个标准
+
+- osi/rm七层模型（理论标准）
+- tcp/ip四层模型（事实标准）
+
+| osi/rm  | tcp/ip  |
+|---|---|
+|  应用层 </br> 表示层 </br> 会话层|  应用层 |
+|  传输层|  传输层 |
+|  网络层|  网络层 |
+|  链路层 </br> 物理层|  链路层 |

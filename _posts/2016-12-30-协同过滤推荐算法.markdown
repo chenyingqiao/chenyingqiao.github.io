@@ -6,6 +6,7 @@ date:       2016-12-18
 author:     "Lerko"
 header-img: "img/post-bg-digital-native.jpg"
 catalog: true
+multilingual: false
 tags:
     - server
 ---
