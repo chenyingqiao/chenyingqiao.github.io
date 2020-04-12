@@ -4,7 +4,7 @@ title:      "死锁和解决方案"
 subtitle:   "死锁和解决方案"
 date:       2020-04-12
 author:     "Lerko"
-header-img: "/q8mq1hi36.bkt.clouddn.com/blog/20200412182752.png"
+header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200412182752.png"
 catalog: true
 multilingual: false
 tags:
