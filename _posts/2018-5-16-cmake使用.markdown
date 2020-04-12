@@ -4,7 +4,7 @@ title:      "cmake使用"
 subtitle:   "cmake的一些基本使用已经笔记记录"
 date:       2018-5-16
 author:     "lerko"
-header-img: "img/post-bg-universe.jpg"
+header-img: "/img/post-bg-universe.jpg"
 catalog: true
 multilingual: false
 tags:

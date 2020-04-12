@@ -4,7 +4,7 @@ title:      "Byte转换工具类"
 subtitle:   "Byte转换工具类"
 date:       2018-04-14
 author:     "lerko"
-header-img: "img/post-bg-universe.jpg"
+header-img: "/img/post-bg-universe.jpg"
 catalog: true
 multilingual: false
 tags:

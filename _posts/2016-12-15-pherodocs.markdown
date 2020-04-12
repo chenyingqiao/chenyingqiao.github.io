@@ -4,7 +4,7 @@ title:      "Phero数据库查询框架【文档】"
 subtitle:   " \"Phero 数据库查询类库的使用\""
 date:       2016-12-15
 author:     "Lerko"
-header-img: "img/post-bg-universe.jpg"
+header-img: "/img/post-bg-universe.jpg"
 catalog: true
 multilingual: false
 tags:

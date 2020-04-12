@@ -4,7 +4,7 @@ title:      "mysql 深入学习"
 subtitle:   "深入学习mysql的基础原理"
 date:       2017-1-13
 author:     "Lerko"
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "/img/post-bg-unix-linux.jpg"
 catalog: true
 multilingual: false
 tags:

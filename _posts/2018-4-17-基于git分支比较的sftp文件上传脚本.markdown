@@ -4,7 +4,7 @@ title:      "基于git分支比较的sftp文件上传脚本"
 subtitle:   "基于git分支比较的sftp文件上传脚本"
 date:       2018-04-14
 author:     "lerko"
-header-img: "img/post-bg-universe.jpg"
+header-img: "/img/post-bg-universe.jpg"
 catalog: true
 multilingual: false
 tags:

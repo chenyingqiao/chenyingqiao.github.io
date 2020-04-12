@@ -4,7 +4,7 @@ title:      "ps 进程管理命令"
 subtitle:   "ps命令很强大！"
 date:       2016-12-18
 author:     "Lerko"
-header-img: "img/post-bg-e2e-ux.jpg"
+header-img: "/img/post-bg-e2e-ux.jpg"
 catalog: true
 multilingual: false
 tags:

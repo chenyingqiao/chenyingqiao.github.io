@@ -4,7 +4,7 @@ title:      "nginx服务器配置"
 subtitle:   "nginx服务器配置详细分析 OneinStack"
 date:       2016-12-18
 author:     "Lerko"
-header-img: "img/home-bg-o.jpg"
+header-img: "/img/home-bg-o.jpg"
 catalog: true
 multilingual: false
 tags:

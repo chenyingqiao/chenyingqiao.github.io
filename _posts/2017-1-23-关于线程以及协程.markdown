@@ -4,7 +4,7 @@ title:      "sass入门"
 subtitle:   "sass入门笔记"
 date:       2016-12-26
 author:     "Lerko"
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "/img/post-bg-unix-linux.jpg"
 catalog: true
 multilingual: false
 tags:

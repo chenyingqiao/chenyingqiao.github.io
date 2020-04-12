@@ -4,7 +4,7 @@ title:      "有限状态机"
 subtitle:   "有限状态机以及有限状态机的应用"
 date:       2016-12-26
 author:     "Lerko"
-header-img: "img/post-bg-2015.jpgs"
+header-img: "/img/post-bg-2015.jpgs"
 catalog: true
 multilingual: false
 tags:

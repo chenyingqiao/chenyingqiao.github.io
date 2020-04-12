@@ -5,6 +5,6 @@ subtitle: This is a new article
 date: YYYY-MM-DD HH:MM
 catalog: true
 author: Lerko
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "/img/post-bg-unix-linux.jpg"
 tags: [tag1, tag2]
 ---

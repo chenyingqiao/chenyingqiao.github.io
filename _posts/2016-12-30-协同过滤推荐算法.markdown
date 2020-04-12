@@ -4,7 +4,7 @@ title:      "协同过滤算法"
 subtitle:   "协同过滤算法"
 date:       2016-12-18
 author:     "Lerko"
-header-img: "img/post-bg-digital-native.jpg"
+header-img: "/img/post-bg-digital-native.jpg"
 catalog: true
 multilingual: false
 tags:

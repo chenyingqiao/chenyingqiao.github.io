@@ -4,7 +4,7 @@ title:      "mysql 主从复制"
 subtitle:   "使用Docker创建本地mysql主从,实现主从分离"
 date:       2016-12-15
 author:     "Lerko"
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "/img/post-bg-unix-linux.jpg"
 catalog: true
 multilingual: false
 tags:

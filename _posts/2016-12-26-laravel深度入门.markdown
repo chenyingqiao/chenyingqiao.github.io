@@ -4,7 +4,7 @@ title:      "laravel深度入门"
 subtitle:   "从源码分析入门laravel"
 date:       2016-12-26
 author:     "Lerko"
-header-img: "img/post-bg-unix-linux.jpg"
+header-img: "/img/post-bg-unix-linux.jpg"
 catalog: true
 multilingual: false
 tags:

@@ -4,7 +4,7 @@ title:      "redis的数据结构"
 subtitle:   "redis的数据结构"
 date:       2020-04-06
 author:     "Lerko"
-header-img: "img/post-bg-e2e-ux.jpg"
+header-img: "/img/post-bg-e2e-ux.jpg"
 catalog: true
 multilingual: false
 tags:

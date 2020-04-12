@@ -4,7 +4,7 @@ title:      "crontab工具的使用"
 subtitle:   "crontab是一个linux重要的计划任务工具"
 date:       2016-12-18
 author:     "Lerko"
-header-img: "img/post-bg-digital-native.jpg"
+header-img: "/img/post-bg-digital-native.jpg"
 catalog: true
 multilingual: false
 tags:
