@@ -364,7 +364,6 @@ delete from video_user where uid = 4;
 # 实例测试文件
 
 ```php
-<?php
 require_once "vendor/autoload.php";
 
 use PheroTest\DatabaseTest\Unit as unit;

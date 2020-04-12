@@ -16,7 +16,6 @@ tags:
 ## 一段攻击代码
 
 ```php
-<?php
 $size = pow(2, 16);
  
 $startTime = microtime(true);
