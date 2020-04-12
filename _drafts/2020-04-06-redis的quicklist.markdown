@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      ""
-subtitle:   "对称的二叉树"
+title:      "redis的quicklist"
+subtitle:   "redis的quicklist"
 date:       2020-04-06
 author:     "Lerko"
 header-img: "img/post-bg-e2e-ux.jpg"
@@ -18,6 +18,10 @@ tags:
 > 通过递归遍历输出带左右节点特征的字符串，然后比对字符串是否相等即可
 
 
+![20200411232259](http://lerko19931115.s3-cn-east-1.qiniucs.com/20200411232259.png)
+
+
+![20200411232725](http://lerko19931115.s3-cn-east-1.qiniucs.com/blog/20200411232725.png)
 ## 代码
 
 ```java
