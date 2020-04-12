@@ -1,0 +1,40 @@
+---
+layout:     post
+title:      "线程和携程的区别"
+subtitle:   "线程和携程的区别"
+date:       2016-12-26
+author:     "Lerko"
+header-img: "/img/post-bg-unix-linux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - web
+---
+
+## 什么是协程
+
+#### 和线程的区别
+
+参考网站：[http://www.cnblogs.com/wonderKK/p/4062591.html](http://www.cnblogs.com/wonderKK/p/4062591.html)
+
+说到Coroutine，我们必须提到两个更远的东西。在操作系统（os）级别，有进程（process）和线程（thread）两个（仅从我们常见的讲）实际的“东西”（不说概念是因为这两个家伙的确不仅仅是概念，而是实际存在的，os的代码管理的资源）。这两个东西都是用来模拟“并行”的，写操作系统的程序员通过用一定的策略给不同的进程和线程分配CPU计算资源，来让用户“以为”几个不同的事情在“同时”进行“。在单CPU上，是os代码强制把一个进程或者线程挂起，换成另外一个来计算，所以，实际上是串行的，只是“概念上的并行”。在现在的多核的cpu上，线程可能是“真正并行的”。
+
+Coroutine，翻译成”协程“，初始碰到的人马上就会跟上面两个概念联系起来。直接先说区别，Coroutine是编译器级的，Process和Thread是操作系统级的。Coroutine的实现，通常是对某个语言做相应的提议，然后通过后成编译器标准，然后编译器厂商来实现该机制。Process和Thread看起来也在语言层次，但是内生原理却是操作系统先有这个东西，然后通过一定的API暴露给用户使用，两者在这里有不同。Process和Thread是os通过调度算法，保存当前的上下文，然后从上次暂停的地方再次开始计算，重新开始的地方不可预期，每次CPU计算的指令数量和代码跑过的CPU时间是相关的，跑到os分配的cpu时间到达后就会被os强制挂起。Coroutine是编译器的魔术，通过插入相关的代码使得代码段能够实现分段式的执行，重新开始的地方是yield关键字指定的，一次一定会跑到一个yield对应的地方。
+
+#### php协程序的例子
+
+生成器类文档:[http://php.net/manual/zh/class.generator.php](http://php.net/manual/zh/class.generator.php)
+
+```
+function logger($fileName) {
+	$fileHandle = fopen($fileName, 'a');
+	while (true) {
+		fwrite($fileHandle, yield  . "\n");
+	}
+}
+
+$logger = logger(__DIR__ . '/log');
+var_dump($logger); //object(Generator)#1 (0) {}
+$logger->send('Foo');
+$logger->send('Bar');
+```
