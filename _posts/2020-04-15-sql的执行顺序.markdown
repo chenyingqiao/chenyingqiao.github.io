@@ -8,7 +8,7 @@ header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200415215926.png"
 catalog: true
 multilingual: false
 tags:
-    - leetcode
+    - mysql
 ---
 
 ## 一个普通sql的执行顺序
