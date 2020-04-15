@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "sql的执行顺序"
-subtitle:   "sql的执行顺序"
+title:      "sql的执行顺序以及表链接算法"
+subtitle:   "查询探究"
 date:       2020-04-15
 author:     "Lerko"
 header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200415215926.png"
