@@ -1,0 +1,50 @@
+---
+layout:     post
+title:      "[leetcode] 二叉树的中序遍历"
+subtitle:   "二叉树的中序遍历"
+date:       2020-04-17
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - leetcode
+---
+
+# 二叉树的中序遍历
+
+给定一个二叉树，返回它的中序 遍历。
+
+```
+输入: [1,null,2,3]
+   1
+    \
+     2
+    /
+   3
+
+输出: [1,3,2]
+```
+
+## 解题思路
+
+> 中序遍历递归即可,比较简单
+
+## 代码
+
+```java
+func inorderTraversal(root *TreeNode) []int {
+    seri := []int{}
+    traversal(root,&seri)
+    return seri
+}
+func traversal(node *TreeNode,seri *[]int){
+    if node == nil {
+        return ;
+    }
+    traversal(node.Left,seri)
+    *seri = append(*seri,node.Val)
+    traversal(node.Right,seri)
+}
+```
+
