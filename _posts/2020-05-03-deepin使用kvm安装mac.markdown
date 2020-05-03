@@ -4,7 +4,7 @@ title:      "使用kvm安装mac"
 subtitle:   "使用kvm安装mac"
 date:       2020-05-03
 author:     "Lerko"
-header-img: "/q8mq1hi36.bkt.clouddn.com/blog/20200503170742.png"
+header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200503170742.png"
 catalog: true
 multilingual: false
 tags:
