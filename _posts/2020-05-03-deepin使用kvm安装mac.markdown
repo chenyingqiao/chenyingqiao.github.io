@@ -179,3 +179,11 @@ iommu=pt intel_iommu=on vfio-pci.ids=1002:66af,1002:ab20
 ```
 sudo ./basic.sh
 ```
+
+
+## NVIDIA驱动
+
+可以查看一下这个仓库
+安装后重启即可
+
+![20200503172529](http://q8mq1hi36.bkt.clouddn.com/blog/20200503172529.png)
