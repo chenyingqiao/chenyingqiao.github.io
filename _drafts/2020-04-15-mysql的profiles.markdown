@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "B+树"
-subtitle:   "B+树"
+title:      "mysql的profiles"
+subtitle:   "profiles命令的使用"
 date:       2020-04-06
 author:     "Lerko"
 header-img: "/img/post-bg-e2e-ux.jpg"
@@ -11,3 +11,8 @@ tags:
     - leetcode
 ---
 
+## mysql日志的分类
+
+1. redo log
+2. undo log
+3. slow query log
