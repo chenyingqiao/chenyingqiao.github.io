@@ -41,8 +41,8 @@ qemu-img create -f qcow2 MyDisk.qcow2 64G
 并添加
 
 ```
-    -drive id=SystemDisk,if=none,file=MyDisk.qcow2 \
-    -device ide-hd,bus=sata.4,drive=SystemDisk \
+-drive id=SystemDisk,if=none,file=MyDisk.qcow2 \
+-device ide-hd,bus=sata.4,drive=SystemDisk \
 ```
 
 ## 显卡直通（PCIe Passthrough）
@@ -62,12 +62,13 @@ qemu-img create -f qcow2 MyDisk.qcow2 64G
 ![20200503164203](http://q8mq1hi36.bkt.clouddn.com/blog/20200503164203.png)
 
 需要准备的事情有：
-    1.开启内核的 iommu
-    2.开启vfio-pci
-    3.查看穿通的硬件地址
-    4.禁用原来的显卡驱动
-    5.卸载硬件
-    6.添加硬件直通到运行脚本
+
+1.开启内核的 iommu
+2.开启vfio-pci
+3.查看穿通的硬件地址
+4.禁用原来的显卡驱动
+5.卸载硬件
+6.添加硬件直通到运行脚本
 
 ### 开启内核的
 
@@ -165,10 +166,10 @@ iommu=pt intel_iommu=on vfio-pci.ids=1002:66af,1002:ab20
 
 然后再启动脚本 basic.sh 中添加这个代码
 ```
-    -vga none \
-    -device pcie-root-port,bus=pcie.0,multifunction=on,port=1,chassis=1,id=port.1 \
-    -device vfio-pci,host=26:00.0,bus=port.1,multifunction=on,romfile=/path/to/card.rom \
-    -device vfio-pci,host=26:00.1,bus=port.1 \
+-vga none \  //如果启动遇到黑屏出命令行这个可以先不加
+-device pcie-root-port,bus=pcie.0,multifunction=on,port=1,chassis=1,id=port.1 \
+-device vfio-pci,host=26:00.0,bus=port.1,multifunction=on,romfile=/path/to/card.rom \
+-device vfio-pci,host=26:00.1,bus=port.1 \
 ```
 
 ## 最后
