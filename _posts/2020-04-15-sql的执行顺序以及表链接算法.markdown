@@ -4,7 +4,7 @@ title:      "sql的执行顺序以及表链接算法"
 subtitle:   "查询探究"
 date:       2020-04-15
 author:     "Lerko"
-header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200415215926.png"
+header-img: "http://img.chenyingqiao.top/blog/20200415215926.png"
 catalog: true
 multilingual: false
 tags:
@@ -59,7 +59,7 @@ sql执行的顺序过程其实是:
 第十二步：执行limit语句，将结果返回给客户端
 ```
 
-![20200415212822](http://q8mq1hi36.bkt.clouddn.com/blog/20200415212822.png)
+![20200415212822](http://img.chenyingqiao.top/blog/20200415212822.png)
 
 ## 子查询执行顺序
 
@@ -108,7 +108,7 @@ hash join实现的几个细节:
 
 3. 如何对数据hash,不同数据库有着自己的方式，不同的哈希方法也会对性能造成一定的影响。
 
-![20200415213301](http://q8mq1hi36.bkt.clouddn.com/blog/20200415213301.png)
+![20200415213301](http://img.chenyingqiao.top/blog/20200415213301.png)
 
 **nested loop join :**
 

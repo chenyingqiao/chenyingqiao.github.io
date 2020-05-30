@@ -4,7 +4,7 @@ title:      "死锁和解决方案"
 subtitle:   "死锁和解决方案"
 date:       2020-04-12
 author:     "Lerko"
-header-img: "http://q8mq1hi36.bkt.clouddn.com/blog/20200412182752.png"
+header-img: "http://img.chenyingqiao.top/blog/20200412182752.png"
 catalog: true
 multilingual: false
 tags:
@@ -19,7 +19,7 @@ tags:
 
 下图是一个死锁的实例示例:
 
-![20200412192943](http://q8mq1hi36.bkt.clouddn.com/blog/20200412192943.png)
+![20200412192943](http://img.chenyingqiao.top/blog/20200412192943.png)
 
 **死锁发生的必要条件:**
 
@@ -42,14 +42,14 @@ tags:
 
 **尽量再资源处理的开头获取全部的锁,并且在结束的时候释放锁**
 
-![20200412193505](http://q8mq1hi36.bkt.clouddn.com/blog/20200412193505.png)
+![20200412193505](http://img.chenyingqiao.top/blog/20200412193505.png)
 
 
 ### 不能有循环等待的条件
 
 **不能锁等待时间过长,应该有一个等待的最大值**
 
-![20200412193708](http://q8mq1hi36.bkt.clouddn.com/blog/20200412193708.png)
+![20200412193708](http://img.chenyingqiao.top/blog/20200412193708.png)
 
 
 ## 银行家算法
