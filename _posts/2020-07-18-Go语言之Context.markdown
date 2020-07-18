@@ -43,7 +43,6 @@ type canceler interface {
     //和context一致
 	Done() <-chan struct{}
 }
-children
 ```
 
 > 这边我们就大致知道了两种context
