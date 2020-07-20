@@ -4,7 +4,7 @@ title:      "Go语言之锁"
 subtitle:   "Go语言之锁"
 date:       2020-07-18
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200503170742.png"
+header-img: "http://img.chenyingqiao.top/blog/20200720160959.png"
 catalog: true
 multilingual: false
 tags:
@@ -35,7 +35,7 @@ PV操作由P操作原语和V操作原语组成（原语是不可中断的过程�
 
     V（S）：①将信号量S的值加1，即S=S+1；
            ②如果S>0，则该进程继续执行；否则释放队列中第一个等待信号量的进程。
-           
+
 PV操作的意义：我们用信号量及PV操作来实现进程的同步和互斥。PV操作属于进程的低级通信。
 
 ### 源码注释
