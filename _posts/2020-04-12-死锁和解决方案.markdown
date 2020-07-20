@@ -21,6 +21,63 @@ tags:
 
 ![20200412192943](http://img.chenyingqiao.top/blog/20200412192943.png)
 
+> 下面是一段golang的goroutine的死锁实例,因为相互还想争夺锁导致deadlock。
+> 但是这种deadlock是语言本身检查不出来的，需要开发者自己进行排查处理，不然会导致两个goroutine僵死
+
+
+```golang
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func main() {
+	deadLock2()
+}
+
+func deadLock2() {
+	a, b := 0, 0
+	var lockA, lockB sync.Mutex
+
+	// 当goroutine1和goroutine2互相尝试获取对方锁这个时候就造成了deadlock
+
+	go func() {
+		for {
+			fmt.Println("goroutian1 begin")
+			lockA.Lock()
+			time.Sleep(100 * time.Microsecond)
+			a++
+			lockB.Lock() //尝试获取b的锁
+			b++
+			lockB.Unlock()
+			lockA.Unlock()
+			fmt.Println("goroutian1", a, b)
+		}
+	}()
+
+	go func() {
+		for {
+			fmt.Println("goroutian2 begin")
+			lockB.Lock()
+			time.Sleep(100 * time.Microsecond)
+			b++
+			lockA.Lock() //尝试获取A的锁
+			a++
+			lockA.Unlock()
+			lockB.Unlock()
+			fmt.Println("goroutian2", a, b)
+		}
+	}()
+
+	time.Sleep(10 * time.Second) //不管这里等待多久goroutine都不会进行输入
+	fmt.Println(a, b)            //最后主goroutine不在进行等待直接输出a b
+}
+
+```
+
 **死锁发生的必要条件:**
 
 1. 互斥条件：进程要求对所分配的资源进行排它性控制，即在一段时间内某资源仅为一进程所占用。
