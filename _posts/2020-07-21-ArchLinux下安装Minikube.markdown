@@ -47,4 +47,5 @@ sudo pacman -S --noconfirm conntrack-tools
 # 参考资料
 
 https://kubernetes.io/docs/tasks/tools/install-minikube/
+
 https://amasuda.xyz/post/2020-04-04-minikube-on-archlinux/
