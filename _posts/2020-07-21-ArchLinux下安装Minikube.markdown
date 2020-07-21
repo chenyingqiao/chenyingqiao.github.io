@@ -8,7 +8,9 @@ header-img: "http://img.chenyingqiao.top/blog/20200721111153.png"
 catalog: true
 multilingual: false
 tags:
-    - Arch Linux K8S
+    - Arch
+    - Linux
+    - K8S
 ---
 
 
