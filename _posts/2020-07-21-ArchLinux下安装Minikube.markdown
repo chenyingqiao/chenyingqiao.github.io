@@ -23,6 +23,8 @@ sudo pacman -S minikube kubectl
 ```shell
 //--image-mirror-country 表示使用中国镜像
 sudo minikube start --driver=none --image-mirror-country='cn'
+//使用kubectl命令可以看到节点
+sudo kubectl get nodes
 ```
 
 # 问题
