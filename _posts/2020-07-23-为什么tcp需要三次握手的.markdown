@@ -4,13 +4,12 @@ title:      "为什么tcp需要三次握手"
 subtitle:   "为什么tcp需要三次握手"
 date:       2020-07-23
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200720160959.png"
+header-img: "http://img.chenyingqiao.top/blog/20200723160953.png"
 catalog: true
 multilingual: false
 tags:
     - TCP/IP
 ---
-
 
 # TCP握手都做了什么
 
