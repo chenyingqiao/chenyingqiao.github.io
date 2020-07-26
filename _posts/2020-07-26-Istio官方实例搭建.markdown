@@ -4,7 +4,7 @@ title:      "Istio官方实例搭建"
 subtitle:   "Istio官方实例搭建"
 date:       2020-07-23
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200726162445.png"
+header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
