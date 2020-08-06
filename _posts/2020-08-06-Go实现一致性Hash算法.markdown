@@ -1,0 +1,71 @@
+---
+layout:     post
+title:      "Go实现一致性hash"
+subtitle:   "Go实现一致性hash"
+date:       2020-08-06
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200806094447.png"
+catalog: true
+multilingual: false
+tags:
+    - go
+---
+
+# 什么是一致性Hash
+
+一致性Hash的作用
+
+1. 特定的Key能确定对应的分区位置
+2. Key运算之后能确定到有限的分区中（所以一致性hash的定位算法必须要能对分区进行循环的定位，存储空间抽象为一个环）
+
+
+# 如何做到环状Hash
+
+1. 确定分区位置
+
+比如是服务器的话可以使用
+
+```shell
+hash（服务器A的IP地址） %  2^32
+```
+
+![20200806095030](http://img.chenyingqiao.top/blog/20200806095030.png)
+
+2、 计算Key Hash值，并和分区位置大小进行比较
+
+![20200806094830](http://img.chenyingqiao.top/blog/20200806094830.png)
+
+
+# 容错和扩展怎么做
+
+## 容错
+
+当其中节点宕机了我们应该怎么处理？
+
+现假设Node C不幸宕机，可以看到此时对象A、B、D不会受到影响，只有C对象被重定位到Node D。一般的，在一致性Hash算法中，如果一台服务器不可用，则受影响的数据仅仅是此服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它不会受到影响
+
+![20200806095221](http://img.chenyingqiao.top/blog/20200806095221.png)
+
+
+## 扩展
+
+统中增加一台服务器Node X
+
+![20200806095324](http://img.chenyingqiao.top/blog/20200806095324.png)
+
+# 数据倾斜怎么处理
+
+![20200806095629](http://img.chenyingqiao.top/blog/20200806095629.png)
+
+进行虚拟节点的处理，后续只需要将虚拟节点和真实的节点进行一个关联就行。
+
+
+![20200806095618](http://img.chenyingqiao.top/blog/20200806095618.png)
+
+# redis是怎么做的
+
+TODO
+
+# golang进行实现
+
+TODO
