@@ -2,7 +2,7 @@
 layout:     post
 title:      "istio注入原理"
 subtitle:   "istio注入原理"
-date:       2020-07-18
+date:       2020-08-12
 author:     "Lerko"
 header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
 catalog: true
@@ -449,6 +449,16 @@ COMMIT
 这个是多出来的几个端口的作用
 
 ![20200812222100](http://img.chenyingqiao.top/blog/20200812222100.png)
+
+# 自动注入
+
+如果需要自动注入的话我们只需要在明明空间中打上一个标签，istio就能自动进行注入操作
+
+```shell
+$ ks label ns jiuxi-ns istio-injiection=enabled
+```
+
+后续创建的pods都能自动进行注入操作
 
 
 # 教程来源
