@@ -8,8 +8,8 @@ header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
-    - golang
-    - grpc
+    - k8s
+    - istio
 ---
 
 # istio资源类型
@@ -44,3 +44,242 @@ client端直接通通过`负载均衡`的方式去访问一个服务，这个服
 ![20200813104634](http://img.chenyingqiao.top/blog/20200813104634.png)
 
 所以我们就需要virtual service
+
+# 实战
+
+## 场景1
+
+client端
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        command: ["/bin/sh","-c","sleep 3600"]
+```
+
+两个http服务
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd
+spec:
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        command: ["/bin/sh","-c","echo 'hello httpd' > /var/www/index.html; httpd -f -p 8080 -h /var/www"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd2
+spec:
+  selector:
+    matchLabels:
+      app: httpd2
+  template:
+    metadata:
+      labels:
+        app: httpd2
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        command: ["/bin/sh","-c","echo 'hello httpd2' > /var/www/index.html; httpd -f -p 8080 -h /var/www"]
+
+```
+
+两个http服务的service
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-svc
+spec:
+  selector:
+    app: httpd
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd2-svc
+spec:
+  selector:
+    app: httpd2
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+
+```
+
+部署完了之后通过busybox就能访问到两个服务了
+
+## 场景2
+
+我们在服务定义的文件里面加入一个中间的service
+
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-svc
+spec:
+  selector:
+    server: httpd
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd2-svc
+spec:
+  selector:
+    server: httpd2
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+```
+
+我们可以看到多了一个svc
+
+```shell
+➜  virtual-service git:(master) ✗ ks get svc -n lerko-virtual
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+httpd-svc    ClusterIP   10.99.26.85     <none>        8080/TCP   2m21s
+httpd2-svc   ClusterIP   10.109.39.32    <none>        8080/TCP   2m21s
+web-svc      ClusterIP   10.110.44.188   <none>        8080/TCP   41s
+```
+
+
+同时我们直接访问10.110.44.188并且`多次刷新`就可以看到返回的数据是，httpd-svc和httpd2-svc两个服务器之间负载均衡返回的数据
+
+# 场景3
+
+如果要达到流量精确百分比控制的话就需要istio来进行控制了
+
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: web-svc-vs
+spec:
+  hosts:
+  - web-svc # 这里是说明这个虚拟service要作用到web-svc上
+  http:
+  - route:
+    - destination:
+        host: httpd-svc
+      weight: 80
+    - destination:
+        host: httpd2-svc
+      weight: 20
+```
+
+应用之后我们可以通过这个命令看到新建的virtual-service
+
+```shell
+$ ks get virtualservices.networking.istio.io -n lerko-virtual
+NAME         GATEWAYS   HOSTS       AGE
+web-svc-vs              [web-svc]   53s
+```
+
+然后我们去client中去访问virtual-service(前提是pods已经注入istio)
+我们多次进行访问的话就会发现大多数的流量是到了httpd2上
+
+```shell
+➜  virtual-service git:(master) ✗ ks exec -it client-88cb688cc-4xk4k -n lerko-virtual -c client /bin/sh
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd2
+/ # wget -q -O - web-svc:8080
+hello httpd2
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # wget -q -O - web-svc:8080
+hello httpd
+/ # 
+```

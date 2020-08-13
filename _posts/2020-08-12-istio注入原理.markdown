@@ -8,8 +8,8 @@ header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
-    - golang
-    - grpc
+    - k8s
+    - istio
 ---
 
 `备注：ks 为 sudo kubectl的别名`
