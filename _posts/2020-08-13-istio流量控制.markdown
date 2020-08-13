@@ -4,7 +4,7 @@ title:      "istio流量控制"
 subtitle:   "istio流量控制"
 date:       2020-08-13
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
+header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
 catalog: true
 multilingual: false
 tags:

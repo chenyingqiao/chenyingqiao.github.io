@@ -4,7 +4,7 @@ title:      "istio注入原理"
 subtitle:   "istio注入原理"
 date:       2020-08-12
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
+header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
