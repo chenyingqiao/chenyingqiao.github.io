@@ -250,7 +250,7 @@ web-svc-vs              [web-svc]   53s
 ```
 
 然后我们去client中去访问virtual-service(前提是pods已经注入istio)
-我们多次进行访问的话就会发现大多数的流量是到了httpd2上
+我们多次进行访问的话就会发现大多数的流量是到了httpd上
 
 ```shell
 ➜  virtual-service git:(master) ✗ ks exec -it client-88cb688cc-4xk4k -n lerko-virtual -c client /bin/sh
