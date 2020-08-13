@@ -16,7 +16,7 @@ tags:
 
 | 类型  | 作用  |
 |---|---|
-|  Virtual Services | 虚拟服务：  |
+|  Virtual Services | 虚拟服务：本质是一个配置片段，用来描述envoy策略  |
 |  Destination rules |  目的规则： |
 |  Gateways | 网关：  |
 |  Service entries | 服务实体  |
