@@ -158,6 +158,8 @@ spec:
 
 部署完了之后通过busybox就能访问到两个服务了
 
+![20200814112314](http://img.chenyingqiao.top/blog/20200814112314.png)
+
 ## 场景2
 
 我们在服务定义的文件里面加入一个中间的service
