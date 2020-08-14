@@ -1,15 +1,48 @@
 ---
 layout:     post
-title:      "golang的垃圾回收算法"
-subtitle:   "golang的垃圾回收算法"
+title:      "golang的垃圾回收"
+subtitle:   "golang的垃圾回收算法：三色标记法"
 date:       2020-07-23
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200720160959.png"
+header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
 catalog: true
 multilingual: false
 tags:
     - go
 ---
 
-# 关于GC
+# 三色标记法
 
+初始化是对象都是白的
+
+| 颜色  | 对应身份  |
+|---|---|
+|  白 |  可以清除 |
+|  灰 |  移动到不可清除前的缓冲区域 |
+|  黑 |  不可进行垃圾回收的变量 |
+
+1. 所有对象都是白色区域
+
+![20200814160653](http://img.chenyingqiao.top/blog/20200814160653.png)
+
+2. 确认顶级内存区域，移动到灰色区域
+
+![20200814160738](http://img.chenyingqiao.top/blog/20200814160738.png)
+
+3. 确认子级内存区域，并将顶级内存区域移动到黑色区域
+
+![20200814160709](http://img.chenyingqiao.top/blog/20200814160709.png)
+
+4. 将所有有引用的内存移动到black
+
+![20200814160726](http://img.chenyingqiao.top/blog/20200814160726.png)
+
+5. 清除白色区域
+
+![20200814160810](http://img.chenyingqiao.top/blog/20200814160810.png)
+
+# 为什么可以异步执行
+
+三色标记法因为多了一个白色的状态来存放不确定的对象，所以可以异步地执行。当然异步执行的代价是可能会造成一些遗漏，因为那些早先被标记为黑色的对象可能目前已经是不可达的了。所以三色标记法是一个 false negative（假阴性）的算法。
+
+除了异步标记的优点，三色标记法掌握了更多当前内存的信息，因此可以更加精确地按需调度，而不用像标记清扫法那样只能定时执行。
