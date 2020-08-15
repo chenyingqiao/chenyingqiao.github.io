@@ -1,0 +1,98 @@
+---
+layout:     post
+title:      "Go语言之Slice"
+subtitle:   "Go语言之Slice"
+date:       2020-08-14
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
+catalog: true
+multilingual: false
+tags:
+    - go
+---
+
+
+# Slice本质是什么
+
+Slice是golang中一个可变长度的数组，我们知道可变长度的数组都是通过固定长度的数组进行扩容实现的，比如Java中的ArrayList。
+
+Slice的本质是一个结构体如下：
+
+```go
+//在栈中的slice
+type slice struct {
+	array unsafe.Pointer
+	len   int
+	cap   int
+}
+
+//在堆中的slice
+type notInHeapSlice struct {
+	array *notInHeap
+	len   int
+	cap   int
+}
+```
+
+
+
+# 空间分配
+
+通过代码观察空间是翻倍
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	memoryCap()
+}
+
+func memoryCap() {
+	s := []int{}
+
+	for i := 0; i < 16; i++ {
+		fmt.Printf("分配内存的大小：%d \n", cap(s))
+		fmt.Println(s)
+		s = append(s, i)
+	}
+}
+
+```
+
+```shell
+$ go run var/slice.go
+分配内存的大小：0 
+[]
+分配内存的大小：1 
+[0]
+分配内存的大小：2 
+[0 1]
+分配内存的大小：4 
+[0 1 2]
+分配内存的大小：4 
+[0 1 2 3]
+分配内存的大小：8 
+[0 1 2 3 4]
+分配内存的大小：8 
+[0 1 2 3 4 5]
+分配内存的大小：8 
+[0 1 2 3 4 5 6]
+分配内存的大小：8 
+[0 1 2 3 4 5 6 7]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9 10]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9 10 11]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9 10 11 12]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9 10 11 12 13]
+分配内存的大小：16 
+[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14]
+```
