@@ -15,4 +15,11 @@ tags:
 
 1. redo log
 2. undo log
-3. slow query log
+4. bin log
+
+
+|  日志类型 |  作用 |
+|---|---|
+| redo log  |   |
+| undo log  |   |
+| bin log  |   |
