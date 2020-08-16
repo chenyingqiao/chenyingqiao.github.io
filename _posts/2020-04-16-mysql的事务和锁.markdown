@@ -108,7 +108,7 @@ select * from table where id>3 锁住的就是id=3这条记录以及id>3这个�
 
 ## MVCC
 
-英文全称为Multi-Version Concurrency Control,翻译为中文即 多版本并发控制。在小编看来，他无非就是乐观锁的一种实现方式。如果把乐观锁看成一个接口，MVCC便是这个接口的一个实现而已。
+英文全称为Multi-Version Concurrency Control,翻译为中文即 多版本并发控制。他无非就是乐观锁的一种实现方式。如果把乐观锁看成一个接口，MVCC便是这个接口的一个实现而已。
 
 ![20200816150024](http://img.chenyingqiao.top/blog/20200816150024.png)
 
