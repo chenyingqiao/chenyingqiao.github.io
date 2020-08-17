@@ -4,7 +4,7 @@ title:      "Mysql和Mongodb对比"
 subtitle:   "Mysql和Mongodb对比"
 date:       2020-08-17
 author:     "Lerko"
-header-img: "/img/post-bg-e2e-ux.jpg"
+header-img: "http://img.chenyingqiao.top/blog/20200817110319.png"
 catalog: true
 multilingual: false
 tags:
