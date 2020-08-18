@@ -1,0 +1,49 @@
+---
+layout:     post
+title:      "常见的缓存问题"
+subtitle:   "常见的缓存问题"
+date:       2020-07-23
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - redis
+---
+
+
+# 常见的缓存问题
+
+**缓存穿透**
+
+缓存穿透是指的请求不存在的key导致穿透到数据库进行查询
+
+![20200818101344](http://img.chenyingqiao.top/blog/20200818101344.png)
+
+解决方案：
+
+![20200818101857](http://img.chenyingqiao.top/blog/20200818101857.png)
+
+**缓存击穿**
+
+大量流量查询一个key
+
+![20200818102119](http://img.chenyingqiao.top/blog/20200818102119.png)
+
+解决方案：
+
+监控热点的key，提前设置未永不过期。
+监控范围可以是接口范围的，如果某个接口流量非常大的话就吧这个接口的key都设置为永久
+
+**缓存雪崩**
+
+大量的key同时失效
+
+![20200818103659](http://img.chenyingqiao.top/blog/20200818103659.png)
+
+解决方案：
+
+key的过期时间设置为平滑的，不要全部的key都设置未同一个时间失效
+
+
+

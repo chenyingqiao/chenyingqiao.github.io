@@ -1,0 +1,17 @@
+---
+layout:     post
+title:      "raft分布式协议"
+subtitle:   "raft分布式协议"
+date:       2020-07-23
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - K8S
+    - 分布式
+---
+
+
+# raft协议是什么
+
