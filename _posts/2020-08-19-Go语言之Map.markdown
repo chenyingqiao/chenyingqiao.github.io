@@ -1,0 +1,127 @@
+---
+layout:     post
+title:      "Go语言之Map"
+subtitle:   "Go语言之Map"
+date:       2020-08-19
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
+catalog: true
+multilingual: false
+tags:
+    - go
+---
+
+## map的特性
+
+1. 参数传递的时候是使用的值传递，如需改变的话需要传入指针
+2. 键值对，遍历输出无须。需要自己定义一个索引进行遍历
+
+## 内存模型
+
+map采用的是*哈希表*，使用*拉链法*解决冲突
+
+*src/runtime/map.go*
+
+下面是一个官方的解读
+
+> 此文件包含Go的map类型的实现。
+
+> map只是一个哈希表。数据整理放入存储桶数组中。每个存储桶最多包含个键/元素对。<br/>
+> 哈希的低位是用于选择存储桶。<br/>
+> 每个存储桶包含一些每个哈希的高阶位以区分条目在单个存储桶中。<br/>
+
+>如果有8个以上的键散列到存储桶中，额外的存储桶。
+
+> 当哈希表增长时，我们分配一个新数组两倍大的水桶。<br/>
+> 递增从旧的值区阵列复制到新的值区阵列。
+
+> map迭代器遍历存储桶数组和以步行顺序返回密钥（存储桶＃，然后溢出链顺序，然后是存储区索引）。<br/>维持迭代语义，我们永远不会在键区中移动键（如果我们做到了，键可能会返回0或2次）。<br/>什么时候扩大表格，迭代器将继续迭代旧表，并且如果存储桶必须检查新表他们正在遍历的对象已被移动（“撤离”）到新表。 
+
+*hash表*
+
+```go
+type hmap struct {
+	//map 中的元素个数，必须放在 struct 的第一个位置，因为内置的 len 函数会通过unsafe.Pointer会从这里读取
+	count     int //总数量
+	flags     uint8
+	// bucket的数量是2^B, 最多可以放 loadFactor * 2^B 个元素，再多就要 hashGrow 了
+	B         uint8
+	//overflow 的 bucket 近似数
+	noverflow uint16
+	hash0     uint32 // hash seed
+	//2^B 大小的数组，如果 count == 0 的话，可能是 nil
+	buckets    unsafe.Pointer 
+	// 扩容的时候，buckets 长度会是 oldbuckets 的两倍,只有在 growing 时候为空。
+	oldbuckets unsafe.Pointer
+	// 指示扩容进度，小于此地址的 buckets 迁移完成
+	nevacuate  uintptr // progress counter for evacuation (buckets less than this have been evacuated)
+	// 当 key 和 value 都可以 inline 的时候，就会用这个字段
+	extra *mapextra // optional fields 
+}
+```
+
+![20200819141632](http://img.chenyingqiao.top/blog/20200819141632.png)
+
+![20200819141822](http://img.chenyingqiao.top/blog/20200819141822.png)
+
+![20200819141747](http://img.chenyingqiao.top/blog/20200819141747.png)
+
+*桶*
+
+```go
+type bmap struct {
+	// tophash通常包含哈希值的最高字节 
+	// 此存储桶中的每个键。如果tophash [0] <minTopHash
+	// tophash [0]改为是疏散状态。
+	tophash [bucketCnt]uint8
+	// 随后是bucketCnt键，然后是bucketCnt元素。 
+	// 注意：将所有键打包在一起，然后将所有元素打包在一起
+	// 编码比交替key /elem /key /elem /复杂一些...但是它允许
+	// 我们消除了例如map [int64] int8所需的填充。
+	// 后跟一个溢出指针。
+}
+```
+
+上面并不是真实的结构，编译器会动态创建一个新的结构如下
+
+```go
+type bmap struct {
+    topbits  [8]uint8
+    keys     [8]keytype
+    values   [8]valuetype
+    pad      uintptr
+    overflow uintptr
+}
+```
+
+![20200819142500](http://img.chenyingqiao.top/blog/20200819142500.png)
+
+![20200819141535](http://img.chenyingqiao.top/blog/20200819141535.png)
+
+
+```go
+type mapextra struct {
+	// If both key and elem do not contain pointers and are inline, then we mark bucket
+	// type as containing no pointers. This avoids scanning such maps.
+	// However, bmap.overflow is a pointer. In order to keep overflow buckets
+	// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
+	// overflow and oldoverflow are only used if key and elem do not contain pointers.
+	// overflow contains overflow buckets for hmap.buckets.
+	// oldoverflow contains overflow buckets for hmap.oldbuckets.
+	// The indirection allows to store a pointer to the slice in hiter.
+	overflow    *[]*bmap
+	oldoverflow *[]*bmap
+
+	// extOverflow拥有一个指向空闲溢出桶的指针。
+	nextOverflow *bmap
+}
+```
+
+# 扩容规则
+
+![20200819143243](http://img.chenyingqiao.top/blog/20200819143243.png)
+
+
+# 键值对被删除的情况迁移
+
+因为很多键值对被删除，就需要等量扩容就是将稀疏的bmap进行重新整合，这样使得内存更加紧凑
