@@ -1,0 +1,141 @@
+---
+layout:     post
+title:      "Go语言之静态二进制文件"
+subtitle:   "Go语言之静态二进制文件"
+date:       2020-08-31
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
+catalog: true
+multilingual: false
+tags:
+    - go
+---
+
+
+# 基本知识
+
+我们都从相同的基础开始，编译一个简单的 go 程序:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Printf("hello world")
+}
+
+```
+
+
+```go
+$go build -o mybin *.go
+```
+
+将在你的文件夹中生成一个二进制的“ mybin”
+
+
+# 交叉编译
+
+如果我们希望这个程序直接拷贝就可以运行到我们的服务器上，我们应该怎么做？
+将这个编译好的文件直接制作成docker基于alpine的镜像，我们会发现镜像无法运行
+
+我们需要进行交叉编译实现一个静态的编译好的文件
+
+$GOARCH 目标平台（编译后的目标平台）的处理器架构（386、amd64、arm）
+$GOOS 目标平台（编译后的目标平台）的操作系统（darwin、freebsd、linux、windows）
+
+```go
+$ GOOS=linux GOARCH=arm GOARM=6 go build -o mybin-arm *.go
+```
+
+这将构建一个 linux + arm (armel)兼容的二进制文件
+
+如果你想运行在arm并且也可以运行在x64的系统上
+
+```go
+$ GOOS=linux GOARCH=amd64 go build -o mybin-arm *.go
+```
+
+# Debian 交叉编译依赖项
+
+无聊但实际上很简单:
+
+```shell
+# aptitude install cross-gcc-dev -t jessie-backports
+# dpkg --add-architecture armhf
+# dpkg --add-architecture armel
+# aptitude update
+# aptitude install crossbuild-essential-armel crossbuild-essential-armhf
+```
+
+然后通过这样进行编译
+
+```go
+$ CC=arm-linux-gnueabi-cc GOOS=linux GOARCH=arm GOARM=6 go build -o mybin-arm *.go
+```
+
+# 更多类型的二进制
+
+现在，当 libc 版本差异、网络库、缺少证书等等给您带来麻烦时，您可以使用更多的静态二进制文件。
+
+```go
+$ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o mybin *.go
+```
+
+你会发现命令越来越长了
+
+现在我们禁用 CGO，你可能不需要根据库和你做的事情，强制重建与-a 和标记 netgo，以确保我们使用内置的网络包，而不是系统的。
+
+禁用 CGO 消除了交叉编译依赖关系的需要。
+
+这个 ldflags-w 只是禁用调试让文件更小。
+
+但是如果你真的需要集成 CGO，你可以考虑这个:
+
+```go
+$ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o mybin *.go
+```
+
+这将使链接的 c 部件也静态地转化为二进制文件，从而降低兼容性风险。
+
+# 最小的go镜像
+
+从上面的操作我们可以通过交叉编译生成一个最小的go镜像
+
+```go
+FROM scratch
+COPY mybin /mybin
+CMD ["/mybin"]
+```
+
+这意味着你的 docker 映像实际上只是你的二进制，没有其他的内容包含在里面。
+
+
+# 库 vs 二进制
+
+有时候你可能希望构建一个库，让他也有一个默认的二进制文件
+
+与制作不同的项目相反，您可以使用所需的包名称作为库
+
+如下：
+
+```go
+package main
+import "myproj"
+func main() { 
+}
+```
+
+现在你可以通过简单的导入在其他项目中使用这个库，但是你可以用它来制作一个二进制文件:
+
+```go
+go build -o mybin cmd/myproj/main.go
+```
+
+好处是你不需要编译 *.go
+
+# 相关链接
+
+https://medium.com/@diogok/on-golang-static-binaries-cross-compiling-and-plugins-1aed33499671
+

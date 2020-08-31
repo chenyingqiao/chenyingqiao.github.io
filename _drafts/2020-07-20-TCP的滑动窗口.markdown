@@ -1,0 +1,23 @@
+---
+layout:     post
+title:      "Go语言之锁"
+subtitle:   "Go语言之锁"
+date:       2020-07-18
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
+catalog: true
+multilingual: false
+tags:
+    - golang
+    - grpc
+---
+
+# grpc是什么
+
+
+> gRPC is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services.
+
+gRPC 是一个现代的开源高性能 RPC 框架，可以在任何环境中运行。它可以高效地连接数据中心内部和跨数据中心的服务，并为负载平衡、跟踪、健康检查和身份验证提供可插拔的支持。它也适用于最后一英里的分布式计算连接设备，移动应用程序和浏览器的后端服务。
+
+# protobuf
+
