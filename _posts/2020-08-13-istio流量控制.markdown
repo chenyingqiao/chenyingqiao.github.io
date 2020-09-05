@@ -17,10 +17,10 @@ tags:
 | 类型  | 作用  |
 |---|---|
 |  Virtual Services | 虚拟服务：本质是一个配置片段，用来描述envoy策略  |
-|  Destination rules |  目的规则： |
-|  Gateways | 网关：  |
-|  Service entries | 服务实体  |
-|  Sidecars | 车边：  |
+|  Destination rules |  目的规则：对vs的流量进行进一步的精细配置 |
+|  Gateways | 网关：网关描述了一个负载均衡器，该负载均衡器在网格的边缘接收传入或传出的 HTTP/TCP 连接。  |
+|  Service entries | 服务实体：注册外部服务，如mongodb mysql这些到网格中  |
+|  Sidecars | 车边：单个网格的代理  |
 
 
 # 流量控制流程

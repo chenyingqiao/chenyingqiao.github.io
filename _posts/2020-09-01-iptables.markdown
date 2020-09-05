@@ -1,0 +1,100 @@
+---
+layout:     post
+title:      "iptables"
+subtitle:   "iptables"
+date:       2020-09-01
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - K8S
+    - 分布式
+---
+
+# filter表
+
+作用： 过滤
+
+查看表
+```shell
+➜  ~ sudo iptables -t filter -L -n 
+**Chain INPUT (policy ACCEPT[接收])**
+target[处理方式]     prot[协议] opt[额外参数] source[原地址]              destination[目的端口]         
+KUBE-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            ctstate NEW /* kubernetes service portals */
+KUBE-EXTERNAL-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            ctstate NEW /* kubernetes externally-visible service portals */
+KUBE-FIREWALL  all  --  0.0.0.0/0            0.0.0.0/0           
+LIBVIRT_INP  all  --  0.0.0.0/0            0.0.0.0/0           
+
+**Chain FORWARD (policy ACCEPT)**
+target     prot opt source               destination         
+KUBE-FORWARD  all  --  0.0.0.0/0            0.0.0.0/0            /* kubernetes forwarding rules */
+KUBE-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            ctstate NEW /* kubernetes service portals */
+DOCKER-USER  all  --  0.0.0.0/0            0.0.0.0/0           
+DOCKER-ISOLATION-STAGE-1  all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+LIBVIRT_FWX  all  --  0.0.0.0/0            0.0.0.0/0           
+LIBVIRT_FWI  all  --  0.0.0.0/0            0.0.0.0/0           
+LIBVIRT_FWO  all  --  0.0.0.0/0            0.0.0.0/0           
+
+**Chain OUTPUT (policy ACCEPT)**
+target     prot opt source               destination         
+KUBE-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            ctstate NEW /* kubernetes service portals */
+KUBE-FIREWALL  all  --  0.0.0.0/0            0.0.0.0/0           
+LIBVIRT_OUT  all  --  0.0.0.0/0            0.0.0.0/0 
+```
+
+![20200901102051](http://img.chenyingqiao.top/blog/20200901102051.png)
+
+INPUT Chain : 入口filter
+OUTPUT chain : 出口filter
+FORWORD ： 中间转发和net表有关
+
+iptables -t filter -A INPUT{指定的链追加} -j DROP -d [ip]{处理方式} --dport {目的端口} -s [ip]{源ip}
+
+iptable的生效顺序是按照添加的顺序来
+可以自己自己指定是添加到那个位置
+iptables -t filter -I INPUT{指定的链追加} [opsition]{插入的位置} -j DROP -d [ip]{处理方式} --dport {目的端口} -s [ip]{源ip}
+ 
+2. net表 ：转发
+
+查看表
+```shell
+➜  ~ sudo iptables -t nat -L -n
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination         
+KUBE-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            /* kubernetes service portals */
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+KUBE-SERVICES  all  --  0.0.0.0/0            0.0.0.0/0            /* kubernetes service portals */
+DOCKER     all  --  0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination         
+KUBE-POSTROUTING  all  --  0.0.0.0/0            0.0.0.0/0            /* kubernetes postrouting rules */
+MASQUERADE  all  --  172.17.0.0/16        0.0.0.0/0           
+MASQUERADE  all  --  172.18.0.0/16        0.0.0.0/0           
+LIBVIRT_PRT  all  --  0.0.0.0/0            0.0.0.0/0           
+MASQUERADE  tcp  --  172.17.0.34          172.17.0.34          tcp dpt:10027
+```
+
+![20200901102828](http://img.chenyingqiao.top/blog/20200901102828.png)
+
+
+PREROUTING：修改转发的目的地址
+POSTROUTING： 修改源地址
+
+如果需要修改目的地址的话会走forward这个路线，不需要的话直接走filter就可以了
+
