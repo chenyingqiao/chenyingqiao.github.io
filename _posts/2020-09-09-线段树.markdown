@@ -1,0 +1,61 @@
+---
+layout:     post
+title:      "线段树"
+subtitle:   "线段树"
+date:       2020-09-09
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - 数据结构
+---
+
+# 引入
+
+现在我们要求一个数组进行两个操作
+1. 任意L到R的和
+2. 任意更新某个数
+
+![20200909111440](http://img.chenyingqiao.top/blog/20200909111440.png)
+
+
+首先我们想到可以用`前缀和`，新建一个数组，保存每个位置到第一位的和
+
+![20200909111727](http://img.chenyingqiao.top/blog/20200909111727.png)
+
+但是算法效率变化了
+
+![20200909111816](http://img.chenyingqiao.top/blog/20200909111816.png)
+
+还有优化空间吗
+
+
+# 线段树
+
+线段树可以做到时间复杂度查找更新都是 log n
+
+![20200909111851](http://img.chenyingqiao.top/blog/20200909111851.png)
+
+下面是一个例子
+
+![20200909112350](http://img.chenyingqiao.top/blog/20200909112350.png)
+
+如果我们要找到
+2 - 5的和
+
+![20200909112507](http://img.chenyingqiao.top/blog/20200909112507.png)
+
+直接获取[3-5]的和再找到2的值相加即可
+
+# 构建线段树
+
+![20200909112800](http://img.chenyingqiao.top/blog/20200909112800.png)
+
+给这个树来个二向箔之后我们怎么寻找对应节点的数据？
+下面有个公式
+
+> left = 2 * Node + 1
+> right = 2 * Node + 2
+
+![20200909114052](http://img.chenyingqiao.top/blog/20200909114052.png)
