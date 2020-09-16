@@ -1,0 +1,112 @@
+---
+layout:     post
+title:      "排序算法"
+subtitle:   "排序算法"
+date:       2020-09-02
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - TCP
+---
+
+```go
+package main
+
+import "fmt"
+
+var (
+	sortArr   = [9]int{4, 3, 2, 5, -7, 1, 6, 9, -1}
+	quickSort = [9]int{4, 3, 2, 5, -7, 1, 6, 9, -1}
+)
+
+func main() {
+	fmt.Println(BubbleSort(sortArr))
+	fmt.Println(SelectionSort(sortArr))
+	QuickSort(&quickSort, 0, len(quickSort)-1)
+	fmt.Println(quickSort)
+}
+
+//BubbleSort 冒泡排序
+func BubbleSort(arr [9]int) [9]int {
+	i, sorted := 0, 0
+	for sorted <= len(arr) {
+		if i+sorted >= len(arr)-1 {
+			i = 0
+			sorted++
+		}
+		if arr[i] > arr[i+1] {
+			arr[i], arr[i+1] = arr[i+1], arr[i]
+		}
+		i++
+	}
+	return arr
+}
+
+//SelectionSort 选择排序
+func SelectionSort(arr [9]int) [9]int {
+	i, sorted, min, minPosition := 0, 0, arr[0], 0
+
+	for true {
+		if arr[i] < min {
+			min = arr[i]
+			minPosition = i
+		}
+		i++
+		if i >= len(arr) {
+			//未排序的遍历完毕，交换最小值到最前面
+			arr[minPosition], arr[sorted] = arr[sorted], arr[minPosition]
+			sorted++
+			if sorted >= len(arr) {
+				break
+			}
+			i = sorted
+			min = arr[sorted]
+			minPosition = sorted
+		}
+
+	}
+
+	return arr
+}
+
+//QuickSort 快速排序
+func QuickSort(arr *[9]int, startPosition int, endPosition int) {
+	l, r := startPosition, endPosition
+	middle := arr[l] //假设最左边的原始为值的基准点
+	emptyPosition := l
+	for l != r {
+		if l < 0 || r > len(arr)-1 || r < 0 || l > len(arr)-1 {
+			break
+		}
+		if arr[r] < middle && r > emptyPosition {
+			arr[emptyPosition] = arr[r]
+			emptyPosition = r
+		}
+		if l < emptyPosition { //需要以空位置为终点
+			l++
+		}
+		if l < 0 || r > len(arr)-1 || r < 0 || l > len(arr)-1 {
+			break
+		}
+		if arr[l] > middle && l < emptyPosition {
+			arr[emptyPosition] = arr[l]
+			emptyPosition = l
+		}
+		if r > emptyPosition { //需要以空位置为终点
+			r--
+		}
+	}
+	arr[emptyPosition] = middle
+	if startPosition == endPosition || startPosition > endPosition {
+		return
+	}
+	if l < 0 || r > len(arr)-1 || r < 0 || l > len(arr)-1 {
+		return
+	}
+	QuickSort(arr, startPosition, emptyPosition-1)
+	QuickSort(arr, emptyPosition+1, endPosition)
+}
+
+```
