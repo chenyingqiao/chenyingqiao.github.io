@@ -1,0 +1,61 @@
+---
+layout:     post
+title:      "Mysql索引和排序"
+subtitle:   "Mysql索引和排序"
+date:       2020-09-16
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - mysql
+---
+
+
+# 索引对排序的影响
+
+建立索引时，可以指定索引的排序方向。
+这对排序查询是有影响的。**特别是多列的情况。**
+
+在多张表连接查询的情况下，只有当order by 子句引用的全部为第一个表的时候才能使用索引作为排序辅助。
+order by 查询和普通查询一样：需要满足最左前缀匹配原则才可以利用到索引
+
+但是有一种指定前缀常量的方式可以使用到索引
+
+比如我们有一个索引列
+
+（date,id,cid）
+
+```sql
+select * from table where date = '2020-09-16' order by id,cid ;
+-- 这样是可以使用到索引的
+```
+
+这样是指定了 2020-09-16为一个date 常量
+
+类似下面的查询也没有问题（范围判断）
+
+```sql
+select * from table where date > '2020-09-16' order by date,id ;
+-- 这样是可以使用到索引的,符合了前缀
+```
+
+下面是一些无法使用到索引排序的情况
+
+```sql
+-- 和索引排序顺序违背的
+select * from table where date = '2020-09-16' order by id desc,cid asc;
+
+-- 引用了不在索引的列
+select * from table where date = '2020-09-16' order by id,name;
+
+-- where 和 order by 无法组成最左前缀
+select * from table where date = '2020-09-16' order by cid;
+
+-- 第一列是范围查询和order by 也无法组成前缀匹配
+select * from table where date > '2020-09-16' order by id,cid;
+
+-- 有多个条件
+select * from table where date > '2020-09-16' and id in (1,2) order by cid;
+
+```
