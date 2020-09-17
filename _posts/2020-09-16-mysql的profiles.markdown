@@ -55,6 +55,7 @@ cleaning up         |0.000008|0.000000|  0.000008|                0|            
 
 ![20200917082435](http://img.chenyingqiao.top/blog/20200917082435.png)
 
+```
 "Status": "query end", 状态
 "Duration": "1.751142", 持续时间
 "CPU_user": "0.008999", cpu用户
@@ -71,10 +72,12 @@ cleaning up         |0.000008|0.000000|  0.000008|                0|            
 "Source_function": "mysql_execute_command", 源功能
 "Source_file": "sql_parse.cc", 源文件
 "Source_line": "4465" 源代码行
+```
 
 
 行数据解释
 
+```
 starting：开始
 checking permissions：检查权限
 Opening tables：打开表
@@ -91,6 +94,7 @@ query end ：查询 结束
 closing tables ： 关闭表 ／去除TMP 表
 freeing items ： 释放项目
 cleaning up ：清理
+```
 
 
 ![20200917085410](http://img.chenyingqiao.top/blog/20200917085410.png)
