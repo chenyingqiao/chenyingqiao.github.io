@@ -1,0 +1,24 @@
+---
+layout:     post
+title:      "http和http2"
+subtitle:   "http和http2"
+date:       2020-09-02
+author:     "Lerko"
+header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
+catalog: true
+multilingual: false
+tags:
+    - TCP
+---
+
+# TCP的特点及其目的
+
+就一个
+
+**可靠性**，需要解决数据破坏，丢包，重复，分片顺序混乱的问题
+
+# 如何实现可靠传输
+
+**序列号和确认应答**
+
+

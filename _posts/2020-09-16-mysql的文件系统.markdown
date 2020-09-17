@@ -49,12 +49,14 @@ block group结构：
 
 各个部分解析
 
+```
 inode table: inode是一个结构体，inode结构体中存放的就是文件的属性
 inode bitmap：我们每个文件都对应了一个inode，每个inode拥有独一无二inode号。
 block bitmap：Block Bitmap中记录着Data Block中哪个数据块已经被占用，哪个数据块没 有被占用
 data blocks：存放数据的数据块
 super block：存放文件系统本身的结构信息。记录的信息主要有：bolck 和 inode的总量， 未使用的block和inode的数量，一个block和inode的大小，最近一次挂载的时间，最近一次写入数据的 时间，最近一次检验磁盘的时间等其他文件系统的相关信息。Super Block的信息被破坏，可以说整个 文件系统结构就被破坏了
 group descriptor table：块组描述符，描述块组属性信息
+```
 
 # 数据存放
 
