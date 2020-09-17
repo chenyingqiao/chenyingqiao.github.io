@@ -91,3 +91,7 @@ query end ：查询 结束
 closing tables ： 关闭表 ／去除TMP 表
 freeing items ： 释放项目
 cleaning up ：清理
+
+
+![20200917085410](http://img.chenyingqiao.top/blog/20200917085410.png)
+
