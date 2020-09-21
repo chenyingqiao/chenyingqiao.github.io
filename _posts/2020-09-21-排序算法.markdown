@@ -2,13 +2,13 @@
 layout:     post
 title:      "排序算法"
 subtitle:   "排序算法"
-date:       2020-09-02
+date:       2020-09-21
 author:     "Lerko"
 header-img: "/img/post-bg-e2e-ux.jpg"
 catalog: true
 multilingual: false
 tags:
-    - TCP
+    - 算法
 ---
 
 ```go
