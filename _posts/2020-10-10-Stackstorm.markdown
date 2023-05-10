@@ -124,7 +124,7 @@ st2 run core.remote hosts='localhost' cmd="for u in bob phill luke; do echo \"Lo
 
 本例中的 webhook 设置为在 https://{ host }/api/v1/webhooks/sample 监听 sample 子 url。当对此 URL 生成 POST 时，触发器将触发。如果条件匹配(在这种情况下，payload 中的值为 st2) ，那么该有效负载将被附加到 st2.webhook _ sample.out 文件中 StackStorm 系统用户的 home 目录中。默认情况下，这是 stanley，因此文件位于/home/stanley/st2。样本。出去。详细规则解剖见规则。
 
-触发器有效负载由{{ trigger }引用。如果触发器有效负载是一个有效的 JSON 对象，那么将对其进行解析，并且可以像{ trigger.path.to.parameter }那样进行访问。
+触发器有效负载由 trigger引用。如果触发器有效负载是一个有效的 JSON 对象，那么将对其进行解析，并且可以像{ trigger.path.to.parameter }那样进行访问。
 
 规则中可用的触发器是什么？就像操作一样，使用 CLI 浏览触发器，了解触发器的作用，如何配置它，以及有效负载结构是什么:
 
