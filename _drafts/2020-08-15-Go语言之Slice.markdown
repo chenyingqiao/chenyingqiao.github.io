@@ -4,7 +4,7 @@ title:      "Go语言之Slice"
 subtitle:   "Go语言之Slice"
 date:       2020-08-14
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
+header-img: "http://chenyingqiao.github.io/img/20200814155942.png"
 catalog: true
 multilingual: false
 tags:

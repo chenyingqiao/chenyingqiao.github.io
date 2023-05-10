@@ -4,7 +4,7 @@ title:      "golang 中 goroutine 的调度"
 subtitle:   "本文转载自go夜读"
 date:       2020-07-23
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200720160959.png"
+header-img: "http://chenyingqiao.github.io/img/20200720160959.png"
 catalog: true
 multilingual: false
 tags:

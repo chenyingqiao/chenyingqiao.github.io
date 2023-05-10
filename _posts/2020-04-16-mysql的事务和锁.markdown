@@ -32,7 +32,7 @@ tags:
 
 ### redo log
 
-![20200816104116](http://img.chenyingqiao.top/blog/20200816104116.png)
+![20200816104116](http://chenyingqiao.github.io/img/20200816104116.png)
 
 mysql支持三种将redo log buffer写入redo log file的时机，可以通过innodb_flush_log_at_trx_commit参数配置，各参数值含义如下：
 
@@ -43,7 +43,7 @@ mysql支持三种将redo log buffer写入redo log file的时机，可以通过in
 |  2（实时写，延迟刷） |  每次提交都仅写入到os buffer，然后是每秒调用fsync()将os buffer中的日志写入到redo log file。 |
 
 
-![20200816104713](http://img.chenyingqiao.top/blog/20200816104713.png)
+![20200816104713](http://chenyingqiao.github.io/img/20200816104713.png)
 
 ### undo log
 
@@ -89,7 +89,7 @@ select * from table where id>3 锁住的就是id=3这条记录以及id>3这个�
 
 事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据
 
-![20200816143637](http://img.chenyingqiao.top/blog/20200816143637.png)
+![20200816143637](http://chenyingqiao.github.io/img/20200816143637.png)
 
 
 **不可重复读**
@@ -97,19 +97,19 @@ select * from table where id>3 锁住的就是id=3这条记录以及id>3这个�
 事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
 
 
-![20200816144642](http://img.chenyingqiao.top/blog/20200816144642.png)
+![20200816144642](http://chenyingqiao.github.io/img/20200816144642.png)
 
 **幻读**
 
 第一个事务对一个表中的数据进行了修改，比如这种修改涉及到表中的“全部数据行”。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入“一行新数据”。那么，以后就会发生操作第一个事务的用户发现表中还存在没有修改的数据行，就好象发生了幻觉一样.
 
-![20200816145855](http://img.chenyingqiao.top/blog/20200816145855.png)
+![20200816145855](http://chenyingqiao.github.io/img/20200816145855.png)
 
 ## MVCC
 
 英文全称为Multi-Version Concurrency Control,翻译为中文即 多版本并发控制。他无非就是乐观锁的一种实现方式。如果把乐观锁看成一个接口，MVCC便是这个接口的一个实现而已。
 
-![20200816150024](http://img.chenyingqiao.top/blog/20200816150024.png)
+![20200816150024](http://chenyingqiao.github.io/img/20200816150024.png)
 
 ## 锁
 

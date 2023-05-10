@@ -4,7 +4,7 @@ title:      "ArchLinux下安装Minikube"
 subtitle:   "Minikube的安装和遇到的问题"
 date:       2020-07-21
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200721111153.png"
+header-img: "http://chenyingqiao.github.io/img/20200721111153.png"
 catalog: true
 multilingual: false
 tags:

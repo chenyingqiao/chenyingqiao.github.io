@@ -4,7 +4,7 @@ title:      "Istio官方实例搭建"
 subtitle:   "Istio官方实例搭建"
 date:       2020-07-23
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
+header-img: "http://chenyingqiao.github.io/img/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
@@ -23,7 +23,7 @@ Istio官网对其的定义
 4. Observe: 提供各种服务面，可以通过Kaili进行监控
 
 
-![20200726150231](http://img.chenyingqiao.top/blog/20200726150231.png)
+![20200726150231](http://chenyingqiao.github.io/img/20200726150231.png)
 
 
 
@@ -31,12 +31,12 @@ Istio官网对其的定义
 
 1.6之前的架构
 
-![20200726150942](http://img.chenyingqiao.top/blog/20200726150942.png)
+![20200726150942](http://chenyingqiao.github.io/img/20200726150942.png)
 
 
 1.6之后的架构
 
-![20200726151431](http://img.chenyingqiao.top/blog/20200726151431.png)
+![20200726151431](http://chenyingqiao.github.io/img/20200726151431.png)
 
 我们可以注意到原先的解耦组件集成为了一个istiod，并且去除了Mixer
 
@@ -80,7 +80,7 @@ $istioctl install --set profile=demo
 ```
 
 其中profile是内置的一些配置文件
-![20200726160421](http://img.chenyingqiao.top/blog/20200726160421.png)
+![20200726160421](http://chenyingqiao.github.io/img/20200726160421.png)
 
 
 中间如果出现error installer Failed to wait for resource问题可以运行
@@ -203,7 +203,7 @@ $echo http://$GATEWAY_URL/productpage
 //输出网址
 ```
 
-![20200726162146](http://img.chenyingqiao.top/blog/20200726162146.png)
+![20200726162146](http://chenyingqiao.github.io/img/20200726162146.png)
 
 # 查看Istio仪表盘
 
@@ -212,4 +212,4 @@ $stioctl dashboard kiali
 http://localhost:39449/kiali
 ```
 
-![20200726162217](http://img.chenyingqiao.top/blog/20200726162217.png)
+![20200726162217](http://chenyingqiao.github.io/img/20200726162217.png)

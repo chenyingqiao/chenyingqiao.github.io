@@ -4,7 +4,7 @@ title:      "Go语言之Context"
 subtitle:   "Go语言之Context的源码解析"
 date:       2020-07-18
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200720160959.png"
+header-img: "http://chenyingqiao.github.io/img/20200720160959.png"
 catalog: true
 multilingual: false
 tags:

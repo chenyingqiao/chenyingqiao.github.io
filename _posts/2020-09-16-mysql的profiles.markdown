@@ -53,7 +53,7 @@ cleaning up         |0.000008|0.000000|  0.000008|                0|            
 
 表格元数据
 
-![20200917082435](http://img.chenyingqiao.top/blog/20200917082435.png)
+![20200917082435](http://chenyingqiao.github.io/img/20200917082435.png)
 
 ```
 "Status": "query end", 状态
@@ -97,5 +97,5 @@ cleaning up ：清理
 ```
 
 
-![20200917085410](http://img.chenyingqiao.top/blog/20200917085410.png)
+![20200917085410](http://chenyingqiao.github.io/img/20200917085410.png)
 

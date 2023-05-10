@@ -22,30 +22,30 @@ tags:
 3. 扫描(SCAN)算法（又称电梯算法）
 4. 循环扫描(Circulair SCAN, C-SCAN)算法
 
-![20200917090528](http://img.chenyingqiao.top/blog/20200917090528.png)
+![20200917090528](http://chenyingqiao.github.io/img/20200917090528.png)
 
-![20200917090621](http://img.chenyingqiao.top/blog/20200917090621.png)
-![20200917090631](http://img.chenyingqiao.top/blog/20200917090631.png)
+![20200917090621](http://chenyingqiao.github.io/img/20200917090621.png)
+![20200917090631](http://chenyingqiao.github.io/img/20200917090631.png)
 
 磁盘模型是这样的
 
-![20200917093109](http://img.chenyingqiao.top/blog/20200917093109.png)
+![20200917093109](http://chenyingqiao.github.io/img/20200917093109.png)
 
 图中指向的那个环就是一个磁盘`块`,磁盘是典型的块设备，所以这些条也就是硬盘分区被划分为一个个的block，每个块的大小被定为1024、2048或4096字节。
 
-![20200917093231](http://img.chenyingqiao.top/blog/20200917093231.png)
+![20200917093231](http://chenyingqiao.github.io/img/20200917093231.png)
 
 这些分区具体被分为多大其实这些分块是被一个叫boot block的东西管理着：
 
 boot block：boot block 是芯片设计厂家在LPC2000系列微控制器内部固化的一段代码，用户无法对其修改和删除。这段代码在芯片复位后首先被运行，其功能主要是判断运行那个存储器上的程序、检查用户代码是否有效、判断芯片是否被加密、芯片的在应用以及在系统编程功能。
 
-![20200917093358](http://img.chenyingqiao.top/blog/20200917093358.png)
+![20200917093358](http://chenyingqiao.github.io/img/20200917093358.png)
 
 其实我们的文件就存储在`block group`上，并且对于磁盘是连续的
 
 block group结构：
 
-![20200917093542](http://img.chenyingqiao.top/blog/20200917093542.png)
+![20200917093542](http://chenyingqiao.github.io/img/20200917093542.png)
 
 各个部分解析
 
@@ -60,7 +60,7 @@ group descriptor table：块组描述符，描述块组属性信息
 
 # 数据存放
 
-![20200917093923](http://img.chenyingqiao.top/blog/20200917093923.png)
+![20200917093923](http://chenyingqiao.github.io/img/20200917093923.png)
 
 一个文件的数据是如何存放到磁盘中的：
 
@@ -102,14 +102,14 @@ data/
 
 
 
-![20200917091442](http://img.chenyingqiao.top/blog/20200917091442.png)
+![20200917091442](http://chenyingqiao.github.io/img/20200917091442.png)
 
 
 # 主键索引和页
 
 主键索引的结构是和硬盘的文件分布是连续的
 
-![20200917091757](http://img.chenyingqiao.top/blog/20200917091757.png)
+![20200917091757](http://chenyingqiao.github.io/img/20200917091757.png)
 
 主键的文件描述
 
@@ -149,24 +149,24 @@ CREATE TABLE `wmills` (
 
 # 页的内部原理
 
-![20200917101001](http://img.chenyingqiao.top/blog/20200917101001.png)
+![20200917101001](http://chenyingqiao.github.io/img/20200917101001.png)
 
-![20200917101011](http://img.chenyingqiao.top/blog/20200917101011.png)
+![20200917101011](http://chenyingqiao.github.io/img/20200917101011.png)
 
 页可以空或者填充满（100%），行记录会按照主键顺序来排列。例如在使用AUTO_INCREMENT时，你会有顺序的ID 1、2、3、4等。
 
-![20200917092410](http://img.chenyingqiao.top/blog/20200917092410.png)
+![20200917092410](http://chenyingqiao.github.io/img/20200917092410.png)
 
 
 页还有另一个重要的属性：`MERGE_THRESHOLD`。该参数的默认值是50%页的大小，它在InnoDB的合并操作中扮演了很重要的角色。
 
-![20200917092443](http://img.chenyingqiao.top/blog/20200917092443.png)
+![20200917092443](http://chenyingqiao.github.io/img/20200917092443.png)
 
 当你插入数据时，如果数据（大小）能够放的进页中的话，那他们是按顺序将页填满的。
 
 若当前页满，则下一行记录会被插入下一页（NEXT）中。
 
-![20200917092607](http://img.chenyingqiao.top/blog/20200917092607.png)
+![20200917092607](http://chenyingqiao.github.io/img/20200917092607.png)
 
 根据B树的特性，它可以自顶向下遍历，但也可以在各叶子节点水平遍历。因为每个叶子节点都有着一个指向包含下一条（顺序）记录的页的指针。
 
@@ -191,19 +191,19 @@ CREATE TABLE `wmills` (
 
 当你删了一行记录时，实际上记录并没有被物理删除，记录被标记（flaged）为删除并且它的空间变得允许被其他记录声明使用。
 
-![20200917094239](http://img.chenyingqiao.top/blog/20200917094239.png)
+![20200917094239](http://chenyingqiao.github.io/img/20200917094239.png)
 
 当页中删除的记录达到`MERGE_THRESHOLD`（默认页体积的50%），InnoDB会开始寻找最靠近的页（前或后）看看是否可以将两个页合并以优化空间使用。
 
-![20200917094346](http://img.chenyingqiao.top/blog/20200917094346.png)
+![20200917094346](http://chenyingqiao.github.io/img/20200917094346.png)
 
 当前后两个页面可以合并成一个页面的时候，我们就可以将他们合并在一起
 
-![20200917094438](http://img.chenyingqiao.top/blog/20200917094438.png)
+![20200917094438](http://chenyingqiao.github.io/img/20200917094438.png)
 
 合并操作使得页#5保留它之前的数据，并且容纳来自页#6的数据。页#6变成一个空页，可以接纳新数据
 
-![20200917094451](http://img.chenyingqiao.top/blog/20200917094451.png)
+![20200917094451](http://chenyingqiao.github.io/img/20200917094451.png)
 
 *如果我们在UPDATE操作中让页中数据体积达到类似的阈值点，InnoDB也会进行一样的操作。*
 
@@ -214,11 +214,11 @@ CREATE TABLE `wmills` (
 
 #10 无法容纳
 
-![20200917094654](http://img.chenyingqiao.top/blog/20200917094654.png)
+![20200917094654](http://chenyingqiao.github.io/img/20200917094654.png)
 
 #11 页无法容纳
 
-![20200917094703](http://img.chenyingqiao.top/blog/20200917094703.png)
+![20200917094703](http://chenyingqiao.github.io/img/20200917094703.png)
 
 还记得之前说的链表吗（译注：指B+树的每一层都是双向链表）？页#10有指向页#9和页#11的指针。
 
@@ -230,11 +230,11 @@ InnoDB的做法是（简化版）：
 4. 重新定义页之间的关系
 
 
-![20200917094846](http://img.chenyingqiao.top/blog/20200917094846.png)
+![20200917094846](http://chenyingqiao.github.io/img/20200917094846.png)
 
 新的页#12被创建：
 
-![20200917094911](http://img.chenyingqiao.top/blog/20200917094911.png)
+![20200917094911](http://chenyingqiao.github.io/img/20200917094911.png)
 
 页#11保持原样，只有页之间的关系发生了改变：
 
@@ -263,7 +263,7 @@ InnoDB用`INFORMATION_SCHEMA.INNODB_METRICS`表来跟踪页的分裂数。可以
 测试分裂的次数如下图
 从左到右分别为 测试1，测试2，测试3
 
-![20200917095302](http://img.chenyingqiao.top/blog/20200917095302.png)
+![20200917095302](http://chenyingqiao.github.io/img/20200917095302.png)
 
 表现因不同主键而异。
 
@@ -271,7 +271,7 @@ InnoDB用`INFORMATION_SCHEMA.INNODB_METRICS`表来跟踪页的分裂数。可以
 
 在页合并的情况中，尝试合并的次数因主键类型的不同而表现得更加不一致。
 
-![20200917100220](http://img.chenyingqiao.top/blog/20200917100220.png)
+![20200917100220](http://chenyingqiao.github.io/img/20200917100220.png)
 
 在插入-更新-删除操作中，自增主键有更少的合并尝试次数，成功比例比其他两种类型低9.45%。UUID型主键（图表的右一侧）有更多的合并尝试，但是合并成功率明显更高，达22.34%，因为数据稀疏分布让很多页都有部分空闲空间。
 
@@ -283,7 +283,7 @@ InnoDB用`INFORMATION_SCHEMA.INNODB_METRICS`表来跟踪页的分裂数。可以
 
 Compact行格式
 
-![20200917101112](http://img.chenyingqiao.top/blog/20200917101112.png)
+![20200917101112](http://chenyingqiao.github.io/img/20200917101112.png)
 
 **变长字段长度列表**：VARCHAR(M)、VARBINARY(M)、TEXT类型，BLOB类型，这些数据类型修饰列称为变长字段，变长字段中存储多少字节的数据不是固定的，所以我们在存储真实数据的时候需要顺便把这些数据占用的字节数也存起来。
 
@@ -301,11 +301,11 @@ VARCHAR(M)，M代表最大能存多少个字符。( MySQL5.0.3以前是字节，
 
 5个字节也就是40个二进制位，不同的位代表不同的意思，如图：
 
-![20200917101435](http://img.chenyingqiao.top/blog/20200917101435.png)
+![20200917101435](http://chenyingqiao.github.io/img/20200917101435.png)
 
 **真实数据**： 记录的真实数据除了我们自己定义的列的数据以外，还会有三个隐藏列
 
-![20200917101537](http://img.chenyingqiao.top/blog/20200917101537.png)
+![20200917101537](http://chenyingqiao.github.io/img/20200917101537.png)
 
 实际上这几个列的真正名称其实是：DB_ROW_ID、DB_TRX_ID、DB_ROLL_PTR。
 

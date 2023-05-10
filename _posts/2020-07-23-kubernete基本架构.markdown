@@ -16,63 +16,63 @@ tags:
 # 基本组成
 
 
-![20200722145543](http://img.chenyingqiao.top/blog/20200722145543.png)
+![20200722145543](http://chenyingqiao.github.io/img/20200722145543.png)
 
-![20200722145512](http://img.chenyingqiao.top/blog/20200722145512.png)
+![20200722145512](http://chenyingqiao.github.io/img/20200722145512.png)
 
-![20200722145628](http://img.chenyingqiao.top/blog/20200722145628.png)
+![20200722145628](http://chenyingqiao.github.io/img/20200722145628.png)
 
 
-![20200722145704](http://img.chenyingqiao.top/blog/20200722145704.png)
+![20200722145704](http://chenyingqiao.github.io/img/20200722145704.png)
 
 
 # 调用流程
 
-![20200722145852](http://img.chenyingqiao.top/blog/20200722145852.png)
+![20200722145852](http://chenyingqiao.github.io/img/20200722145852.png)
 
 
 # Pods
 
 ## Pods基本定义
 
-![20200722150305](http://img.chenyingqiao.top/blog/20200722150305.png)
+![20200722150305](http://chenyingqiao.github.io/img/20200722150305.png)
 
 
-![20200722150546](http://img.chenyingqiao.top/blog/20200722150546.png)
+![20200722150546](http://chenyingqiao.github.io/img/20200722150546.png)
 
 ## Pods生命周期
 
-![20200722150647](http://img.chenyingqiao.top/blog/20200722150647.png)
+![20200722150647](http://chenyingqiao.github.io/img/20200722150647.png)
 
 
 ## 创建Pods
 
-![20200722151248](http://img.chenyingqiao.top/blog/20200722151248.png)
+![20200722151248](http://chenyingqiao.github.io/img/20200722151248.png)
 
 # Labels和Selectors
 
 > labels可以对容器进行标记
 
-![20200722152532](http://img.chenyingqiao.top/blog/20200722152532.png)
+![20200722152532](http://chenyingqiao.github.io/img/20200722152532.png)
 
 
-![20200722152625](http://img.chenyingqiao.top/blog/20200722152625.png)
+![20200722152625](http://chenyingqiao.github.io/img/20200722152625.png)
 
 # ReplicaSet
 
 用于控制副本数量，比如设置副本数量是3个，删除一个会自动在创建一个出来
 保证是3个
 
-![20200722152801](http://img.chenyingqiao.top/blog/20200722152801.png)
+![20200722152801](http://chenyingqiao.github.io/img/20200722152801.png)
 
 
 # Deployments
 
-![20200722152919](http://img.chenyingqiao.top/blog/20200722152919.png)
+![20200722152919](http://chenyingqiao.github.io/img/20200722152919.png)
 
 如果只使用ReplicaSet的缺点
 
-![20200722153254](http://img.chenyingqiao.top/blog/20200722153254.png)
+![20200722153254](http://chenyingqiao.github.io/img/20200722153254.png)
 
 
 关于部署的可以看一下这个链接
@@ -81,32 +81,32 @@ tags:
 https://www.cnblogs.com/chenliangcl/p/10142241.html</a>
 
 
-![20200722154114](http://img.chenyingqiao.top/blog/20200722154114.png)
+![20200722154114](http://chenyingqiao.github.io/img/20200722154114.png)
 
-![20200722154317](http://img.chenyingqiao.top/blog/20200722154317.png)
+![20200722154317](http://chenyingqiao.github.io/img/20200722154317.png)
 
-![20200722154417](http://img.chenyingqiao.top/blog/20200722154417.png)
+![20200722154417](http://chenyingqiao.github.io/img/20200722154417.png)
 
-![20200722155904](http://img.chenyingqiao.top/blog/20200722155904.png)
+![20200722155904](http://chenyingqiao.github.io/img/20200722155904.png)
 
 
 # Service
 
-![20200722161035](http://img.chenyingqiao.top/blog/20200722161035.png)
+![20200722161035](http://chenyingqiao.github.io/img/20200722161035.png)
 
-![20200722161810](http://img.chenyingqiao.top/blog/20200722161810.png)
+![20200722161810](http://chenyingqiao.github.io/img/20200722161810.png)
 
 # Service 服务发现
 
-![20200722162300](http://img.chenyingqiao.top/blog/20200722162300.png)
+![20200722162300](http://chenyingqiao.github.io/img/20200722162300.png)
 
 # Service 服务发布
 
-![20200722162411](http://img.chenyingqiao.top/blog/20200722162411.png)
+![20200722162411](http://chenyingqiao.github.io/img/20200722162411.png)
 
 # Service 的网络
 
-![20200722163027](http://img.chenyingqiao.top/blog/20200722163027.png)
+![20200722163027](http://chenyingqiao.github.io/img/20200722163027.png)
 
 # 数据管理
 

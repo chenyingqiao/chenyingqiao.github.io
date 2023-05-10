@@ -4,7 +4,7 @@ title:      "TCP可靠性传输"
 subtitle:   "TCP可靠性传输"
 date:       2020-09-09
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200907114445.png"
+header-img: "http://chenyingqiao.github.io/img/20200907114445.png"
 catalog: true
 multilingual: false
 tags:
@@ -54,7 +54,7 @@ TCP通过ACK（确认应答），来实现可靠的传输。
 
 为什么需要三次握手可以另外一篇文章，总结是：防止历史连接请求导致的错误
 
-![20200907113952](http://img.chenyingqiao.top/blog/20200907113952.png)
+![20200907113952](http://chenyingqiao.github.io/img/20200907113952.png)
 
 **发送数据的单位**
 
@@ -63,7 +63,7 @@ tpc可靠传输中是以段未单位发送，在建立连接的时候会通过SY
 
 **滑动窗口**
 
-![20200909102655](http://img.chenyingqiao.top/blog/20200909102655.png)
+![20200909102655](http://chenyingqiao.github.io/img/20200909102655.png)
 
 `传输效率`：窗口扩大了确认区间，可以从单次应答等待，提升为批量应答等待。使用了缓冲区，用来进行多段同时应答的功能。
 
@@ -74,12 +74,12 @@ tpc可靠传输中是以段未单位发送，在建立连接的时候会通过SY
 
 在没有使用窗口控制的时候，没有收到确认应答的数据都会被重发。当我们使用了滑动窗口，某些确认应答丢失我们页无需重发，可以通过下一次应答来确认。
 
-![20200909095833](http://img.chenyingqiao.top/blog/20200909095833.png)
+![20200909095833](http://chenyingqiao.github.io/img/20200909095833.png)
 
 如果窗口前端的数据没有接收到，未接收到的一方就会进行3次ACK.
 当收到前端缺失的数据，窗口就向前滑动了
 
-![20200909100356](http://img.chenyingqiao.top/blog/20200909100356.png)
+![20200909100356](http://chenyingqiao.github.io/img/20200909100356.png)
 
 **滑动窗口流控制**
 
@@ -119,6 +119,6 @@ TCP中有一个特殊的字段可以用来通知设置窗口大小。网络吞�
 
 一旦出现超时重传，或者收到第三个重复的 ack 时（快重传），TCP 会把慢启动门限 ssthresh 的值设置为 cwnd 值的一半，同时 cwnd = ssthresh （在有些版本中，会让 cwnd = ssthresh + 3）。
 
-![20200909104626](http://img.chenyingqiao.top/blog/20200909104626.png)
+![20200909104626](http://chenyingqiao.github.io/img/20200909104626.png)
 
 > 实际上，现代的 Linux 内核版本早已都不采用上面这些 TCP 版本了，而是使用使用的 TCP Cubic 版本。那为什么还要学呢？这就好比你想学会走，你就得先学会爬，简单的先弄会，以后再自学复杂的。

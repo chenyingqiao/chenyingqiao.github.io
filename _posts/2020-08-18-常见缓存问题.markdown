@@ -18,17 +18,17 @@ tags:
 
 缓存穿透是指的请求不存在的key导致穿透到数据库进行查询
 
-![20200818101344](http://img.chenyingqiao.top/blog/20200818101344.png)
+![20200818101344](http://chenyingqiao.github.io/img/20200818101344.png)
 
 解决方案：
 
-![20200818101857](http://img.chenyingqiao.top/blog/20200818101857.png)
+![20200818101857](http://chenyingqiao.github.io/img/20200818101857.png)
 
 **缓存击穿**
 
 大量流量查询一个key
 
-![20200818102119](http://img.chenyingqiao.top/blog/20200818102119.png)
+![20200818102119](http://chenyingqiao.github.io/img/20200818102119.png)
 
 解决方案：
 
@@ -39,7 +39,7 @@ tags:
 
 大量的key同时失效
 
-![20200818103659](http://img.chenyingqiao.top/blog/20200818103659.png)
+![20200818103659](http://chenyingqiao.github.io/img/20200818103659.png)
 
 解决方案：
 

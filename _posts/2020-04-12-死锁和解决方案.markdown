@@ -4,7 +4,7 @@ title:      "死锁和解决方案"
 subtitle:   "死锁和解决方案"
 date:       2020-04-12
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200412182752.png"
+header-img: "http://chenyingqiao.github.io/img/20200412182752.png"
 catalog: true
 multilingual: false
 tags:
@@ -19,7 +19,7 @@ tags:
 
 下图是一个死锁的实例示例:
 
-![20200412192943](http://img.chenyingqiao.top/blog/20200412192943.png)
+![20200412192943](http://chenyingqiao.github.io/img/20200412192943.png)
 
 > 下面是一段golang的goroutine的死锁实例,因为相互还想争夺锁导致deadlock。
 > 但是这种deadlock是语言本身检查不出来的，需要开发者自己进行排查处理，不然会导致两个goroutine僵死
@@ -99,14 +99,14 @@ func deadLock2() {
 
 **尽量再资源处理的开头获取全部的锁,并且在结束的时候释放锁**
 
-![20200412193505](http://img.chenyingqiao.top/blog/20200412193505.png)
+![20200412193505](http://chenyingqiao.github.io/img/20200412193505.png)
 
 
 ### 不能有循环等待的条件
 
 **不能锁等待时间过长,应该有一个等待的最大值**
 
-![20200412193708](http://img.chenyingqiao.top/blog/20200412193708.png)
+![20200412193708](http://chenyingqiao.github.io/img/20200412193708.png)
 
 
 ## 银行家算法
@@ -125,7 +125,7 @@ func deadLock2() {
 
 ## 哲学家就餐问题
 
-![20200811085329](http://img.chenyingqiao.top/blog/20200811085329.png)
+![20200811085329](http://chenyingqiao.github.io/img/20200811085329.png)
 
 假设有五位哲学家围坐在一张圆形餐桌旁，做以下两件事情之一：吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。餐桌中间有一大碗意大利面，每两个哲学家之间有一双筷子。因为用一只筷子很难吃到意大利面，所以假设哲学家必须用两只筷子吃东西。他们只能使用自己左右手边的那两只筷子。
 

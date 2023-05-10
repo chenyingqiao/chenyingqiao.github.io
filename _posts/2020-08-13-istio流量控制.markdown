@@ -4,7 +4,7 @@ title:      "istio流量控制"
 subtitle:   "istio流量控制"
 date:       2020-08-13
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200726164806.png"
+header-img: "http://chenyingqiao.github.io/img/20200726164806.png"
 catalog: true
 multilingual: false
 tags:
@@ -27,21 +27,21 @@ tags:
 
 其实是通过pilot对envoy这个代理进行控制，以达到流量控制的目的
 
-![20200813104018](http://img.chenyingqiao.top/blog/20200813104018.png)
+![20200813104018](http://chenyingqiao.github.io/img/20200813104018.png)
 
 下面列举几个场景
 
 client端直接通过`代码硬编码`的方式去访问一个服务，这个服务有两个不一样的服务器 （k8s可以做到）
 
-![20200813104452](http://img.chenyingqiao.top/blog/20200813104452.png)
+![20200813104452](http://chenyingqiao.github.io/img/20200813104452.png)
 
 client端直接通通过`负载均衡`的方式去访问一个服务，这个服务有两个不一样的服务器 （k8s可以做到）
 
-![20200813104619](http://img.chenyingqiao.top/blog/20200813104619.png)
+![20200813104619](http://chenyingqiao.github.io/img/20200813104619.png)
 
 如果要进行详细规划k8s就做不到了
 
-![20200813104634](http://img.chenyingqiao.top/blog/20200813104634.png)
+![20200813104634](http://chenyingqiao.github.io/img/20200813104634.png)
 
 所以我们就需要virtual service
 
@@ -158,7 +158,7 @@ spec:
 
 部署完了之后通过busybox就能访问到两个服务了
 
-![20200814112314](http://img.chenyingqiao.top/blog/20200814112314.png)
+![20200814112314](http://chenyingqiao.github.io/img/20200814112314.png)
 
 ## 场景2
 

@@ -4,7 +4,7 @@ title:      "Go语言之Map"
 subtitle:   "Go语言之Map"
 date:       2020-08-19
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200814155942.png"
+header-img: "http://chenyingqiao.github.io/img/20200814155942.png"
 catalog: true
 multilingual: false
 tags:
@@ -60,11 +60,11 @@ type hmap struct {
 }
 ```
 
-![20200819141632](http://img.chenyingqiao.top/blog/20200819141632.png)
+![20200819141632](http://chenyingqiao.github.io/img/20200819141632.png)
 
-![20200819141822](http://img.chenyingqiao.top/blog/20200819141822.png)
+![20200819141822](http://chenyingqiao.github.io/img/20200819141822.png)
 
-![20200819141747](http://img.chenyingqiao.top/blog/20200819141747.png)
+![20200819141747](http://chenyingqiao.github.io/img/20200819141747.png)
 
 **桶**
 
@@ -94,9 +94,9 @@ type bmap struct {
 }
 ```
 
-![20200819142500](http://img.chenyingqiao.top/blog/20200819142500.png)
+![20200819142500](http://chenyingqiao.github.io/img/20200819142500.png)
 
-![20200819141535](http://img.chenyingqiao.top/blog/20200819141535.png)
+![20200819141535](http://chenyingqiao.github.io/img/20200819141535.png)
 
 
 ```go
@@ -119,7 +119,7 @@ type mapextra struct {
 
 # 扩容规则
 
-![20200819143243](http://img.chenyingqiao.top/blog/20200819143243.png)
+![20200819143243](http://chenyingqiao.github.io/img/20200819143243.png)
 
 
 # 键值对被删除的情况迁移

@@ -4,7 +4,7 @@ title:      "TCP之Keepalive"
 subtitle:   "TCP之Keepalive"
 date:       2020-09-07
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200907114445.png"
+header-img: "http://chenyingqiao.github.io/img/20200907114445.png"
 catalog: true
 multilingual: false
 tags:
@@ -15,7 +15,7 @@ tags:
 
 tcp其实也有短连接和长链接的两种场景
 
-![20200907113952](http://img.chenyingqiao.top/blog/20200907113952.png)
+![20200907113952](http://chenyingqiao.github.io/img/20200907113952.png)
 
 **短链接**
 

@@ -4,7 +4,7 @@ title:      "istio注入原理"
 subtitle:   "istio注入原理"
 date:       2020-08-12
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200813160107.png"
+header-img: "http://chenyingqiao.github.io/img/20200813160107.png"
 catalog: true
 multilingual: false
 tags:
@@ -16,7 +16,7 @@ tags:
 
 # 架构图
 
-![20200726151431](http://img.chenyingqiao.top/blog/20200726151431.png)
+![20200726151431](http://chenyingqiao.github.io/img/20200726151431.png)
 
 # 新建一个pods进行注入操作
 
@@ -304,7 +304,7 @@ docker.io/istio/proxyv2:1.6.5
 initContainers【istio-iptables】 //这个是一个初始化的容器，执行完就结束了，用于注册`network space`
 
 
-![20200812220807](http://img.chenyingqiao.top/blog/20200812220807.png)
+![20200812220807](http://chenyingqiao.github.io/img/20200812220807.png)
 
 我们可以观察一下`istio-proxy`容器的运行进程
 
@@ -327,7 +327,7 @@ istio-p+      38  0.0  0.0  34408  2780 pts/0    R+   01:17   0:00 ps aux
 |  envoy |  轻量级的代理 |
 
 
-![20200812221935](http://img.chenyingqiao.top/blog/20200812221935.png)
+![20200812221935](http://chenyingqiao.github.io/img/20200812221935.png)
 
 # 注入后网络变化
 
@@ -448,7 +448,7 @@ COMMIT
 
 这个是多出来的几个端口的作用
 
-![20200812222100](http://img.chenyingqiao.top/blog/20200812222100.png)
+![20200812222100](http://chenyingqiao.github.io/img/20200812222100.png)
 
 # 自动注入
 

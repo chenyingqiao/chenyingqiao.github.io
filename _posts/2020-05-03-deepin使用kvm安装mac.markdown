@@ -4,7 +4,7 @@ title:      "使用kvm安装mac"
 subtitle:   "使用kvm安装mac"
 date:       2020-05-03
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200503170742.png"
+header-img: "http://chenyingqiao.github.io/img/20200503170742.png"
 catalog: true
 multilingual: false
 tags:
@@ -59,7 +59,7 @@ qemu-img create -f qcow2 MyDisk.qcow2 64G
 
 如图：（gtx940m已经被卸载了所以看不到了）
 
-![20200503164203](http://img.chenyingqiao.top/blog/20200503164203.png)
+![20200503164203](http://chenyingqiao.github.io/img/20200503164203.png)
 
 需要准备的事情有：
 
@@ -186,4 +186,4 @@ sudo ./basic.sh
 可以查看一下这个仓库
 安装后重启即可
 
-![20200503172529](http://img.chenyingqiao.top/blog/20200503172529.png)
+![20200503172529](http://chenyingqiao.github.io/img/20200503172529.png)

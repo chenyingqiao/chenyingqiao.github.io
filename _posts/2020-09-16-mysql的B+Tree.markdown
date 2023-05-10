@@ -49,11 +49,11 @@ tags:
 * 所有叶子结点都出现在同一层，叶子结点不包含任何关键字信息(可以看做是外部接点或查询失败的接点，实际上这些结点不存在，指向这些结点的指针都为null)
 
 
-![20200916222458](http://img.chenyingqiao.top/blog/20200916222458.png)
-![20200916222542](http://img.chenyingqiao.top/blog/20200916222542.png)
+![20200916222458](http://chenyingqiao.github.io/img/20200916222458.png)
+![20200916222542](http://chenyingqiao.github.io/img/20200916222542.png)
 
-![20200916222722](http://img.chenyingqiao.top/blog/20200916222722.png)
-![20200916222754](http://img.chenyingqiao.top/blog/20200916222754.png)
+![20200916222722](http://chenyingqiao.github.io/img/20200916222722.png)
+![20200916222754](http://chenyingqiao.github.io/img/20200916222754.png)
 
 
 # 联合索引
@@ -61,7 +61,7 @@ tags:
 mysql的索引是使用的B+树。
 如果定义一个联合索引包含 地区id,姓，国家（area_id,name,country）,mysql在构建b+tree的时候会按照id首先进行插入位置的确定。如果area_id都是一致的话，这样就继续比价后面两个字段。
 
-![20200917075335](http://img.chenyingqiao.top/blog/20200917075335.png)
+![20200917075335](http://chenyingqiao.github.io/img/20200917075335.png)
 
 # 最左匹配原则
 

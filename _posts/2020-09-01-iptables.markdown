@@ -51,7 +51,7 @@ KUBE-FIREWALL  all  --  0.0.0.0/0            0.0.0.0/0
 LIBVIRT_OUT  all  --  0.0.0.0/0            0.0.0.0/0 
 ```
 
-![20200901102051](http://img.chenyingqiao.top/blog/20200901102051.png)
+![20200901102051](http://chenyingqiao.github.io/img/20200901102051.png)
 
 INPUT Chain : 入口filter
 OUTPUT chain : 出口filter
@@ -90,7 +90,7 @@ LIBVIRT_PRT  all  --  0.0.0.0/0            0.0.0.0/0
 MASQUERADE  tcp  --  172.17.0.34          172.17.0.34          tcp dpt:10027
 ```
 
-![20200901102828](http://img.chenyingqiao.top/blog/20200901102828.png)
+![20200901102828](http://chenyingqiao.github.io/img/20200901102828.png)
 
 
 PREROUTING：修改转发的目的地址

@@ -4,7 +4,7 @@ title:      "Mysql和Mongodb对比"
 subtitle:   "Mysql和Mongodb对比"
 date:       2020-08-17
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200817110319.png"
+header-img: "http://chenyingqiao.github.io/img/20200817110319.png"
 catalog: true
 multilingual: false
 tags:
@@ -50,7 +50,7 @@ B+tree
 
 （3）搜索时相当于二分查找
 
-![20200817100142](http://img.chenyingqiao.top/blog/20200817100142.png)
+![20200817100142](http://chenyingqiao.github.io/img/20200817100142.png)
 
 *B+tree:*
 
@@ -62,7 +62,7 @@ B+tree
 
 （4）增加了相邻接点的指向指针。
 
-![20200817100229](http://img.chenyingqiao.top/blog/20200817100229.png)
+![20200817100229](http://chenyingqiao.github.io/img/20200817100229.png)
 
 两者区别就是：
 
@@ -87,4 +87,4 @@ mysql事务的支持比mongodb好
 mongodb隔离性是属于RC(不可重复读)，会导致出现幻读和不可重复读，只解决了脏读问题
 而mysql的RR(可重复读)中innodb解决了幻读的问题
 
-![20200817100621](http://img.chenyingqiao.top/blog/20200817100621.png)
+![20200817100621](http://chenyingqiao.github.io/img/20200817100621.png)

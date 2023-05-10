@@ -4,7 +4,7 @@ title:      "操作系统"
 subtitle:   "操作系统"
 date:       2020-09-02
 author:     "Lerko"
-header-img: "http://img.chenyingqiao.top/blog/20200806224734.png"
+header-img: "http://chenyingqiao.github.io/img/20200806224734.png"
 catalog: true
 multilingual: false
 tags:
@@ -24,7 +24,7 @@ tags:
 5. 面向字节流的服务
 6. 管道内部提供了同步机制
 
-![20200909210502](http://img.chenyingqiao.top/blog/20200909210502.png)
+![20200909210502](http://chenyingqiao.github.io/img/20200909210502.png)
 
 **命名管道(FIFO): **
 
@@ -32,7 +32,7 @@ tags:
 
 # 进程
 
-![20200909215532](http://img.chenyingqiao.top/blog/20200909215532.png)
+![20200909215532](http://chenyingqiao.github.io/img/20200909215532.png)
 
 1. 新建态(new): 进程被创建，尚未进入就绪队列。
 2. 就绪态(ready): 进程具备运行条件，等待系统分配处理器。
@@ -68,7 +68,7 @@ tags:
 3. 内存页框表：页框表的表项给出物理块使用情况：0为空闲，1为占用
 4. 页表：页表是操作系统为进程建立的，是程序页面和内存页框的对照表，页表的每一栏指明程序中的某一页面和分得的页框之间的关系。
 
-![20200909211037](http://img.chenyingqiao.top/blog/20200909211037.png)
+![20200909211037](http://chenyingqiao.github.io/img/20200909211037.png)
 
 # 中断
 
@@ -83,7 +83,7 @@ tags:
 
 # 处理器调度
 
-![20200909215905](http://img.chenyingqiao.top/blog/20200909215905.png)
+![20200909215905](http://chenyingqiao.github.io/img/20200909215905.png)
 
 1. 高级调度： 又称作业调度、长程调度。从输入系统的一批作业(job, 用户提交给操作系统计算的一个独立任务)中按照预定的调度策略挑选若干作业进入内存，为其分配所需资源并创建对应作业的用户进程。
 2. 中级调度： 又称平衡调度，中程调度。根据内存资源情况决定内存所能容纳的进程数目，并完成外存和内存中进程对换工作。
@@ -93,23 +93,23 @@ tags:
 
 **先来先服务调度**
 
-![20200909203734](http://img.chenyingqiao.top/blog/20200909203734.png)
+![20200909203734](http://chenyingqiao.github.io/img/20200909203734.png)
 
 **短作业调度算法**
 
-![20200909203828](http://img.chenyingqiao.top/blog/20200909203828.png)
+![20200909203828](http://chenyingqiao.github.io/img/20200909203828.png)
 
 **高响应比高者调度算法**
 
-![20200909204044](http://img.chenyingqiao.top/blog/20200909204044.png)
+![20200909204044](http://chenyingqiao.github.io/img/20200909204044.png)
 
 **优先数调度算法**
 
-![20200909204115](http://img.chenyingqiao.top/blog/20200909204115.png)
+![20200909204115](http://chenyingqiao.github.io/img/20200909204115.png)
 
 **循环轮转调度法**
 
-![20200909204250](http://img.chenyingqiao.top/blog/20200909204250.png)
+![20200909204250](http://chenyingqiao.github.io/img/20200909204250.png)
 
 # PV操作
 
@@ -149,6 +149,6 @@ c. 有限等待。 进入临界区内的进程应在有限时间内退出。
 
 地址转换：在多道程序环境下，程序中的逻辑地址与内存中的物理地址不可能一致，因此存储管理器必须提供地址变换功能，把逻辑地址转换成相应的物理地址。
 
-![20200909220519](http://img.chenyingqiao.top/blog/20200909220519.png)
+![20200909220519](http://chenyingqiao.github.io/img/20200909220519.png)
 
 [内存管理](https://blog.csdn.net/qq_29677867/article/details/91038642#111__3)
