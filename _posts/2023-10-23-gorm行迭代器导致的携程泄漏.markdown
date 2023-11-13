@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "Stackstorm快速开始"
-subtitle:   "Stackstorm快速开始"
-date:       2020-09-21
+title:      "Gorm携程泄漏问题"
+subtitle:   "Gorm携程泄漏问题"
+date:       2023-10-23
 author:     "Lerko"
 header-img: "/img/post-bg-e2e-ux.jpg"
 catalog: true

@@ -1,0 +1,203 @@
+---
+layout:     post
+title:      "golang通道的实现"
+subtitle:   "golang通道的实现"
+date:       2023-10-23
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - gorm
+    - go
+---
+
+# 简单的示例
+
+```golang
+package main
+
+func main() {
+	ch := make(chan string, 1)
+	ch <- "1234"
+	println(<-ch)
+}
+```
+
+# _type 类型
+```golang
+type _type struct {
+	size       uintptr // 类型的大小，以字节为单位。
+	ptrdata    uintptr //指针数据的大小，即内存前缀中存储指针的部分的大小。 
+	hash       uint32 // 类型的哈希值，用于在运行时进行类型检查和映射
+	tflag      tflag // 类型标志，包含关于类型的一些附加信息，如是否可寄存（can be stored in Eface）等
+	align      uint8 // 类型的对齐方式，以字节为单位。
+	fieldAlign uint8
+	kind       uint8 // 类型的种类，表示 Go 语言中的基本类型（int、float、pointer 等）。
+	equal func(unsafe.Pointer, unsafe.Pointer) bool // 用于比较两个对象是否相等的函数。
+	// gcdata stores the GC type data for the garbage collector.
+	// If the KindGCProg bit is set in kind, gcdata is a GC program.
+	// Otherwise it is a ptrmask bitmap. See mbitmap.go for details.
+	gcdata    *byte // 垃圾回收器（GC）类型数据，如果 kind 的 KindGCProg 位被设置，gcdata 是一个 GC 程序，否则是一个指向位图的指针。
+	str       nameOff // 类型的名称在字符串表中的偏移量。
+	ptrToThis typeOff // 指向此类型的指针的类型偏移量
+}
+```
+
+下面是一个chan类型的值数据
+```shell
+- : runtime._type :
+    - size: 16 = 0x10
+    - ptrdata: 8 = 0x8
+    - hash: 125357496 = 0x778cdb8
+    - tflag: tflagUncommon|tflagExtraStar|tflagNamed (7) = 0x0
+    - align: 8 = 0x8
+    - fieldAlign: 8 = 0x8
+    - kind: 24 = 0x18 // chan类型
+    - equal: runtime.strequal
+    - gcdata: *1
+        - : 1 = 0x1
+    - str: 1843
+    - ptrToThis: 14656
+```
+
+kind的类型枚举：
+kind: 1 表示 bool 类型。
+kind: 2 表示 int 类型。
+kind: 3 表示 int8 类型。
+kind: 4 表示 int16 类型。
+kind: 5 表示 int32 类型。
+kind: 6 表示 int64 类型。
+kind: 7 表示 uint 类型。
+kind: 8 表示 uint8 类型。
+kind: 9 表示 uint16 类型。
+kind: 10 表示 uint32 类型。
+kind: 11 表示 uint64 类型。
+kind: 12 表示 uintptr 类型。
+kind: 13 表示 float32 类型。
+kind: 14 表示 float64 类型。
+kind: 15 表示 complex64 类型。
+kind: 16 表示 complex128 类型。
+kind: 17 表示 array 类型。
+kind: 18 表示 chan 类型。
+kind: 19 表示 func 类型。
+kind: 20 表示 interface 类型。
+kind: 21 表示 map 类型。
+kind: 22 表示 ptr 类型。
+kind: 23 表示 slice 类型。
+kind: 24 表示 chan 类型。
+kind: 25 表示 string 类型。
+kind: 26 表示 struct 类型。
+kind: 27 表示 unsafe.Pointer 类型。
+
+# chantype 类型
+```golang
+type chantype struct {
+	typ  _type // 字段表示通道类型本身的信息，是一个 _type 结构体。这包括了通道的基本类型信息，如大小、对齐等
+	elem *_type //字段表示通道中元素的类型信息，也是一个 _type 结构体。通道是类型安全的，因此它存储了通道中元素的类型。elem 字段指向通道中元素的类型信息。
+	dir  uintptr //字段表示通道的方向，是一个 uintptr 类型。通道可以是单向的（发送或接收）或双向的。dir 字段用于表示通道的方向信息，具体的数值和方向的对应关系可以参考下面的说明。
+}
+```
+
+# hchan
+
+```golang
+type hchan struct {
+	qcount   uint           // 队列中的总数据
+	dataqsiz uint           // 循环队列的大小
+	buf      unsafe.Pointer // 指向 dataqsiz 元素的数组
+	elemsize uint16
+	closed   uint32
+	elemtype *_type // 元素类型
+	sendx    uint   // 发送索引
+	recvx    uint   // 接收索引
+	recvq    waitq  // 接收服务员列表
+	sendq    waitq  // 发送服务员名单
+
+    // 锁保护 hchan 中的所有字段，以及在该通道上阻塞的 sudogs 中的几个字段。 
+    // 持有此锁时不要更改另一个 g 的状态（特别是不要准备好 g），因为这可能会因堆栈收缩而导致死锁。
+	lock mutex
+}
+```
+在 Go 语言中，chan 的缓冲区（buffer）是由一个带有元素的环形队列（ring buffer）实现的数据结构。这个环形队列用于存储在通道中传递的元素。
+当通道被创建时，可以选择指定通道的容量，即缓冲区的大小。这个容量决定了通道可以同时存储的元素数量。
+缓冲区的实现是基于数组的，它包含以下几个关键属性：
+buf 数组：
+用于存储通道元素的数组。这个数组是一个环形队列，当队列的尾部到达数组的末尾时，会绕回到数组的开头。这样实现可以有效地利用有限的内存空间。
+sendx 和 recvx 指针：
+sendx 是指向下一个要写入的位置的指针，而 recvx 是指向下一个要读取的位置的指针。这两个指针在缓冲区的数组上移动，以实现环形队列的效果。
+qcount：
+表示当前缓冲区中存储的元素数量。当一个元素被发送到通道时，qcount 会增加；当一个元素被从通道接收时，qcount 会减少。这个值被用于判断缓冲区是否已满或为空。
+缓冲区的实现使得通道在发送和接收元素时可以进行非阻塞的操作，只有在缓冲区满时发送操作会阻塞，只有在缓冲区空时接收操作会阻塞。
+这里是一个简化的示意图，表示一个容量为 3 的缓冲区：
+  |-----------------|
+  |   |   |   |     |
+  |-----------------|
+  ^               ^
+sendx           recvx
+
+# 创建chan
+
+makechan(t *chantype, size int) *hchan
+
+```golang
+// makechan
+// t *chantype 描述channel对象, 和反射获取到的type是一样的 
+// size int 需要初始化的channel的大小
+func makechan(t *chantype, size int) *hchan {
+	elem := t.elem
+
+	// 编译器会检查这一点，但要安全。
+	if elem.size >= 1<<16 {
+		throw("makechan: invalid channel element type")
+	}
+    // 判断对齐是否符合
+	if hchanSize%maxAlign != 0 || elem.align > maxAlign {
+		throw("makechan: bad alignment")
+	}
+
+    // 使用 math.MulUintptr 计算通道元素的大小 (elem.size) 乘以缓冲区大小 (size) 的总内存大小。同时，检查是否溢出。
+	mem, overflow := math.MulUintptr(elem.size, uintptr(size))
+	if overflow || mem > maxAlloc-hchanSize || size < 0 {
+		panic(plainError("makechan: size out of range"))
+	}
+
+    // 当 buf 中存储的元素不包含指针时，hchan 不包含 gc 感兴趣的指针。
+	// buf 指向相同的分配，elemtype 是持久的。
+    // sudog 是从其所属线程引用的，因此无法收集它们。
+    // todo(dvyukov,rlh)：重新考虑收集器何时可以移动分配的对象。
+	var c *hchan
+	switch {
+	case mem == 0:
+        // 队列或元素大小为零。
+		c = (*hchan)(mallocgc(hchanSize, nil, true))
+        // 竞争检测器使用此位置进行同步。
+		c.buf = c.raceaddr()
+	case elem.ptrdata == 0:
+        // 元素不包含指针。
+        // 在一次调用中分配 hchan 和 buf。
+		c = (*hchan)(mallocgc(hchanSize+mem, nil, true))
+		c.buf = add(unsafe.Pointer(c), hchanSize)
+	default:
+        // 元素包含指针。
+		c = new(hchan)
+		c.buf = mallocgc(mem, elem, true)
+	}
+
+	c.elemsize = uint16(elem.size)
+	c.elemtype = elem
+	c.dataqsiz = uint(size)
+	lockInit(&c.lock, lockRankHchan)
+
+	if debugChan {
+		print("makechan: chan=", c, "; elemsize=", elem.size, "; dataqsiz=", size, "\n")
+	}
+	return c
+}
+```
+
+# 发送数据到chan
+
+```golang
+
+```
