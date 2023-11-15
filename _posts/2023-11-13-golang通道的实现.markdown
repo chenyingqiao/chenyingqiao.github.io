@@ -199,5 +199,288 @@ func makechan(t *chantype, size int) *hchan {
 # 发送数据到chan
 
 ```golang
+/*
+* 通用单通道发送/接收 
+* 如果块不为零， 
+* 那么协议将不会 
+* 休眠，但如果它可能 
+* 未完成则返回。
+ *
+* 当涉及睡眠的通道已关闭时，睡眠可以通过 g.param == nil 唤醒。 * 循环并重新运行该操作是最简单的；我们会看到它现在已经关闭了。
+ */
+func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
+	if c == nil {
+		if !block {
+			return false
+		}
+		gopark(nil, nil, waitReasonChanSendNilChan, traceEvGoStop, 2)
+		throw("unreachable")
+	}
 
+	if debugChan {
+		print("chansend: chan=", c, "\n")
+	}
+
+	if raceenabled {
+		racereadpc(c.raceaddr(), callerpc, abi.FuncPCABIInternal(chansend))
+	}
+
+    // 快速路径：检查在不获取锁的情况下是否发生了非阻塞操作失败。
+    //
+    // 在观察到通道未关闭的情况下，我们观察到通道不准备进行发送操作。这两个观察分别是对 c.closed 和 full() 的单字（word-sized）读取。
+    // 由于关闭的通道无法从“准备发送”状态过渡到“不准备发送”状态，即使在两个观察之间通道被关闭，它们也意味着在这两次观察之间存在一个瞬间，
+    // 此时通道既未关闭又不准备发送。我们将其视为我们在那一刻观察到了通道，并报告发送无法继续。
+    //
+    // 这里的读取操作重排序是可以的：如果我们观察到通道不准备发送，然后观察到通道没有关闭，那就意味着在第一次观察时通道没有关闭。
+    // 但是，这里没有保证前进。我们依赖 chanrecv() 和 closechan() 中锁释放的副作用来更新该线程对 c.closed 和 full() 的视图。
+	if !block && c.closed == 0 && full(c) {
+		return false
+	}
+
+	var t0 int64
+	if blockprofilerate > 0 {
+		t0 = cputicks()
+	}
+
+	lock(&c.lock)
+
+	if c.closed != 0 {
+		unlock(&c.lock)
+		panic(plainError("send on closed channel"))
+	}
+
+	if sg := c.recvq.dequeue(); sg != nil {
+		// Found a waiting receiver. We pass the value we want to send
+		// directly to the receiver, bypassing the channel buffer (if any).
+		send(c, sg, ep, func() { unlock(&c.lock) }, 3)
+		return true
+	}
+
+	if c.qcount < c.dataqsiz {
+		// Space is available in the channel buffer. Enqueue the element to send.
+		qp := chanbuf(c, c.sendx)
+		if raceenabled {
+			racenotify(c, c.sendx, nil)
+		}
+		typedmemmove(c.elemtype, qp, ep)
+		c.sendx++
+		if c.sendx == c.dataqsiz {
+			c.sendx = 0
+		}
+		c.qcount++
+		unlock(&c.lock)
+		return true
+	}
+
+	if !block {
+		unlock(&c.lock)
+		return false
+	}
+
+	// Block on the channel. Some receiver will complete our operation for us.
+	gp := getg()
+	mysg := acquireSudog()
+	mysg.releasetime = 0
+	if t0 != 0 {
+		mysg.releasetime = -1
+	}
+	// No stack splits between assigning elem and enqueuing mysg
+	// on gp.waiting where copystack can find it.
+	mysg.elem = ep
+	mysg.waitlink = nil
+	mysg.g = gp
+	mysg.isSelect = false
+	mysg.c = c
+	gp.waiting = mysg
+	gp.param = nil
+	c.sendq.enqueue(mysg)
+	// Signal to anyone trying to shrink our stack that we're about
+	// to park on a channel. The window between when this G's status
+	// changes and when we set gp.activeStackChans is not safe for
+	// stack shrinking.
+	gp.parkingOnChan.Store(true)
+	gopark(chanparkcommit, unsafe.Pointer(&c.lock), waitReasonChanSend, traceEvGoBlockSend, 2)
+	// Ensure the value being sent is kept alive until the
+	// receiver copies it out. The sudog has a pointer to the
+	// stack object, but sudogs aren't considered as roots of the
+	// stack tracer.
+	KeepAlive(ep)
+
+	// someone woke us up.
+	if mysg != gp.waiting {
+		throw("G waiting list is corrupted")
+	}
+	gp.waiting = nil
+	gp.activeStackChans = false
+	closed := !mysg.success
+	gp.param = nil
+	if mysg.releasetime > 0 {
+		blockevent(mysg.releasetime-t0, 2)
+	}
+	mysg.c = nil
+	releaseSudog(mysg)
+	if closed {
+		if c.closed == 0 {
+			throw("chansend: spurious wakeup")
+		}
+		panic(plainError("send on closed channel"))
+	}
+	return true
+}
+
+```
+
+# 接收数据
+
+```golang
+// chanrecv receives on channel c and writes the received data to ep.
+// ep may be nil, in which case received data is ignored.
+// If block == false and no elements are available, returns (false, false).
+// Otherwise, if c is closed, zeros *ep and returns (true, false).
+// Otherwise, fills in *ep with an element and returns (true, true).
+// A non-nil ep must point to the heap or the caller's stack.
+func chanrecv(c *hchan, ep unsafe.Pointer, block bool) (selected, received bool) {
+	// raceenabled: don't need to check ep, as it is always on the stack
+	// or is new memory allocated by reflect.
+
+	if debugChan {
+		print("chanrecv: chan=", c, "\n")
+	}
+
+	if c == nil {
+		if !block {
+			return
+		}
+		gopark(nil, nil, waitReasonChanReceiveNilChan, traceEvGoStop, 2)
+		throw("unreachable")
+	}
+
+	// Fast path: check for failed non-blocking operation without acquiring the lock.
+	if !block && empty(c) {
+		// After observing that the channel is not ready for receiving, we observe whether the
+		// channel is closed.
+		//
+		// Reordering of these checks could lead to incorrect behavior when racing with a close.
+		// For example, if the channel was open and not empty, was closed, and then drained,
+		// reordered reads could incorrectly indicate "open and empty". To prevent reordering,
+		// we use atomic loads for both checks, and rely on emptying and closing to happen in
+		// separate critical sections under the same lock.  This assumption fails when closing
+		// an unbuffered channel with a blocked send, but that is an error condition anyway.
+		if atomic.Load(&c.closed) == 0 {
+			// Because a channel cannot be reopened, the later observation of the channel
+			// being not closed implies that it was also not closed at the moment of the
+			// first observation. We behave as if we observed the channel at that moment
+			// and report that the receive cannot proceed.
+			return
+		}
+		// The channel is irreversibly closed. Re-check whether the channel has any pending data
+		// to receive, which could have arrived between the empty and closed checks above.
+		// Sequential consistency is also required here, when racing with such a send.
+		if empty(c) {
+			// The channel is irreversibly closed and empty.
+			if raceenabled {
+				raceacquire(c.raceaddr())
+			}
+			if ep != nil {
+				typedmemclr(c.elemtype, ep)
+			}
+			return true, false
+		}
+	}
+
+	var t0 int64
+	if blockprofilerate > 0 {
+		t0 = cputicks()
+	}
+
+	lock(&c.lock)
+
+	if c.closed != 0 {
+		if c.qcount == 0 {
+			if raceenabled {
+				raceacquire(c.raceaddr())
+			}
+			unlock(&c.lock)
+			if ep != nil {
+				typedmemclr(c.elemtype, ep)
+			}
+			return true, false
+		}
+		// The channel has been closed, but the channel's buffer have data.
+	} else {
+		// Just found waiting sender with not closed.
+		if sg := c.sendq.dequeue(); sg != nil {
+			// Found a waiting sender. If buffer is size 0, receive value
+			// directly from sender. Otherwise, receive from head of queue
+			// and add sender's value to the tail of the queue (both map to
+			// the same buffer slot because the queue is full).
+			recv(c, sg, ep, func() { unlock(&c.lock) }, 3)
+			return true, true
+		}
+	}
+
+	if c.qcount > 0 {
+		// 直接从队列接收
+		qp := chanbuf(c, c.recvx)
+		if raceenabled {
+			racenotify(c, c.recvx, nil)
+		}
+		if ep != nil {
+            //附值给对应的参数
+			typedmemmove(c.elemtype, ep, qp)
+		}
+		typedmemclr(c.elemtype, qp)
+		c.recvx++
+		if c.recvx == c.dataqsiz {
+			c.recvx = 0
+		}
+		c.qcount--
+		unlock(&c.lock)
+		return true, true
+	}
+
+	if !block {
+		unlock(&c.lock)
+		return false, false
+	}
+
+	// no sender available: block on this channel.
+	gp := getg()
+	mysg := acquireSudog()
+	mysg.releasetime = 0
+	if t0 != 0 {
+		mysg.releasetime = -1
+	}
+	// No stack splits between assigning elem and enqueuing mysg
+	// on gp.waiting where copystack can find it.
+	mysg.elem = ep
+	mysg.waitlink = nil
+	gp.waiting = mysg
+	mysg.g = gp
+	mysg.isSelect = false
+	mysg.c = c
+	gp.param = nil
+	c.recvq.enqueue(mysg)
+	// Signal to anyone trying to shrink our stack that we're about
+	// to park on a channel. The window between when this G's status
+	// changes and when we set gp.activeStackChans is not safe for
+	// stack shrinking.
+	gp.parkingOnChan.Store(true)
+	gopark(chanparkcommit, unsafe.Pointer(&c.lock), waitReasonChanReceive, traceEvGoBlockRecv, 2)
+
+	// someone woke us up
+	if mysg != gp.waiting {
+		throw("G waiting list is corrupted")
+	}
+	gp.waiting = nil
+	gp.activeStackChans = false
+	if mysg.releasetime > 0 {
+		blockevent(mysg.releasetime-t0, 2)
+	}
+	success := mysg.success
+	gp.param = nil
+	mysg.c = nil
+	releaseSudog(mysg)
+	return true, success
+}
 ```
