@@ -62,33 +62,60 @@ type _type struct {
 ```
 
 kind的类型枚举：
-kind: 1 表示 bool 类型。   
-kind: 2 表示 int 类型。   
-kind: 3 表示 int8 类型。   
-kind: 4 表示 int16 类型。   
-kind: 5 表示 int32 类型。   
-kind: 6 表示 int64 类型。   
-kind: 7 表示 uint 类型。   
-kind: 8 表示 uint8 类型。   
-kind: 9 表示 uint16 类型。   
-kind: 10 表示 uint32 类型。   
-kind: 11 表示 uint64 类型。   
-kind: 12 表示 uintptr 类型。   
-kind: 13 表示 float32 类型。   
-kind: 14 表示 float64 类型。   
-kind: 15 表示 complex64 类型。   
-kind: 16 表示 complex128 类型。   
-kind: 17 表示 array 类型。   
-kind: 18 表示 chan 类型。   
-kind: 19 表示 func 类型。   
-kind: 20 表示 interface 类型。   
-kind: 21 表示 map 类型。   
-kind: 22 表示 ptr 类型。   
-kind: 23 表示 slice 类型。   
-kind: 24 表示 chan 类型。   
-kind: 25 表示 string 类型。   
-kind: 26 表示 struct 类型。   
-kind: 27 表示 unsafe.Pointer 类型。   
+kind: 1 表示 bool 类型。
+
+kind: 2 表示 int 类型。
+
+kind: 3 表示 int8 类型。
+
+kind: 4 表示 int16 类型。
+
+kind: 5 表示 int32 类型。
+
+kind: 6 表示 int64 类型。
+
+kind: 7 表示 uint 类型。
+
+kind: 8 表示 uint8 类型。
+
+kind: 9 表示 uint16 类型。
+
+kind: 10 表示 uint32 类型。
+
+kind: 11 表示 uint64 类型。
+
+kind: 12 表示 uintptr 类型。
+
+kind: 13 表示 float32 类型。
+
+kind: 14 表示 float64 类型。
+
+kind: 15 表示 complex64 类型。
+
+kind: 16 表示 complex128 类型。
+
+kind: 17 表示 array 类型。
+
+kind: 18 表示 chan 类型。
+
+kind: 19 表示 func 类型。
+
+kind: 20 表示 interface 类型。
+
+kind: 21 表示 map 类型。
+
+kind: 22 表示 ptr 类型。
+
+kind: 23 表示 slice 类型。
+
+kind: 24 表示 chan 类型。
+
+kind: 25 表示 string 类型。
+
+kind: 26 表示 struct 类型。
+
+kind: 27 表示 unsafe.Pointer 类型。
+
 
 # chantype 类型
 ```golang
@@ -121,21 +148,34 @@ type hchan struct {
 ```
 
 在 Go 语言中，chan 的缓冲区（buffer）是由一个带有元素的环形队列（ring buffer）实现的数据结构。这个环形队列用于存储在通道中传递的元素。
+
 当通道被创建时，可以选择指定通道的容量，即缓冲区的大小。这个容量决定了通道可以同时存储的元素数量。
+
 缓冲区的实现是基于数组的，它包含以下几个关键属性：
+
 buf 数组：
+
 用于存储通道元素的数组。这个数组是一个环形队列，当队列的尾部到达数组的末尾时，会绕回到数组的开头。这样实现可以有效地利用有限的内存空间。
+
 sendx 和 recvx 指针：
+
 sendx 是指向下一个要写入的位置的指针，而 recvx 是指向下一个要读取的位置的指针。这两个指针在缓冲区的数组上移动，以实现环形队列的效果。
+
 qcount：
+
 表示当前缓冲区中存储的元素数量。当一个元素被发送到通道时，qcount 会增加；当一个元素被从通道接收时，qcount 会减少。这个值被用于判断缓冲区是否已满或为空。
+
 缓冲区的实现使得通道在发送和接收元素时可以进行非阻塞的操作，只有在缓冲区满时发送操作会阻塞，只有在缓冲区空时接收操作会阻塞。
+
 这里是一个简化的示意图，表示一个容量为 3 的缓冲区：
+
+```
   |-----------------|
   |   |   |   |     |
   |-----------------|
   ^               ^
 sendx           recvx
+```
 
 # 创建chan
 
