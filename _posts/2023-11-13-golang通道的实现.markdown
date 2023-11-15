@@ -2,14 +2,14 @@
 layout:     post
 title:      "golang通道的实现"
 subtitle:   "golang通道的实现"
-date:       2023-10-23
+date:       2023-11-15
 author:     "Lerko"
 header-img: "/img/post-bg-e2e-ux.jpg"
 catalog: true
 multilingual: false
 tags:
-    - gorm
     - go
+    - chan
 ---
 
 # 简单的示例
