@@ -138,6 +138,8 @@ sendx           recvx
 
 # 创建chan
 
+> ch := make(chan string, 1)
+
 makechan(t *chantype, size int) *hchan
 
 ```golang
@@ -197,6 +199,8 @@ func makechan(t *chantype, size int) *hchan {
 ```
 
 # 发送数据到chan
+
+> 	ch <- "1234"
 
 ```golang
 /*
@@ -331,6 +335,9 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 ```
 
 # 接收数据
+
+因为没有竞争关系，所以只会进入到直接从队列接收的代码
+> 	println(<-ch)
 
 ```golang
 // chanrecv receives on channel c and writes the received data to ep.
