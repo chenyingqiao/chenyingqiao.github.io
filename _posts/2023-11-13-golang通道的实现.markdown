@@ -451,15 +451,15 @@ func chanrecv(c *hchan, ep unsafe.Pointer, block bool) (selected, received bool)
 		return false, false
 	}
 
-	// no sender available: block on this channel.
+	// 没有可用的发送者：阻止此通道。
 	gp := getg()
 	mysg := acquireSudog()
 	mysg.releasetime = 0
 	if t0 != 0 {
 		mysg.releasetime = -1
 	}
-	// No stack splits between assigning elem and enqueuing mysg
-	// on gp.waiting where copystack can find it.
+    // 分配 elem 和入队 mysg 之间没有堆栈分割
+    // 在 gp.waiting 上，copystack 可以找到它。
 	mysg.elem = ep
 	mysg.waitlink = nil
 	gp.waiting = mysg
@@ -468,10 +468,8 @@ func chanrecv(c *hchan, ep unsafe.Pointer, block bool) (selected, received bool)
 	mysg.c = c
 	gp.param = nil
 	c.recvq.enqueue(mysg)
-	// Signal to anyone trying to shrink our stack that we're about
-	// to park on a channel. The window between when this G's status
-	// changes and when we set gp.activeStackChans is not safe for
-	// stack shrinking.
+    // 向任何试图缩小堆栈的人发出信号，表明我们即将停在通道上。 
+    // 这个 g 的状态发生变化和我们设置 gp.active stack chans 之间的窗口对于堆栈收缩来说是不安全的。
 	gp.parkingOnChan.Store(true)
 	gopark(chanparkcommit, unsafe.Pointer(&c.lock), waitReasonChanReceive, traceEvGoBlockRecv, 2)
 
