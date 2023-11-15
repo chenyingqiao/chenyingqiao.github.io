@@ -12,12 +12,7 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-# weibo_username:     huxpro
-# zhihu_username:     huxpro
 github_username:    chenyingqiao
-#twitter_username:  huxpro
-# facebook_username:  huxpro
-# linkedin_username:  firstname-lastname-idxxxx
 
 
 
@@ -47,9 +42,6 @@ kramdown:
 
 
 
-# Disqus settings
-#disqus_username: _your_disqus_short_name_
-
 # Duoshuo settings
 duoshuo_username: lerko
 # Share component is depend on Comment so we can NOT use share only.
@@ -65,8 +57,6 @@ duoshuo_share: true                     # set to false if you want to use Commen
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
 ga_domain: chenyingqiao.github.io
-
-
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
