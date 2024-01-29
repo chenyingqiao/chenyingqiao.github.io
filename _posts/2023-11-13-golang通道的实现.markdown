@@ -9,7 +9,7 @@ catalog: true
 multilingual: false
 tags:
     - go
-    - chan
+    - 数据结构
 ---
 
 # 简单的示例
