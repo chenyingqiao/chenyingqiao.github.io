@@ -1,0 +1,20 @@
+---
+layout:     post
+title:      "linux中的内存管理和内存页"
+subtitle:  "linux中的内存管理和内存页" 
+date:       2024-02-21
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - kubernetes
+---
+
+# 为什么有内存页的存在
+
+  在linux中其实进程是不能直接管理内存的，只有内核才能进行内存的管理。
+那么linux需要给进程虚拟出一块进程自己的内存，让进程有一个错觉自己独占了整个内存,并且是连续的内存
+
+# 内存页的结构
+

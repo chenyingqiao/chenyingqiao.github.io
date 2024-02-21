@@ -1,0 +1,16 @@
+---
+layout:     post
+title:      "如何调试k8s"
+subtitle:  "如何在本地对k8s源码进行调试" 
+date:       2024-01-31
+author:     "Lerko"
+header-img: "/img/post-bg-e2e-ux.jpg"
+catalog: true
+multilingual: false
+tags:
+    - kubernetes
+---
+
+# 环境准备
+
+nvim
